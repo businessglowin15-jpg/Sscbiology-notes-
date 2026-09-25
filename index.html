@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>जीव विज्ञान | Hindi Study Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Hind:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F4EA;
+    --paper:#FFFFFF;
+    --forest-900:#0E2F27;
+    --forest-800:#154A3D;
+    --forest-700:#1F6F5C;
+    --marigold:#F2A93B;
+    --marigold-dark:#D9860F;
+    --ink:#182620;
+    --muted:#5C6A61;
+    --border:#E3DFCC;
+    --correct:#2F9E44;
+    --correct-bg:#E7F6EA;
+    --wrong:#D64545;
+    --wrong-bg:#FCEAEA;
+    --shadow: 0 10px 30px rgba(14,47,39,0.08);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Hind', sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Rozha One', serif; font-weight:400;}
+  .app{
+    display:grid;
+    grid-template-columns:270px 1fr;
+    min-height:100vh;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar{
+    background:linear-gradient(180deg, var(--forest-900), var(--forest-800));
+    color:#F3F4EA;
+    padding:28px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .brand{display:flex; align-items:center; gap:12px; padding:0 6px;}
+  .brand-mark{
+    width:46px;height:46px;border-radius:12px;
+    background:var(--marigold);
+    color:var(--forest-900);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Rozha One',serif; font-size:22px;
+    flex-shrink:0;
+  }
+  .brand h1{font-size:20px; margin:0; line-height:1.2; color:#fff;}
+  .brand p{margin:2px 0 0; font-size:11px; letter-spacing:1.5px; color:#B9CFC4; font-family:'Poppins',sans-serif; text-transform:uppercase;}
+
+  .chapter-nav{display:flex; flex-direction:column; gap:4px; flex:1;}
+  .nav-label{font-family:'Poppins',sans-serif; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:#7FA093; padding:0 10px; margin:6px 0 4px;}
+  .nav-item{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    border-left:3px solid transparent;
+    transition:background .25s ease, border-color .25s ease, transform .15s ease;
+    color:#D9E6DF;
+  }
+  .nav-item:hover{background:rgba(242,169,59,0.1); transform:translateX(2px);}
+  .nav-item.active{background:rgba(242,169,59,0.16); border-left-color:var(--marigold); color:#fff;}
+  .nav-num{
+    font-family:'Poppins',sans-serif; font-size:11px; font-weight:600;
+    width:24px;height:24px;border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .nav-item.active .nav-num{background:var(--marigold); color:var(--forest-900);}
+  .nav-title{font-size:14.5px; line-height:1.3;}
+
+  .sidebar-home-btn, .sidebar-test-btn{
+    font-family:'Poppins',sans-serif;
+    border:none; cursor:pointer;
+    border-radius:10px; padding:12px 14px;
+    font-size:13px; font-weight:600;
+    display:flex; align-items:center; gap:8px; justify-content:center;
+  }
+  .sidebar-home-btn{background:rgba(255,255,255,0.08); color:#F3F4EA;}
+  .sidebar-test-btn{background:var(--marigold); color:var(--forest-900); transition:transform .2s ease, box-shadow .2s ease;}
+  .sidebar-test-btn:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(242,169,59,0.35);}
+
+  /* ===== MAIN ===== */
+  .main{min-height:100vh; display:flex; flex-direction:column;}
+  .topbar{
+    position:sticky; top:0; z-index:5;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 34px;
+    background:rgba(243,244,234,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  .crumbs{font-family:'Poppins',sans-serif; font-size:13px; color:var(--muted); letter-spacing:.3px;}
+  .crumbs b{color:var(--ink);}
+  .test-btn{
+    font-family:'Poppins',sans-serif; font-weight:600; font-size:13.5px;
+    background:var(--forest-800); color:#fff;
+    border:none; padding:11px 20px; border-radius:999px;
+    cursor:pointer; display:flex; align-items:center; gap:8px;
+    box-shadow:var(--shadow);
+    transition:transform .2s ease, background .2s ease;
+  }
+  .test-btn:hover{background:var(--forest-700); transform:translateY(-2px);}
+
+  .content{padding:34px; flex:1;}
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .fade-in{animation:fadeUp .5s ease both;}
+
+  /* ===== HOME GRID ===== */
+  .hero{margin-bottom:30px;}
+  .hero .eyebrow{font-family:'Poppins',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--forest-700); font-weight:600;}
+  .hero h2{font-size:34px; margin:8px 0 6px; color:var(--forest-900);}
+  .hero p{color:var(--muted); max-width:600px; font-size:15.5px;}
+
+  /* ===== FULL TEST BANNER ===== */
+  .full-test-banner{
+    background:linear-gradient(120deg, var(--marigold-dark), var(--marigold));
+    border-radius:18px; padding:22px 28px; margin-bottom:26px;
+    display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    cursor:pointer; box-shadow:var(--shadow);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .full-test-banner:hover{transform:translateY(-3px); box-shadow:0 14px 30px rgba(217,134,15,0.35);}
+  .ftb-left{display:flex; align-items:center; gap:16px;}
+  .ftb-icon{font-size:34px;}
+  .full-test-banner h3{margin:0 0 4px; color:var(--forest-900); font-size:19px;}
+  .full-test-banner p{margin:0; color:var(--forest-900); opacity:0.85; font-size:13.5px;}
+  .ftb-btn{background:var(--forest-900); color:#fff; flex-shrink:0;}
+  .ftb-btn:hover{background:var(--forest-800); box-shadow:0 10px 22px rgba(14,47,39,.3);}
+
+  /* ===== WATERMARK ===== */
+  .watermark{
+    position:fixed; right:14px; bottom:12px; z-index:100;
+    font-family:'Poppins',sans-serif; font-size:11.5px; font-weight:600;
+    color:rgba(14,47,39,0.55); background:rgba(255,255,255,0.72);
+    padding:6px 12px; border-radius:999px; letter-spacing:.3px;
+    pointer-events:none; user-select:none; backdrop-filter:blur(2px);
+    box-shadow:0 2px 8px rgba(14,47,39,0.08);
+  }
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:20px;
+  }
+  .chap-card{
+    background:var(--paper);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px;
+    cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    opacity:0; animation:fadeUp .5s ease forwards;
+  }
+  .chap-card:hover{transform:translateY(-6px); box-shadow:var(--shadow); border-color:var(--marigold);}
+  .chap-card .icon{font-size:28px;}
+  .chap-card .num{font-family:'Poppins',sans-serif; font-size:11px; color:var(--muted); letter-spacing:1px; margin-top:10px;}
+  .chap-card h3{font-size:19px; margin:4px 0 8px; color:var(--forest-900);}
+  .chap-card p{font-size:13.5px; color:var(--muted); margin:0 0 14px; line-height:1.5;}
+  .chap-card .row{display:flex; justify-content:space-between; align-items:center;}
+  .pill{font-family:'Poppins',sans-serif; font-size:11px; font-weight:600; background:#EFF1E4; color:var(--forest-700); padding:5px 10px; border-radius:999px;}
+  .go{font-size:18px; color:var(--marigold-dark); transition:transform .2s ease;}
+  .chap-card:hover .go{transform:translateX(4px);}
+
+  /* ===== CHAPTER VIEW ===== */
+  .chapter-hero{
+    background:linear-gradient(120deg, var(--forest-900), var(--forest-700));
+    color:#fff; border-radius:20px; padding:32px 34px; margin-bottom:26px;
+    position:relative; overflow:hidden;
+  }
+  .chapter-hero::after{
+    content:''; position:absolute; right:-40px; top:-40px; width:180px; height:180px;
+    background:radial-gradient(circle, rgba(242,169,59,0.35), transparent 70%);
+  }
+  .chapter-hero .tag{font-family:'Poppins',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:#F2A93B; font-weight:600;}
+  .chapter-hero h2{font-size:32px; margin:8px 0 6px;}
+  .chapter-hero p{color:#DCE7E1; max-width:560px; font-size:15px; margin:0;}
+  .chapter-hero .icon-badge{
+    position:absolute; right:30px; bottom:24px; font-size:52px; opacity:0.5;
+  }
+
+  .paper-card{
+    background:var(--paper); border:1px solid var(--border); border-radius:16px;
+    padding:28px 30px; margin-bottom:20px;
+  }
+  .paper-card h3{color:var(--forest-800); font-size:21px; margin:0 0 12px; display:flex; align-items:center; gap:10px;}
+  .paper-card h3::before{content:''; width:6px; height:22px; background:var(--marigold); border-radius:4px; display:inline-block;}
+  .paper-card p{line-height:1.85; font-size:15.5px; color:#2C3830; margin:0 0 12px;}
+  .paper-card ul{margin:0 0 12px; padding-left:22px; line-height:1.9; font-size:15.5px; color:#2C3830;}
+  .paper-card li{margin-bottom:4px;}
+  .formula{
+    font-family:'Poppins',sans-serif; background:#F3F4EA; border:1px dashed var(--forest-700);
+    border-radius:10px; padding:12px 16px; font-size:14.5px; color:var(--forest-800); margin:10px 0;
+    display:inline-block;
+  }
+  .note-box{
+    background:var(--correct-bg); border-left:4px solid var(--correct);
+    border-radius:8px; padding:14px 18px; margin:14px 0; font-size:14.5px; color:#20512A;
+  }
+  .note-box strong{color:var(--correct);}
+
+  .chapter-footer-actions{display:flex; gap:14px; margin-top:26px; flex-wrap:wrap;}
+  .btn-primary, .btn-ghost{
+    font-family:'Poppins',sans-serif; font-weight:600; font-size:14px;
+    padding:13px 22px; border-radius:12px; cursor:pointer; border:none;
+    display:flex; align-items:center; gap:8px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-primary{background:var(--marigold); color:var(--forest-900);}
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(242,169,59,.35);}
+  .btn-ghost{background:transparent; border:1.5px solid var(--border); color:var(--forest-800);}
+  .btn-ghost:hover{border-color:var(--forest-700); transform:translateY(-2px);}
+
+  /* ===== QUIZ SELECT OVERLAY ===== */
+  .overlay{
+    position:fixed; inset:0; background:rgba(14,47,39,0.55);
+    display:none; align-items:center; justify-content:center; z-index:50; padding:20px;
+    backdrop-filter:blur(3px);
+  }
+  .overlay.show{display:flex; animation:fadeUp .3s ease;}
+  .select-panel{
+    background:var(--paper); border-radius:20px; padding:30px; width:100%; max-width:640px;
+    max-height:85vh; overflow-y:auto;
+  }
+  .select-panel h3{margin-top:0; color:var(--forest-900); display:flex; justify-content:space-between; align-items:center; font-size:22px;}
+  .close-x{cursor:pointer; font-size:20px; color:var(--muted); font-family:'Poppins',sans-serif; border:none; background:none;}
+  .quiz-pick-list{display:flex; flex-direction:column; gap:10px; margin-top:16px;}
+  .quiz-pick-item{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:14px 16px; border:1px solid var(--border); border-radius:12px; cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .quiz-pick-item:hover{border-color:var(--marigold); background:#FCF7EC;}
+  .quiz-pick-item .left{display:flex; align-items:center; gap:12px;}
+  .quiz-pick-item .qi-icon{font-size:22px;}
+  .quiz-pick-item .qi-title{font-weight:600; font-size:14.5px; color:var(--forest-900);}
+  .quiz-pick-item .qi-sub{font-size:12px; color:var(--muted); font-family:'Poppins',sans-serif;}
+
+  /* ===== QUIZ RUN OVERLAY ===== */
+  .quiz-overlay{
+    position:fixed; inset:0; background:var(--bg); z-index:60; display:none;
+    flex-direction:column; overflow-y:auto;
+  }
+  .quiz-overlay.show{display:flex;}
+  .quiz-top{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 32px; background:var(--paper); border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:2;
+  }
+  .quiz-top h3{margin:0; font-size:19px; color:var(--forest-900);}
+  .quiz-exit{background:none; border:none; font-size:22px; cursor:pointer; color:var(--muted);}
+  .timer-wrap{display:flex; align-items:center; gap:10px;}
+  .timer-ring{transform:rotate(-90deg);}
+  .timer-ring circle.bg{stroke:var(--border);}
+  .timer-ring circle.fg{stroke:var(--forest-700); transition:stroke-dashoffset 1s linear, stroke .3s ease;}
+  .timer-ring.warning circle.fg{stroke:var(--wrong);}
+  .timer-text{font-family:'Poppins',sans-serif; font-weight:600; font-size:14px; color:var(--forest-900);}
+
+  .quiz-body{max-width:720px; margin:0 auto; padding:34px 24px 60px; width:100%;}
+  .progress-dots{display:flex; gap:6px; margin-bottom:22px; flex-wrap:wrap;}
+  .dot{width:26px; height:6px; border-radius:4px; background:var(--border); transition:background .3s ease;}
+  .dot.done{background:var(--forest-700);}
+  .dot.current{background:var(--marigold);}
+
+  .q-card{
+    background:var(--paper); border:1px solid var(--border); border-radius:18px; padding:30px;
+    animation:fadeUp .4s ease;
+  }
+  .q-index{font-family:'Poppins',sans-serif; font-size:12px; color:var(--muted); letter-spacing:1px; margin-bottom:8px;}
+  .q-text{font-size:19px; line-height:1.6; margin:0 0 22px; color:var(--ink);}
+  .options{display:flex; flex-direction:column; gap:12px;}
+  .option{
+    border:1.5px solid var(--border); border-radius:12px; padding:14px 18px;
+    cursor:pointer; font-size:15px; display:flex; gap:12px; align-items:center;
+    transition:border-color .2s ease, background .2s ease, transform .15s ease;
+  }
+  .option:hover{border-color:var(--marigold); transform:translateX(3px);}
+  .option .opt-letter{
+    width:26px; height:26px; border-radius:50%; background:#F3F4EA; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-size:12.5px; font-weight:600; color:var(--forest-800);
+  }
+  .option.selected{border-color:var(--forest-700); background:#F3F4EA;}
+  .option.correct{border-color:var(--correct); background:var(--correct-bg); animation:pulseCorrect .5s ease;}
+  .option.correct .opt-letter{background:var(--correct); color:#fff;}
+  .option.wrong{border-color:var(--wrong); background:var(--wrong-bg); animation:shake .45s ease;}
+  .option.wrong .opt-letter{background:var(--wrong); color:#fff;}
+  .option.disabled{cursor:default; pointer-events:none;}
+
+  @keyframes pulseCorrect{0%{transform:scale(1);}40%{transform:scale(1.02);}100%{transform:scale(1);}}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  .q-actions{display:flex; justify-content:flex-end; margin-top:24px;}
+
+  /* result screen */
+  .result-wrap{max-width:640px; margin:0 auto; padding:50px 24px; text-align:center;}
+  .score-ring{margin:0 auto 20px;}
+  .result-wrap h2{font-size:30px; color:var(--forest-900); margin:0 0 6px;}
+  .result-wrap p.sub{color:var(--muted); margin:0 0 30px;}
+  .review-list{text-align:left; display:flex; flex-direction:column; gap:12px; margin-bottom:30px;}
+  .review-item{border:1px solid var(--border); border-radius:12px; padding:14px 18px; background:var(--paper);}
+  .review-item .rq{font-size:14px; font-weight:600; margin-bottom:6px; color:var(--forest-900);}
+  .review-item .ra{font-size:13px; margin:2px 0;}
+  .ra.ok{color:var(--correct);}
+  .ra.bad{color:var(--wrong);}
+  .result-actions{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+
+  /* ===== SHARE LOCK ===== */
+  .lock-badge{
+    display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600;
+    font-family:'Poppins',sans-serif; color:var(--marigold-dark); background:#FCF0DA;
+    border-radius:999px; padding:3px 9px; margin-left:8px; vertical-align:middle;
+  }
+  .quiz-pick-item.locked{opacity:0.72;}
+  .quiz-pick-item.locked:hover{border-color:var(--border); background:transparent;}
+  .gate-panel{
+    background:var(--paper); border-radius:20px; padding:36px; width:100%; max-width:460px;
+    text-align:center;
+  }
+  .gate-icon{
+    width:76px; height:76px; border-radius:50%; background:#FCF0DA; color:var(--marigold-dark);
+    font-size:28px; display:flex; align-items:center; justify-content:center; margin:0 auto 18px;
+  }
+  .gate-panel h3{margin:0 0 8px; font-size:21px; color:var(--forest-900);}
+  .gate-panel p{color:var(--muted); font-size:14.5px; margin:0 0 20px; line-height:1.6;}
+  .gate-progress{display:flex; gap:6px; justify-content:center; margin-bottom:22px;}
+  .gate-dot{width:30px; height:8px; border-radius:4px; background:var(--border);}
+  .gate-dot.filled{background:var(--marigold);}
+  .gate-actions{display:flex; flex-direction:column; gap:10px;}
+  .gate-link-box{
+    display:flex; align-items:center; gap:8px; background:#F3F4EA; border:1px solid var(--border);
+    border-radius:10px; padding:10px 12px; margin-bottom:16px; font-family:'Poppins',sans-serif;
+    font-size:12.5px; color:var(--forest-800); word-break:break-all; justify-content:space-between;
+  }
+  .gate-link-box button{
+    flex-shrink:0; border:none; background:var(--forest-800); color:#fff; border-radius:6px;
+    padding:6px 10px; font-size:11px; cursor:pointer; font-family:'Poppins',sans-serif; font-weight:600;
+  }
+
+  @media (max-width: 900px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{position:relative; height:auto;}
+    .content{padding:22px;}
+    .topbar{padding:16px 20px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="watermark">Made by Ashwin</div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">जी</div>
+      <div>
+        <h1>जीव विज्ञान</h1>
+        <p>Hindi Study Notes</p>
+      </div>
+    </div>
+    <div class="chapter-nav">
+      <div class="nav-label">अध्याय सूची</div>
+      <div id="chapterNav"></div>
+    </div>
+    <button class="sidebar-home-btn" onclick="showHome()">🏠 होम पर जाएं</button>
+    <button class="sidebar-test-btn" onclick="openQuizSelect()">📝 टेस्ट लें</button>
+    <button class="sidebar-test-btn" style="background:var(--forest-700); color:#fff;" onclick="startFullTest()">🏆 फुल टेस्ट (40 प्रश्न) <span class="lock-badge" id="lockFull" style="background:rgba(255,255,255,.18); color:#fff;">🔒</span></button>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumbs" id="crumbs">होम</div>
+      <button class="test-btn" onclick="openQuizSelect()">📝&nbsp; टेस्ट लें</button>
+    </div>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<!-- Quiz chapter-select overlay -->
+<div class="overlay" id="quizSelectOverlay">
+  <div class="select-panel">
+    <h3>किस अध्याय का टेस्ट देना है? <button class="close-x" onclick="closeOverlay('quizSelectOverlay')">✕</button></h3>
+    <div class="quiz-pick-list" id="quizPickList"></div>
+  </div>
+</div>
+
+<!-- Quiz run overlay -->
+<div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-top">
+    <h3 id="quizTitle">टेस्ट</h3>
+    <div class="timer-wrap">
+      <svg class="timer-ring" width="50" height="50" viewBox="0 0 100 100">
+        <circle class="bg" cx="50" cy="50" r="42" stroke-width="8" fill="none"/>
+        <circle class="fg" id="timerCircle" cx="50" cy="50" r="42" stroke-width="8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="timer-text" id="timerText">02:00</span>
+      <button class="quiz-exit" onclick="exitQuiz()">✕</button>
+    </div>
+  </div>
+  <div class="quiz-body" id="quizBody"></div>
+</div>
+
+<!-- Share-to-unlock overlay -->
+<div class="overlay" id="gateOverlay">
+  <div class="gate-panel">
+    <div class="gate-icon">🔒</div>
+    <h3 id="gateTitle">टेस्ट लॉक है</h3>
+    <p id="gateDesc">इसे अनलॉक करने के लिए दोस्तों के साथ शेयर करें।</p>
+    <div class="gate-progress" id="gateProgress"></div>
+    <div class="gate-link-box">
+      <span id="gateLinkText">tinyurl.com/SSCSCINECENOTES</span>
+      <button onclick="copyGateLink()" id="gateCopyBtn">कॉपी करें</button>
+    </div>
+    <div class="gate-actions">
+      <button class="btn-primary" onclick="doShare()">📤 शेयर करें</button>
+      <button class="btn-ghost" onclick="closeOverlay('gateOverlay')">बंद करें</button>
+    </div>
+  </div>
+</div>
+
+<!-- Telegram promo overlay -->
+<div class="overlay" id="tgOverlay">
+  <div class="gate-panel">
+    <div class="gate-icon" style="background:#000; padding:0; overflow:hidden;">
+      <img src="data:image/png;base64,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dRpRuzDGFMs8xnFob+9g/rz5/Oxn/8fRRx/NU0891SUxpNLGlE6nSbkpwj2q1nr07t2Ha665hpNPPtlX0vHyqBfUZwnPeio1SogYv8tJDNu2bmPatGl87nOf48tf+jLW2rc0tK6muibIxx1Wr3qTJ598MhYq70kZDT772c/ypz/dztBhw3xets0HIvB5PC/gaXt5rJenpjrDF7/wRR599FHGFpRC8ec9jR49mvvuu48vXnppwO/OF6WAkpTEVcsF7TS58EwC2FJGxCBhk9Ky5FvL08HQexwjbNwqbNluApkk6NdoqK1+myj0nhj/wL4SgDAKnuHNdUISbTKa1Jcjyrrbo2qiKn44PwwVncviFk0ExaTo+VUt3/rWt/jB97/Pc1OnctX3r2LUqFH+osjnS00JoU1DQkqPJkCKEWHzps08/MgjXTAKklMJv06aJ5/PBZuLPxkCVb785S/zla98hYceeoh77/kr73//+6mprQlCUxsZrp20LP1IwqdFTp061RcgEOm6pkS5YF4BefY9o+W6666jo72j4mA57eLFD3/4bF54fho/+clPOOaYY+jbtw9VmQxVmTS9e/fmwAMP5Ktf/SpTp07l2l9dW1QMiZeP6urquPaXv+T6639Nt27dAnYb5WUJpUu67J56O02oO0uoxl9cU8HCUyVZCb7wWQO7WpWNWwUc31E1dRe61e1Z3ltp/9mj599+5aouTqnOc7RzXloP3d8EAu6ZkLh6vHl/d434u3+mioLa4WfSa/FnuiTmHjT3A3rYoYdpa2tbRGh927Zt+pe779bzzjtPhwwZom4grr6758CBg3T6i9P3qBFfY0LrU6dOVcdxis34gI4eNUY3b94cOTcv7+lrs2bpD6++Wo877jjt27efukGTfVfPnj176u9//4fyc4uIqsea70NiAZ+46CL/3AIBAxHRO+74c9e/1eu6sV9VNZfL6erVq3XWa7P0tdde05UrVxXFDBK/24uJ0wffNW3aNB07dqwv8u5ExedT6bSmUml1g7VQEn5PJ6yRzN4/A/GIdPAs/bmq+Fo69u++2ESVGielD9/gqs43qrMcbX/Z0Umj30ZD/25BF/zxof16BVuXEdrbLFtaCn5cosCidN1Do7CXc3yTACiNznSNl0PiO22wS6YzVVz5ne9QU1Pth5YBzt+9e3fO/vCHOfvDH2bLli0sWrSI+fPns3DhQt58cyXbt7fQ1tYWqEfW0Nzcn8MOO4wPfOADDBo0qPhdQmWWkcYuwGuzXvNpk8b4WzOWS75wMU1NTRECiIgwedIkJk+axDe+/g3WrVvLwkWLWLJ4MSveeIMNGzbQ2taG9TzSmQzN/ZuZMGE8xxxzTEk6N3ISFfACKV3PXbtamfnyy6XTNQa1lquv/iGnnHISPXo0RuR9EoFJid2/4P+u69Lc3Exzc3PZfVaNjg6MThUMrkdABDjiiCN48sknOfPMM5k58xWMuD6rSWOfIYZM77bgpsmVkngbdxTsLnlsKR8uHr751jOs2+IVwdWqtNDcS5i9l839LnthwfW10KsxGPyLsG0HbGnxW9Fktxmf7nWhWnVPYtEoEaHiO4MXvHyOD5xxBqe875RI6aFAri909zQ1NXHEEUdwxBFHRELIfMBhdoyD4zqxMEuKiKckEDqiYZTgeR4PP1wKvdXLM27c+KLaYzmnu8QkGzBgAAMGDOCkoBNq96GXlDOKtHzzk5Ck7/Tp01m0aFHwelACcgxz587l69/4Jjdcfz3GGGysBJO4Ucd52louFBcdP0l42GHsbaWeXAkGnnd0dESNKTa8UCVkyKoBcSMZXy58sCjYHl9olJ1QSXhfkwEvyipnytoNhV5oC8bQq3HvZ6OYvckPutUL9bWBeqERNm0ztLYRGQSlXe4IklxEE4mpaScSncqtX0IdRxISdZdQ11CojKCqVFfX8J9f+1qJ1yulXV3DJAIbGvQd/DBjDOl0mnTan2uL+sBKeFh54fNWwyoRGu1gCh4zZszg+eef9xvdAxrl1y+/nB49eoTeW+rCCXcvqQ09Ndp9o8F52SJ5QrEFELE4NLzEiA6fV5j5+pvf3hB0bZnY5uNw04038r8/+UmZLGzx+wpXP6HBw4Y8aXhIug2dpwaDYMPXrXieUqpXb9++nQsvvJB58+b5mATEyDOh2ywUWzhLGHVcPjZp2nxoZVcQ05ewUn5XYWfIQDZuC/GBDfTtufcg1l5pYtXUCNUZinpMW7dBLqf4iqThNoCK+38C0ly52zVxdIjEpu6F704F4kdheqD18nz845/h8CMOL5tqH3fjYQ6sinaJt4VrrBpvYrbhWqIWF3xnNstV37+K9ra24vkedtjhfOTcj5QBXeFjFIGTmNq5Vmi6UKsxwkQ4lLZlxQAJKgx/+9vfuP+++4mOcdBSlUGE73z3u/RobORzn/scouCpF90BiM1GCrPnKG8FTPqTJqygwjXcvn0HH//4J3j88cd94w3JzsaDDYlXNTSufRWa2hgCRzU+bbJL/XeJ5G8a0kTXhJnFm7f6JdjC5xt7yFs34D1x3N3rIZMuxV1bt/uTyP1BcVIMUaIUvXAFM4G3VrhNZeoKCZOTKae5RSgFQiQMLlAWCUozAwYM5OuXXx4LIcNDxBM4z0nRlcSkVkKte+Vhf5zP7f/9f378Yx5/7PHiW6qrqrniiiuKI019sXWNjk22GpsgESOEa/mA6uisprjSYJiD4vu8tOMrYHzpy18ml/cC1lP5zzHGIe9Zvvzlr9DS0sLXvvY1XNcNOqiiZAeNU2pD2lQlo4lRbstkhDRCGV25ciWf/exneeyxx0LxspQqBpS01kohbqhLScq2luiMZiUUYlOe38fI98XfGBq2J0HrY1nNOPjMtu0EA8/8QLhX9z0Ln8OWtFfthN3qBR+Y9WvBW1vsHgTLuodFUU2IwXUPYmkJhYYhMCWOqVjLMccew9BhQ8uuRFjsTAn39ZaHq2gQmgYaWIW6rLVafD0a8vnvt0HDv4hwzTXX8IMf/MBfYMYBhdGjR3PC8ccXiQw2GBBWDCfVf4a/t/R/638m+HPxmDb4e/HcvOLrVm1xWmKhFJJOpZgxYwYfPvvDrFq5MlDniKpShKc6GGPI5nJ885vf5LzzzuPNN9/Edd1ipGCLxyv9X23p3DzPf90Ln1fkz8HvCs7fOA6O4/DEE09w4okn8thjjyGOE2t8ibp2RcsjtnDaoFEWmcai5UjTDErioEWJpsgaNn0NN+xEA5TtbUI+b4oH7Fa/5wws3ooBN3ZTcLQ4hW3HruRqVLR+2rUhRwe8ayi8CqGWXbSLlecX5UiWimDcFA888ABXXnklW7duLS7CIiVeo831Gow6CedzNjAUtdHFH843bcR4tKgymXJdtmzZwhe/+EUuu+wy8vl8QMAwOK7DggUL+dj5H2PWrNl+jdmY4uZUZIwFxli2ORT+LZSThw2kcK628Hro/BBIpVy/xvvrX3P6aaezdMkSn1YaVq5IUKrUEJ/47rvv5vjjj+cPf/gDHR0dRQqnlw8ZpKclYy0Yr+eVniHjLf5ZLY7jYw8rV77JV77yVc4880yWLFniXx9bIt9Ex5yUKJpJqVgkktGKE2xiEw5jg81jAh/JI4ES/FTwVe3tQt4rWX5dtew12WavmhmOngLvPy6YA+w6PPC08uKrPg0x0l4VRjOlAkgf02+SOCk3Hj4RF10rXVSRhAsczX5A/KFdz02dWmzkHzJkKHV1dUVjLhhbWRgcanezoZlFmugRS56yAHq1tbdz91/+wic/9SkefvjhQODNKaHLCp61LFgwnzvu+BOrV6+hubk/ffv1Kxpy0UhjHqQ06Ku0UK0X3WDCG02RiOI4pFMpOjo7eerJJ/nSl7/Mr669lrb2toBlVbjOJiQkV3pGstMAxNq2tYX77ruPJ598AhGhX9++NHTrhhFT9PilTSV0ToVNKVQyc4xDOp1GjGHZ0mX8+tfX8YVLvsgTTzxOPu8FkUsY3pdEADaKzFSgkiqh+VbEEHUpq7GVsj2JGHyc1SuxElQxRBc/9exer3zyg0ImDRjDhs3CLQ9YrN1zA94rPffLP+Xwk28atNMiGZdLvudx/e2Cm5KyLpeS/SbkMhFGpVSQAK1Uk4s3NlAEL+KGp6F6ZxjkKfCMhw4dxgc/+EE+8IEzmDRpUmmcB5R5syL7SSuBMv5CdhwH13Xp6PD5048+9hh/vuMOXgkaAiQwSAm3GwZlueImopb6+gaOPPIIPvShszjyyCMYMmRIMT9W1ZIh2FJ/bClUKw0qM8ZEQl9jDNlslhVvrOCxRx/jrrvu4u8vvxzMWHLK8jwRUyq1RFLoUo6pYbdC6foOGjSIU099P6eccjKTJ+9Pr969ETF4eVtcIMU+nWBTttbS0dHBunXrmPnyyzz08EM89eRTtO7aWqEAGepACgFFpnhtBasmADn961SYnKmhoQISM8ZyE5Eoj1CjAu+75zFHVVbzORjcbPn77UKveg9cw2sLDUdc2El7xztkwN++2OG/vyq+lGzG5dNX5Ln5LsFNGcJjFqPNRuUQXriBQzUuFKalwc8iFYvqxYsfAj3CZZuuJtEXFrSX9wCLMQ7Dhw/j4IMP5pBDDmHc+PEMGTKEpsZGqqurSaVSZY0I4dA5l8vT2dnJli2bWbJ0KS+//DIvvvACL7/8cnFWkT+JIB41RJGxcG+v51nU+obQ0NDAfhMnctBBBzFhwn4MHz6Mfv36061bN2pranCCvFOCUoyG8udsZyctLdtZvXo1S5YuYd68ebz26mvMmTuXlm1bQ4vWoJgQmt9VU2047yl0YNjQU8uqlb379GH82JFMGDeU8WOHMKB/H/r16Ua3+jRqs+za1cKmDWvZsG4Fr7++mIWLlrBlyw6s+iKKDXVCtzqhR4PSUOfjMQ11UFMNmbSQcgJ6a+EZXMdVG/JM/bvy6iJDKmXZ1S4sesMh5VrqapS2diGXN4mtqEmD0TU8hSNB7aWS8Ra3u8Bf5fNKv97Ky7cb+vfwwBHmLjUc9rFOWtv3BZEj4ZFyo0mDv74KO1CFAjcam/pWEH3XRBUDoTS8K9ZCEnmvkeicgch3aQUSV+ymOK6Dqh/eLVmyhCVLlnD77bcjxtC9Wzd/ymCvXjQ1NtK9e3caGhpIZzKICNnOTnbu2sW2rVvZsnUrmzdvZuOGjWxraYl0EkUnVWgx4oiODg2PatYyrtqOHbt4YdqLvDBtWhEB7tG9gT69m+jVq5Hu3XuQSmciLWttHR6btmz3z2/LFlq2bgVyFak0qkK3OmVQP6itttRWKd3qoaZKqEoLqbQvWmjVF2WoSkF1lWI9jzfXCzvbtThR0HGElAsNtYam7obxwzzqatbRULWOnvXPUV8DtVVQ3QmpvO+NegPDGoAGcMaB60Iq4xarWOIaMLYYgiKhSYARtodGW8qzcM7xYMUfObNgBdzxkGXZWofmfh6PTYU31ijiSAK4SRmiXhYqJ/aua1noncT98vL4OXDwEadMJ24fG7ApAGbFiQrltVclSjqI1BgLoJFo5Yg5VEMr72eITkCP1IzjJeFIf4NWYGKW+lIptOwFIe22bdv8ZvmAibSnAY3fDeQU2WpouOTjH6+hTqipUqozSn0N9OgGPbsrNdV+nb2uWqlyLdUZn/3Wo95/f0oEx/hhZsrZRn31NgpksGwWP/QSyKRgWyus3ACrNsK6reC4htpah5TxVUuq0r5xplPQrQ56NimD+sCg3pbaGiGTFqoygGOiejBY38n6g2/93+l5/m8WJ6RTZX0h5PCC9sDmAtUUJwiZPYtNhWhKAfjkOPgz2AqpjxcCKUO15GR6n38MvwynbNsBc9+AGfOU51+GVeuV7buEzpctO1r9CEFVEvCamIetVDuWLlLAhBi3VGq14bpWgnbXPjbgpMZ7yhL38hBWY+FHiNuWbAYSs94YrUZiG0CYaFFWJVYioWt5NxQxUCw0eIsgnwyFvCWdpbDnVHxkr7BohB4NMLw/jBoCzb2F3o3Q3Av69lT69nSoq4LqdJ7aaqGqWhDjlRI51JcdLZyW1SAyFTQveJ6/YTnG37rynq/ygCiO8e3MCaoFubwgRnGrjB+2WOvLAQu+NnFsJCb5UuSg1kKBK45FyZcuk/EXnBbODUVMOBc3iKeBppb6HtQRjFj/PBz/oEYNpigaFWwAeQ/UBJKwYRWR0OyTBOZTKQ/1mXB++RD69BB6NxqOmqh85nRL1vMBxCdegiuug/Wb/VguPCM8mtNq5DWVZOHCsnrx7rjDhSiCtybqvtcG7HldnVSg3yt7twkk/2P5VPT43dJKFGmNEkUiJAEtL9yrBFrDtryWoBFFxLCRKynX945N3ZXGeuhWJ/RphAF9LZNGGSaPMgzspdTUFeiuthTGeB7k/EXmOzXF7yS05ayeQKVDS7Ut3JRERsWnBFxHEcefa5TLK4UOO+P4Sog2H/9ukLz6DQpBndyEjdkxiOv4XiIkqu6zYvC9r1cCCo0pMZikGKpZJK3YDti01eCmDY5x2dQirN+UZcMWpWUn5D0HFahKC30bLSMHGYb2NxiTR3PBRSqQODTUwhIZQhRm6AVJW0EEPthsXKNUN4E4PmPs9MNg9EDDplaX79+gzF7sTxEMK8YocaRau1i/yc0cQlQeTuKjgGLTId4xA87nozzkOElnb1GxZMXjcLko9i+BGmVin4SU8h+Ni/NbiohkNO/0PYvjQE2t0r1eaeoGPRqEPk1C7wZL/16GXo2G2irBs1CThroq38M2dYOGehOEnIRyNC0xAArexQmFnUZBPIz6Hlw9H5UVJzRsLCRzi/H/rlllV4dh87YUm1uEbS05drX520yPeqFfb5eBvT3qqmxQTvIN0RiKNeSwnpeqBQekykFy0LbLYlVwHWVri2HTzjQtLR6bt2VpbfdPvboKenU3DBvkMLApjxHrg1+GEvPNESRj2LkVfnWH5amXYPGbeVIpMK5Lyw5l+w5LPh/elIMBZ2Lp02R5/5HKxefAlJElLl+xqhCZ3RlL30J5VJG9VUzpgs3AcVm7Ic/fnrXMX6GYlEfLToobZUTlI3KIsIZ0OcAqsbUXqURpNLfGr8RS6ocRrN17X7xXBuzLAhcOYUmnoXxqW6FbJDRvRpJ5zeEuK4k035dqjRLiwUa7UrRsIyg6KS/qzR1HcVPQvU7p3QQDesPgfsqwgcKgvkL/Jj+0bWyAmipDVYqAHhq28yD3CxcLrfpIhBMgfCoB0UWxncqOVtjQ4rB+K2zbAdtblV2tSnsbVGWEccNdxo8w9OnRiZcF40i0ySKVYucOj5kLPJ6dCS8v8DWFN2+Htg5LRxE48isBtbVK/54weaRy1nHCmcc5pKoMmvf8cy+0fRrf4MSBtp3KXx9Xps+CGbOErCe4jmHjNsOOVo+ODouvzV663m4aRgzOc9yBlk+dYThwvAabg6JiWLFGePZVuOMRlyemFdILW1w34giCwRgtjQnFr3FbT9mwWfjjg4bZS/Lc/n0YM0x92aYEz1dUrNJydlSJL+7n5K8sMby5DmYstNxyL2zYRCkFEiml7MR022LV3AKmIjFLVd0N4VCjoG4mDelUaZ3lbQCd7IXz26t+4I6sLe2UQE0mGY+LdIx08Y2FiyQkq3aU0TG1HK32rB9mug5kUpZMGro1KD27K72bhIH9YfgAwyHjYMQAS496Q3VawLUgwZZnJVQBCcgcuVjOFZAoCjN1cYPv6LRsbHHYtkvIeg7zlgmvLLK8tsBjxSrL5halvTOIXghCUvx810kpE8fk+O4n4cxjA1RfQDIO6gl/ecLjz4/BY88Lbe3BtRcwxgYjLX1jFBGsws5dysLtwsKlwh2PCB84Hm74jtCv0WdBSZBm4jhs3qrMmAe//5vw1yfzZQiqONZH+tX6kZY4xRVqrcOipcqiJZaX5wl//h/D8P4em7YKtz6iPPtanudnCi3bHdy0oGpCqHuIE2781KWYmqlvyEagJgObtsJjLwljRhZSEFO6HRKdQVRq8CDR/SkwdrBl7HCHbt1gyVLl+VcM23ZJQoeDlrOvNMTfL2w6wXnE/P8eECD9aDCTgrRTAm6yWcXbQwPW3XngJFe+qz08/UnoUReNDcJDjiO9nFoJmZMKNcYY2BQijBcqNOII6ll6NynD+lt6N0K3BmjurQxpFpp7QZ9GpVcPh6YGqK+1pRtgLdqZ/GvL+k1DoXnRANKweYtw39OGh6Yqry6GLdvzWBXa2t0yoT4x4oO0UpjzY4r9tXMWevzXtcKQZmHSKCXXATPmCX98CO5/BjZv88PsIsdCtGxESSkdVBwTtIqJcP/ThnWb8tz3C+jbQ1ELLS2Wm+7L8eTfldcWwaat6aCcprHJ8zYC8GnhaUuQcDrld9T8+XHhso8Z/vosPPV3ZdYiZfsOf5ym2nDIXgIBrQqoQYxSk8lTW6U0dlPGDBPGDzOcergyfqShW42gOUu40ydBbjzinUvKpUWqHyKG2log7TG4l3+tZ8wzsLPQSxCdHhIZP5NQ8g1PdIgu+niXQ/lEzcKPyKQhFeotaO1Qcrl3MIRuaSUyLSo06yoSykQyd03wvtrVtiHRkFpLuY/rCofvn6exzjJjtmHscOXkw+CAsUrfRujTJPToBumUlJBK64+AUS+ct1QWRg6zBsPjP8UIpAXbaZk1T7nkv/PMmFvI20wR3DCFPFjDLDMNaZlrSCHCMqCXXzpa+KZgHeXHNwr3PePR2eliXMEYjdDBS+LoPjhVuta2iMBKoCVtXI+X53rc+ajhKxc55HcJv3/QMvVVy4rVsKtVcFyvOEYTJVKfL1L6xMF1hYZajwG9LD27WYYOgAnDhbNPdKjvabjxbo/f/MWydpP4uXeEARdECQjYHCLQ1B2a+wrjhytjBjmMHGQZO9gyqK/Q2Gj8BD7wuhrxcXEJ2SJ0FsLnNMqNNkDGRXOG15fkuOHPHr/4kxSRdBLYgon+Ji69FsZeyvrdJRFdDX+krhZSTqHg7NLa4WF1T4Pnt2DAO3aAWoOIDz/6Blw2DixaMNM9qY1p1JsE35n3AsMjDzj06G6YNNIyeZRw8bkwcbTQq5uDm/YgX+pmUq8Ubpa2yhiSIBUSBYm2egiAo2zdbnhqpuGmu4XnZnp0ZA2Oa8qGW2kgSudTEEsbgFUlZTyq0kqPehg2ECaPNRw+0XDUgcq9T8EXvqfMXCjkPDCOjYmtG6xXiPC9gLLo4qYditIF1hZVIcLqG68tgM4Ow52Pwz3PKHOWwM6d/rUwTkifubDfef71rqm29GhQBvdXpoxXxg4zjBumjBho6Nvd+jiBenRkLYdPdFBg/hLh+Vfh9ZUmyGuD9EMNQ/oL3/ykw6iBloF9Lf17W2pq3SCF0cLPgpwXVZoO9WiXG0XSHGrB85TOHHTkDDt2WWYtg0ef87j9IaW1reD0wk38ErLFaL4dHdMlJaKRSAIzrQLZOgr4AEq3GovrFkp3wXnteS33LXjgXT6QlXEV1NBYL74xx9A7EhsTohc7UWCnMPoy6H2dMErYb6QyZoBwwFjL6KFK3+5Q1118xDfvr2Xt1OLUwbJrF+F2JgkYhdkyWkIsVRGjtGVT3P+4x71Pe0yf67FqnetPtHei3c6R0kOhLBViV6VSytBmYcIw2H+U8oFjlImThQ3r4bo7YdlqZe3mFJ61GBNuK5diCNhUr4wZapk0HEYNgsH9PBobhVSd4ZZ7LNff4YNvBaKAiIDn0KeHJdfmMXwgXHgaPPd34aW5wvJ1JggVbdC9Y+jbS/jMmS4TR1pGDnbo3R0aGzxfC1xCXi+vqOdHHjt2KjPnebS1wuhhwhvrLItXmmKZ06etWs49UfncBQY6g0VrgU4bUp0MOrBE9yylDHu/EPaX94S5K5RV6y07d8G6zcLD03K8thBa25zi560XcNAdKbXlSbx9RsPE/qhiRxKJKTEfjg5jLaQR3eqiNr5pW9d6NknB614Z8M5dPtsnU+df/O49BMc1dCkNWzTOUlirWskTS5GUoapkUpYe3ZQTjnTYsVN5baFlQG/Iq6Gh2jKwN/5UtxjzS+JC3eEbreEyRDx0KhilX+rJZj3ueSLH9HnCqvWGnbssIvmgfqalnVtMMN/IC0J9Q/9elpGDhcljlYnDhTFDYWBv6F4nVKcVrOLt8rjveZdXllimTje0tqdIpYK+WS2VStQaBvUXHr4WRg8SHFd9AxCFamXmHIfHXvS9ti9Nq4GyhkNVjeGsU/K4aY9Nm4V1G5XmAdBzvcMbGwWrXikv9ZSzj4erLguE+zVEIPGCulTQfF5yKoam7spnP6yYOmHeIsOjLwQlK1NgyRmqq+FDx+ehPe9vbMbxQURrEXH9WnixDh7LJ0WTWn0S0zKf4KJMHmHYf0QASrrCZee7LF7u8doS2NFmmD7bsnCZ+jTQNqEzG8UAJKyiEiv9Js8fiZcny3nQGvPGfZoKe7y/KWzetmd+V/YExEo2YKW1zdK93g95eveA6gy0dpTmm0Zb/yTZmBNVDqINgFZh5pw8M+ekuP4OpVeDx8jBygFj4IDxlgkjyukwhTpnl1qYZXrRUm7o4hfppr1iufk+y4w5QnuHn+tKiG0WiHOiuAzqrxwyAQ4eD4dOVEYPNTQ1KCajJaTbUzTvg0kq8MxMeGyax+LXlREDhObeWWYvNazbLKHJFYp6eY6aLIwbLpD10I7Sz370KctX/red5StTvmGrFFsdbd7y+XPg0AMMHbs8Jo5STjrasGKDMHM+eDYo5QR9zq5j+eDRAm2KelK01cKwdpWQgknQnCEiBNUgbEeax1/I8dpCU5x0gfp86cMOEg6Z4oKn5LIeuzoMO3cJ7e2WPC4Deyn1mWwsySRxoyUGUJWtLQ2BqhjIK4Y8Y0fC2DG+UX/+I4LnuazZarntIcuVvzBF9paE1CwlQeqq1EjTFdkqNsQgssb9F/r2Mv4mFhxk45a9JETurQFv36m07FSa+/oeuEeDpb4OdrUVqHFdDfmKVNJKhfVydjhWfQrimJFCQ43lmP0tZ54AvXqmIJcv5np4xRitwij2Mn1RSKDlham1BSWePz3o8dgLln49hKMmwcatltdXObTnopxb61lSqTx/+IHLcYfmIecFjjjYbztCBAD8saCqghWHhnrLoROVTApcY8nlwXWjw9esBSOWj54E5IIurIxDRwf85THLD2+2LH4DxMkHC8v3AF7eY/Rgj29fpJD3GxKGDVI8VR54Qnh1gU999DkPBlSZPMZy5AF+zi8COc8EdWGHjo48rliq05S8cDHOseAoazd7vLJIaNnlllIrn8NHjwb439/BnEWGZauEdZs9WtvAdS3dGzr4yseEz37YQfM22ddEnLFUcICaMC8vRIH1BPE8HzMywoIVyh2PKA8/B1XpQllfAyBJSvcsFsMWZgmX58HJQI9E1n5pktTAvrZE9LGW9ZvfYS50eyes2yKMH+3fs4YaoWc3j7XrfYV5hfJJ7GWTB0M6DxoFHop0R6t07y40NqZ5+VXLhvUeG7f5xxo5UBnWDHU1YEnT3pmjvUOprTU09wisL2mqXJl0ZsmwC6oSBRRdrTJltOWAccILs4RXZht25ZQeDXnaN0f7eT31mDLW48j9FDpDiHGBTWVMMCYz0FgUX//ZdaB7HdSlYcoYhwMmGV6dl+eJ6V6R6SOBWuWB4+DI/bVY5J+71HDzvZZbHzJs3Rag3tYPBzRoFh812HDbjzz6NeXRvD8WBuOwdqNh+uwcLTv8+m5xcJq4HHxAnidnC6/MgflLYeV6y842aGyw9G6Ci85yOHVK7C4WsI8qYdbrHq8tFLyc54NwYvxZxzj89TGPvz5mIyGm40K3OkN7hzJ/meJZgxMiAJU3CsQh4Zh7FElsbCiypFAU/5ys9RjcE778EeFLZytL1kKb53DT3XnufsznkkdkJLQkPlESO4yWkTSKwiRQf0uJnZvy6NNY0m3L55T1W95hA1aFdRtLZYuqtPhxfLgnqBK5Oz4TuIydUoqWjIG/v2r5+6sOiDBfDU9M9xfo4P5+/jugj3L4/lkmjVMG9Yamelsuclw2Xy6Zc10qrvvvdFyfpvTcy3l6NMAXLnKZNsvj/24KmE+mUFoyICk+9aEcqYyH5qVEgSxwiAMvhxa4wwFoZIWmBsOnP+SQqk+xdr3HL2/NsqXFz2V9jqMgxuWSj0J9T8vyZXDbw8KtD+ZZutot0lkLoba1FjzDpLGG237oMmGUoh02mDZoIeUwbxnMW1aqqxbF0VzLH//mcP0dBF7QUuizHtDb3x+e/Ltw3CRDdcqL1LhxDHPnG376uzzL3rCl3DfUiCCOUyRqSAE3UNja4jGsr/KFs8EhD2WN9SXmUxRzjAn0VRAlLQ33pKimWni9vsbvDMOFNRstV17n8fJ8iiooxZQwpA+toQ0hjkBLhbw4bpZW/Y6zPj2Mn1qJsrPVsGGLfWcNGGDVelvMN00GhjRLgnmGd9Au5gNL+YDlQhHdOIqIh2BQHLy8hyPK6MGGr1zgcujYPD3qtPQLvHLN7cqNIFLWYRKJkzzLyEEOY4YKOB7rN+V5dR68uTaNcXxaoKrF5mHcCMO5p6cgnfPb3wxYL8X2Vti8NcvWFmjPQrduDvuPNkg+h+b9Yzd1y6Oah84crywU5i6RSDnK8wzDBlqGD3O48lqHvzySZ/GKYBi48YrXy1fy8BfS+45QbviOZXB/RbMgjikyoDZusNxyn7BmgxMQQ3yARlXBerS1BeLtrgkIJ/6GtWqDpaYKzjrcoSoT8DhCg3SzectnrrLMmE2A0Jvijm/VBnK1JQFCH/Cz9OwhfPT98OWPuQzrm/cpn8YQlWrT5MyoxBIqhrs28IzF6Y1QVo4S8LnlImBcMEJnq69uks0KbR2OT6nUqAeOrhVNcE5JUWdsMwq4/OpB93qhd6MWNaG3bDds28E7b8BLVnqlHM0oIwcr4Ub1MBui4vT2IoZUyjJiupAlZUM8jBgO2k+44jOW9x9pcasUsup7ilzgsuPbiJTI6RWtWctHnRQ2HiOF9j6Hqa/AtFct+bz15VjUBGhvnrNPdNjenual+Q6z5nnMXw7LV3us2wQbtwitbVBdDQN6W8aPtnzkJOHso7UkRSuwfafl+ZeF1RvcgINti556+y7hw5cKm7dQJI1IobZaCN08oaHB5bLzLZdfYKmp9nymWaFxwTF0ZD0++nWPp17yJ0qI2FLcE+hq+a+VkGMQqqvznDhF+OlXhVHDbOCdtThqBcdhyRvK0pX+30VihN6CSKDnXzewVGeUsUOUr14onHasQ49uoDkpCXuYLgBeTVhMUs6gK8+Nfa/Z2WlZsBI2b4eVG5RHplmWLlfmL4O8ZzCuf442xEwLzx6PT1eIdypoqFwU5UhoMU1TC819lR4NWmz+WL/FY2fru2DAy1dBPmtwxYdShw0oFailqzEzYbmdSn0N4Zqs+PKqNVWWn/4nnP8BP+zQDottDRBS45QIanEvqiTPJyqebkgnJDZkXAPiIOKwszXDi3M6WbEy0L8usJ3EIAZuf8jjhrs62Lw9hc07FIvT+I25AuzYZViR89jaYlm7FsYNdBg3wiJWIA2LFwlTX1Y62hXHDdrRA4+6ZZsPEjluIb+WUvgblF1OOMzwwy8ZDpko0InfglfowlG/eX7B8hQvzMoCXpAGhNi+BY3kEvWK6moYM8hywYeE896Xok9DHg0LjRQ2aFdYvFzY0iJ+6K9Em1gC4kldjTJqKBy2v3DsQSkOHmsZ2NMi5NFskO+XlfyoMNAjBn5qF+qJIQKF4g8haGqw1FenaGwQGqrybN4G2aywcrPlD/fC1pZSc4XjutFcWikjAYXlnaJzoioxs5RhzQY3jd/7bIQVq/2+7nfcgFdvgB27oLHBP5/hg6C6SsjmNUHALmZTqsQHfSelMMW8zBhyeeXXd1h61Duce3oaHH8+kSM+lVA12n2iFfuMSztIueZWuDRRiBw8SHnMfC3Hy/Ohs9Ng3JiwvBiWrQy2EGMxrqBaUOMIeLueT69MuzBumPKJD7qMGOKC7QQjZLMOv77TY/ZinzgS7+Dyy3M28JBBuOz5v2fcMMNl5ysXnKGkq/IB4i2hWogGZQrlmRlKZ2eQAmh4wHXp+0Dp0QBjhymnHmk59Uhh0igH17V+c4cxJaURCRoU8nleWeAATqlLJ/i/9Sxnn+zy4VPS7Dekk6H9PWq6G3+mnuej42pDmWL4Hmo4YZUSWitasTwpccKilos4uw4M6lNo6VQOHBMcJmVYtUoY0T9PaztMHmN48DnDL/8U60wLRXUFdDmuS11JHDa85MaOEP8c1L+Wfmq0+4ai+L/vtQGv36ys26Q0dvez8ebe0LtRWbnewbixyEYrMFZi+jfJJ+r/Ws86zF2S4z9/6nHHY8p+I5QDRwvHTvE1nEokESpOBIxBgcmtjYRuhvjec9Z8y/eu83hlXtCIYEOTJAKtK+OUvGVpLG0gCyPQ0OAxqD985CThgtMNAwd60OGhnkVSDn9+UPnjfUHuaOKgqkQiCQVSDowbBZ/6EJx/qqF7N8+nHmZNKIw0xQ4qP8d1WLbK9xQmmDBY4mRbJo02nHQ4HLF/mokj8jQ3WTKFTjObR7O2WANXos2yAvTr7dG/l7BuS2GBGlSV+lrLj79iGD5aoF0ga9E2L6gr+7muONaPdhz1YWkLonlspyl1BamSwJcs5xKUvRZXYtEikqWqiGeDVtA0WKFPjywHjRfWb4WmXi5VVT5fPUrQ0FgTw54jx8U91cCE4bbEibfKohV2tw1FSb/G3T1dOvpoa4eFbxjGj/ZVJXrUOwxptry5NhbGVhoPqJLICyubrx68z6qQThmOOkA591Rl/5EevbsbMlWhXbmMe13hV5e9HBsAXojjU5Y/3S9cfDXs2CWl9jGpINlToOYFeitioKHOMrwZPnSicMQkOHqy4rqKthbyRz+/fmWhHwgZ44XE/CQ6oqNIVIG+fS03fM9wyBSFnR6ai+ril0LQUlhp8z57q6Y6T3tWIi14NVXKLd83TJwskLOQ9+vrNmcD/QEJzlV9lY4wgOP43lTI0t7hoVaKs5WwDgdOgEF9s7BLSmmLUzBWX0fL60yzfkuOBcsNqzc6dKvJs3ylUFMLn/9wqeOznLteLpoW7pspRALxRvsi5dZalq6F5esMC97wWPqm8socmLUIOrJCJp2nM2d8rnJM0L1QSpK3IIWj6iu5jGgWCKLWtlZh8Zu7/y7dUyLH7r5q7useZ5/qI5RulWXscD+H2z3zqhLTI3pEawM1CZTaWuXbnxH+69Piv5ilSBoJe6YywCy+I8e4sxrn34UXiFVeX25p6zAYxwm8mUYIGcUuqdCqcR1lQF/DwfvBofvBofs5TBlvSKXyaKei+VKlSxyhZbvwyDRLRLea8pGXxXmzRli51vDBLyr/9Sn47Nlpqqpy0BEixcS0XBTFkTzDmyWYm1vod/VrogeMVcYOycOuwk8JareO3+JW0K7qaHPYtFV4c7XSstMwor8yfQ4cNDnP7MVKy04PEScUunq8/yhDqsbf6HFdRIVdOyxvrIXXFsEri5S5SzwWLhc6O/LU13jsaFWGDlCuu8LBOKaodFm2TjQ2ukxCkyTDtm5iHMiivpdSnYYBvYX5y2Hndusbb97FcX0+juNQxrOOk24rlrLKXvP/4lmlubdf+sTzr++6TZY1G3hLD/etfGj2QkXzDhIooO03uuTmwjsfiY36sdCjwKIqmJSFXj2Uj31AGD9COWC4ZfKUKp+B1ZmHtOuHQHkvGAwVQruTGlW0PIQuy6PC1QDXMHO2w22PWT9iVhstZ4TaG9Mpy+Bm4cBxwqGThANHw5jBSs/u+N7JWsh7aFZiA998BH/e/2vvvOOsKK///36emXu3L8vSFqkCAqIgSkexixU7KZYYxRKjRpNoEjVGTUxiYjemaGLDGL8/xd4L9l4oSpEiKHVhYXu9d+Y5vz9m7r0zc+8uoICYOK/XfbG73DJ35jnPOedzzvl8ljisWIPPUJHJ/YyHoaQVL0SCIIyiskpx4bWKh150+M3ZcMh430Mn03OG6Rqs0orGZnjvE2hs9spzmYWuOfIAiJW4kBDPO2oBo6mus/hstfDxYsXbcz2+qDVVFomEobjApW8FHDZeaG5WfLpcENFYlk5TGBXkOxw2SdHUYPPpMsOcpYrXZ8GsT2D5KkVTc7jqoC2LxlaboQOSHDjBMHKwD/C0BwZFmoXCnGU+sXu64uN7S629KMJyUQZ69YK8Wk2fnpq5872N1NIB7i+ivc/Zn5sGrlSOcDnLnr3e8qH9oaRQ+WkUfLbSUNuwHQ340+VCQ72htNCjCt1zsCEWU+kKQBDIUFmtWTkIhwLXyyDE43DMwYqunYQXXtc8/hYM3lkRVxbFRZreFbBbH+MtNlLK9r6XdAN5WpBLNit0l9w7phEK8h3y8jyqUW9SJ9j/bBg9THHqFMXY3TVDB2rKSv12QhdvSicFRKc9YY7+HK1YXw3dOsHqjZm+YzGGziXQvVyx6HM3kxsHVCGU32f85keGI88TTp5icek0zeC+LjgmHYoLBqU162pjLF+bTNeXU0u6sBCmeHpqbKy3Wfi58PYc4b1PhI8Xw4pKSLT5uwke6NK3QtOjq0dFe+Jkw6oNsHp9xlOlSvsF+Zrr7nKZvQCWroDWtkAXlvLr0wHk2xhFIpGgqkqYPFaTH09tSNEJ+hxeVrUf5YnfjppwFAkTo6lVMWuhsGi54ZOlFm9/rFiyLOE1mGjtVyQzobdSHfQ25+oOS+EW0t7MnTB6NyAGGI/a6IP5qgNcZhsY8Iq1wudrYcQugCsM7mfRp8IbEld2IAjM2pUCIJbkjqctrVhVCYefKShl0dRk0hfmkH1gzIgkE/dQtDQqLKXoXGaDZdPa4qKVQ++ueNM+EkA0Qwmi5K4vpmqWrvDSO5pVlR65uOMGel5FU1io+euvNWP3cqHF986JVPimslv6MjF+KIwT1/DhAk2bmyrrWP4Qh83xB8PvL9RcfVuSfz5icFzLzy3Ds8dKKZKO4p5H4elXXc48Xjj/ezY79QSSxiMk0IpVVS6VG1VW5t+ts8vL72l+e5vmg3kuKyuVT/2TaTzWVooSR1A4rK9WrK8WbviFZuCQOG/OS7Juo9eMkNo4lBJq6hX3Pa4zoI8O8HNHIjPL0hQXGPr1EK67GA7ZB2/kMOT7VG7cJCfGkTGIJathySqorVd8vi7BylUwfzEsWAbV9V56pLRCYflsmpER8lyD+R2pZUoQEM2QOKTey44JY3f30Hwvmld8MG870cqme6Jb4eNFMGJXgYSiS7kwYjAsW5lLDUnlHCKRnGUe7wmWBa0Jn93UVoCDUoqZb1u8+IYHBhkX8vJgvzFJJoxIMGwADNtF44m0S7oAH9WuCdd/VVYJCQUTRgkHjHJ59l3LR0u9VxmjmbinMHp3Dc2ON1ORCs18rxqk/2m3j1cL6zcqPlthqGv0cttUA0AsrvjeEdCjm+FvlwpH7Wdx+W0eTQ3BOYIUwKW9c66qUfzxTuHRV1x+crLFyYcpSjt7hYYlXzhsqPVrv/410QpWrVP85HcqlEcGmUYlUC5T4mIpl64l8JOTNT86AbTYvDlLaGpO+hOWPh+z8mlmtRemkxZ/C1zu4LikGMbuDheeYnHQGBdp84WvVUDbN9I2p1Q0Fw6WBiXNp71zD6F/D4+Kt8mJ8fEilzVrDTPfVzz0klBdm5KiUem1l+rYkna7+MLrVoRNlI1UqsGPHl1g2AAvUkJ7qconS9i+Bgzw5mzDKcdqRAzKEsaPgMdm5pr/DS230HXuyBPr4OyBf7M9ChkLx3HYeyT85GTFkZNiFOUl0y1pGLLFxFOoNu1QCqiMMauYIukIK9cbEm0mPbjvtem5TD0YtOWhvyo0G6tC3yV79w7sXrbNkjWwsS5JIml7NDxiMK5ixK7CxOEKWlyMgSP2FSaOUNz2oOKW+12fIytDqpYqZ3k1ZE1js/DE68Kbc+G7hygm7214+R1DUzMhcvrU6WqLgNBYuBHGTwxAIBaD3t00N12iOGIfQbsO0mazttIrZnje1WQHHxHhtaCH6l0h7DMSjpusmDzRoqzUQKsKal7nLAN6/cSRwYF02hDMS5XPEeYvxbYkRbYwuL/FroPgotOTfLxY88LbNkN3Nrw/12XG8zotfhYeUOgQodokcuxV5IRd+/tDDALEFAuWuaxYu+XC3l/ZgN+dCy0NUBADHMXEPSEWS+3AGUoXlWPaKHuoX9o9QSWZUo9XX9XstrPm8mmGgf0MNTUJ4uXezqnbYfxQKW8suQB5lQ59lK+I8OECxcp1vtlKyoN4DJfHHGCB4/rgkoqA25I9UJGLUkhg0XJh7UYVkCn1OpaOOUBTWKyQVpXmgi4rMvz6RzFOOEjx53tcnnvLULkBYrYi6Xi5bgpyXVWpKSk0FBbC+/OSDO2nmLVAZYb8AyTiKhcYQ6YPBTw63t0GwaF7a048yGbMbgbcJOIKKu6yx67Cc29ponwU4k91Bd1ucaFiSH9h4kg4aJxi3AhFRbk38IErSGtm4qfjhZwDmQ7OgafaVH0QT/nE8MVFDrsPgoSrWVFpWPkFLFoKn6/WfL7K4rMVjt+znQoIg1TGEonmNocuRLLE4iaN1lh5QJunlPH2HHezO7Bka3rgxZ8LS1ZpRgzygJvdBln07eny2UpB2UGW5wxFZ1gCVGUN8mehd4HWSiMgvpr5mmrhiTc1xxfYDNvZoC0nXTLJohdVYRJ8EcnKU9POUisa2zSfrTHUN9necAImfS+OO0jRo7tAS0oSU0LwY/sbRTgvqquHL9a5tLQaSgoUDW2egRXkK47dz6sPBjvHjAHVkmTXfpq7r7RYtV7xr8eEVz9wqW0QVq83NLZAnwqDtjQjBwpjhkL/nRSDB1oMGyAs+tzKwSmVkTHK/NnQqRSG7wIHjoWDx8NeQ5XH6Og6XvcUfqNI0uHkQ4Tn34A5i1LLSQMuWruUd1L020kYOVSx72jN6KHCwF6QX6wztDyOCWUwolQH/iaiYBBSpwxGU5KZE1c2iYSmDWH2fMMTLwkFBQ6frRCefwuq6zIlOJ0CsTIyTTm976ZkRDPrPCxqF4vDAaP8WBpBkoY3Pvzy+W+2AW9BY0lLK7wzxzBiiIe6lnd2GTtc+GyFRMJIIiWmzNxw0ECjO2zwv8QoykuFc06ConzDIWNgzF5x0DaJBofaepeCuJCfZwIjaIFarwRqvyrXDZE0MrroC1j6uVBcaFFd5/qTPhCzDd89WPmSKCrnLiyyyc779HWZsLtm5ptel1TTOoWlHcYPF3brb5BEJvcMDYUYEHHp3V1z1Y8VK9bEeO0jl08/UxQXCKWdNFP2V5TmQWmB8UD6hOEHUzRvzfFQ72j0YVmGLp1hUF8YtasXSe01RDFgJ8H2wUAcB2lJzdJafo+3QRyX4YPg6VsUf3sIKmsM+YWa4YOEnXvCwN5C726QV+C3dLrK5zAzodTDIwBMRRIZTaqc0VQg3UEHaZoUjgttSU1zq0tdg1DdqFldKcz/LMm7CxWz5tvU1Sbp2U1oa9M0NHsAWnqjJsitJtlEjRGdlDTl7qYQZAHXFXbubRg+EC//VYp1G2DWwq1pwJv5XqnvMPNd4Zyp/kXUisP3VTzwtN+ipxQ5GDvDekchraKOcwqtFV06ecz9f7kfau5wGTKwjb12V1R0hnGDFbpQZ+jtlY3SNphkmtcJE6BejfbR+CHwJ4tcj6/XcnyhMu889xmlGDNcI45pt9c1G8GIRhXezS4tTDCsr0WXTorCAhfHsdBKcdaJFrF81zdgFdGGUukWTnEFXKFvV5dTD4dkwgunDXFvikpcHP9rq1bDsQdqunbWXHtnksVfCD26ePQ8wwcIuw2EQX0VPbsKdsyk68A44k006QCbiZLAwk4hz4qduimuOU88svu4fxsTPhBlVIYx1P8ySqeAkJQKeSp+0RnjyDTEBwJzb965ocmbJqpuEOobhQ31wvpqqKmByiqX6jrYWAcb6hycJKxZr9lQZ6UxlGWrPODQ0oG0IuVyRbWDNKusqDDYEhSsikoOxlUxwqS9oLyz8rrdYpoPP4W1VWxFA2bLYvF35xqqqm26dfbKSZNGa7p2NlTXZZTe2kNjRSLxcoj5L2q83g35+R+SIQ83Z0mM2iahU77LC68aduqp6d1d0VgPfXtBfZvQ0qgoKYTiUqF7OezSQ3whrhwf5ih27qXYe6TwxocW8TxQYkg6Lmcep4jFxG/KINy6qbJjq6DEqki0VAUlBS7jh1l8XgvGuBw8XnPCIZa/OwfQ/Fz0JSrDY4ULMd/ING0ZzmjLNwLlRQ377CE8daNQU2coKdHYBX6jSVCn2PVJ7LRALDhd5tP8ZGAtf837s7uSkhzNNNdg29kIseupV7S1QiLpKSe2tBqaWw3NbUJTq4dc5dkuTc2K+iZFU4uiqcW7/zW1iuoGoapWsbFeqGsQWlvBcRRNzYpEwsMEUjmlCcj2WJa/+WidmSqLNtekf1c5wLgcViABOV3JtdYD3XUajtrXH2BQXhvqi287fDX/u6Xd2DlCwUdutTn2YIEkGEsx5cfCM68p7LjOKFEEO6VUtohZ+4P+QeLuTP6aIgowor05UxxSCmJ5+Yb+PQ1DB3i8y2N3M+zSy9CtTFNc4OnrKhUOndMNEqJQccO/n7K4+g5NYaGNm3TYqavLQ38SSgtTGb2KcCFFVKtSvc4EGkZUpFHXKFocuH46DBkA3znUN17HTY8Chlo8swZSM8PgHsMj3uiTZHK/dGubpPpTxWuN9FkmjVEkXYvWJLQloC2paEkIbUkh6UAymZIuhZaER6yfH/MYJ/0RBFyjaG0TmlqE1oQi0QbNbYr6ZkV9k6GxUWhqgYYWqGtUNDRBQ5PQ1iY4jqLF1zUOGp7WvvC16SgXjsx+qwg1UuT5imAfSY6e6sjwvQjthvCSM1qVnM5KxEt5e3U3fPBvqCj3GloaE4rxJ7vMXyrb3wMHT+6p14RjD/Z2YR1THH2A4pnXJFzzFclRGM8xMxkZ9IeA9kyU3UMErQwq5o3wxeOaof1cjpxkmHq4haUd+nWD4pJUU4CPVIaoUTyjleBNNTC0vzB6d1hRmWSnroazj7fpVC5Im5NmP8IKemBf81YFS2h+HcS4uI6QTCiSxtt0lBIsrdBKOP0oly6dPXdhxCOYS00zGVfhGkXCyThmxxGSjsL1DSvhKJpbNU0tQn2TUFMnNLVCwoXmVkVdvQfUNLVA0lW0JRVNrZ7nSiaF1oShsRVaWwxJR9GW9ORJHdcbMzT+/fAEFI3PYpkp14hk1BfC7bLt+YgcbBbK70RLsWkaP+/XQYMjQLgeSojTa0Ny1GqjjBrhvlnVoQfLjJ0Squ+3p/Wrgs4gaPCusN9eUNHVi/KIK+Z8LCz6/Kv6369owACvvGeoqbU8naSkcMh4RZcyobrel05UWWVvsilthPYmmFSOnS91s4zJqPPFC6F/TxdlhE8WGHbuo0h2ciE9x+pxTquAJ095MM9bphqQNaN3g+sucPnxH4TrLxL69XfB2Kj8AnBdWlsSNDYYmts0DS2amnqhvsFQ06jYUKuo3KDZUGNoaBDqmz2F+OZmQ5ujcMVTILQtQfnnUVgA+fmCEc/ziXj6vq7recCWhMLxxcmSjpBMAWlYOK4hkXBoSxpP5DtnM3h7TeI5RH8CerUqUIxN5YrGqIDelUpHG7kbBwOLWjJMK6QJBCTNgZYmsE8JqpNRuQxGIznxB5W7Uhvs1Apyv2T0pCQ3JpKrVT4grIDkKlWmtMFS+XsQMTcctW+m1KVseOYN8bvevmYD/ny18OZsw5QDPTLwnfvCfqPhkZcMYukwa1BWf2WwCT1otBGVhSCzUSAKLS1WfO9oQ8yGnt1cjtkfupbYuEbR1OiwssobMS3tYoHrE7vhG45SIBaIxhVNwjE0NSWpbVA0NtusWgudS5I88xasf8ylplGoqjVsrBMqq6CmTmhscUk6Fq0JQzKRup0WmRaIKNm3ypE+5K5cZ/+/yuSfqf7vlLGZFM2Rr/fj9xgrFaE6CkWMKqdNq8COKbnIqPz6aJa4NrnalCXDtCHhomKKxF+ldJsDr9Rpgv8MC0ZOfqpcW5BEjTrDBa4iTB4i2ZVlpcIMHkp1oM0XcEAiUR5rf/rIFXr39MtHjkfo19wAz7xh2BrHVzZgYzx+4ikH+DfRUpx4qPIMONj2llMIqgOV83bRaQ+91MobzVr6hWLlGpuN1Q73POSRqI3e3TCkn3jEYZ01cdsiFjPU1xtqGmBjraa6UVHbqKmth4Ymh+oGqK+3qG0QEm1JHKNwDEx/KnWObnBCIbymlU/QDR4Rn9aIWIibzAnvK50BPvA1lFKhaLqbKCQUa7IjE+1zY6V0k1N5oNa4yUT79Uppt0Qdeo1lxzCu036A2YEWrkrn5AH1Cq299xM3Kx4QNzM0ry0r0laS2m8yJApZKyWdXmWMNQf/aTtRXnZemKuPn6x4JkcbpZKAh/H7Eoxw2N7Qo4fXM09c8d4sYd4SdgwDBnjhLWHlWos+3b2B8IPGK/r2dFlZid+bvCkwLOwpghdQAt3qobY2Da1tMPMNH1VEsbHGwo5BbQO8+I6ipQVa28QjoAuBTEGPFp2hVZncxz+Ki4vZZ599sG0bEfH+BV599VUaGhp87xeYiBIhHs9j0t77UVRUhFIa25dif+/991m5YqXfl6wjqKbHw1RcXMKee+3J+LHjGDJkCMWlJYgxbKyu5tOFC3n//feZPWcOSU9x3Z+i8RvxjWG33Xdn2K67YoyHuGtt+RxjJuANCbUlBrV/Pl/+OXPmzmXAwIHstedI/300wZQwLDrmb0CAcV1eff0Naqur00ChuN71H7TLYPaeOJHhw3enZ8+e5OflU1Nby8KFC/jggw+YNXs2jQ0NoCwsSxMexFWh6pyoCHMJ4T+2S48V9QkSKQEF48BgKbC9TqtgZBXJk73+AeGkw/0ZZI/DgUde3nwd4M2tCn3lxz9/a4ssjonMi4ksjsn5J1sCttixmMRicYnF42L7/6YedizP/zkv88jLk3heXvhv8eDzvH/t9M/e+6Yelh0XpWOirbhY/u/asv1HLPOz7T0sOyaWbYvl/57+f22J0loA2XuffcQYI9Hjxhtv9CAepdOvw39N7959pKqqKus1l112WSoZFK0tsVKvAyktLZWf/uxn8vHHH4vrutLe0drWKq++8oqceOKJov3Ps+xY+n1uv/0O+SrHk08+KYBcdtllX+r1++2/vwDpc+vZs6fcfvvtUl1d3e5rXNeVefPmyaWX/kq6dO3qfyf//sRiYsdi/vrJEzu0ZuI51koHj7w8iUd+jsfzJJ6XL/F4vsTy8iUWzzwnnhd5TeC1sXhcYnnxnGvUjsUFYjJqN0ua37dF5miRuZZUvR6T/jsp2Vp2p7fWLvB/zxjchErj5qccBfl5xmfWSCHRYY5fpaJjWuFcK3cAozIgguQoGCiwLIXWGU+hUg3/ijQxnJdpRRFJldE+UhkP6XVjZW+Z559/PkcddZTfNSQBShzfvwfYJDLMEtnEo8Z1GDduPDNnvsyNN9zA8OHDPe4qn6xdTJg/Oy+Wx377789DDz3EQzNm0LN3X1zHSc/Wah3ocjZevTgrn5UcDKFpPgAd9my5tvpIJ1vq/Y0xuL4KuzGGwYMH8+wzz3L22WfTuXPnQLDhfzeR9Gfutttu/OEPf+TlmTMZNWqUzx9NhIgjh/pBsH7bXibWjutKVysDjSooIiyqkj09l8U0H0DlA8/7/hGKgiI/Oohrnn/b8Pka2Wred6sZ8FuzDR8tMGAZSMCo3Sz22UulewVCMiY54xoVyIyz5SVTxhcFTFPylaSNk/B0Ucpgdfh9VKB2mHlvFaor5lwFKTI4I8RiMW699Vb69u2HcV3fkH3uZq1DkzgZzng3BPwY12Hy5Mk89dSTjB49Kr24JcD8kRoZTBm0kczCP/6443j8kRnstFPP9OfZPhVqql6udYbZI0XWLiJkcUr572n5XTiO42ZVhqSd16iAEaX+VlhUzL/+9S/2GLkHJmiwPj1QSAEhsAmMGDGCkXuMzJxjxCIjbDoZcErRDg1tttEqwvdd5dioRMLOQ6lNt1KojDYAO/WA7x3id6UBbhLue/Krxc5qWxlwaxvc9bBfDxSw48KZJ3hE30ZyCyCLhIvgQsQrSC50MXv3DZMyhMWZQ8V8Ha0761A9UAWr/dF6YNB+Azd655135g9/+EM6b1bBXDoX4BP0JsZljz1Gct9999G1a1fPQCVDr+rlryp0HlrrgHyLd4wZM4Z77rmb4uLitOdLXwmVu+87ZzXG/6z06wPjhxKgfY1em/D1Mbi+4R9x2GFMmjQp3Bfvf/+WlhZqa2sD5cTMeyxevJjHHn/M15VSWZGLivSoSlR6VFQgpmqHxzJQs02vP2kP65LN63kOSLiIK0w9GHpV+EoWNsxZaHj9I9ksw9xUF2TqNTZb8XjsRcPlZ9r0qfB2nSMmKXYbBPOWgI5l89krtemeMNVBl7SktQkiYbeogLINoSmooDgVkU7sTFlAZfWxSpRjOLAyTvr+93n55ZncddddXkOH4yDGDfCOZ16bBpvEUFhYyC0330z37t1DHigVuq9Zs4aZM2eycOFCbNtizOixHHTwQRQWFgYWnfeaQw6ZzEUXXcQ111zDddddx1NPP+3xSmuN6zpMnDCRX/ziF2n1gtR53XzLLbw8cybxvLz0OSxftsz35FY4dFUK17hcccUVzJs3z1diyJi0awyJtjY+/vhjACYfemjotUopHMfhxutu5J5776G1tZUBAwdy+GGHcfzxx7PzzjsDcNddd7Fx40a0ZWf1J4qP9iqi3N6+cmPEJCSr7iMhIYBoVS2ksZCqF2c6ntsrJoVeaQSKCgynHakysjKW4u7HXFpaNxvU32xjlq35uP4Xlsinlpg5lshCW27+hccjatk+EBGPe6BWBNAKghFxHyCIR0CHeBo88P/1H3Ya1MrxiHkP23+kQJAg8JX1sOMhUGiffSZJMpkMgS5GjBhjxLgeuFVVVSUjRo5MX4devXrL2rWV3nNdkwbBLrv8svRzTvr+Sd7/GyOu63rv57//9OnTpU+fPlnXd9y4cfLuu++mgR9jMu+9bt26nK8B5Oijjw6de+o45ZRT2r2Xl192eeY1/vdMJNpkzz1HbnIdKK3l+eeeD51n6hw7l3fOen63bt3k8l//Wj784EPp1bu3B/JZlmgrvG4yQGiexOL5gUcA/MzLDYjG8/Ijv0ee779vav1lg6hhwMpO/S3PX1Np8Couxx9siZmtRT6yROba8sXzMelevnVtbauAWFHPeNcjhrpaH6ByhO8fZbFzL8HDIzK1ugwlrAozH0WYOkNAg8qEUCoAZqmoXo3Kiqjal3ZpN8bqIIfyletTKa4IdO3alVtuvJH8/Pw0KBNWtIs4cKX47ne/GzhllfYIM2bMYNq0aaxcuRKlLb8B30ZbFu+99x5Tp05l8eIlnjcPYAPdu3fniCOOyJSWLMuryQLxWDxUVk557nhePPx8K8MNZaLjNeIBc8lkssMG+VS+3drWFv7WAuXl5Vz4k5/QrVu30Muqqqr4/TXXcOBBB7J69ep0fpzFehR4P6VytG4qsnNalfLQJqvfOVg+VqGISXVYtAkSIqRBRj8Mj8WE876rUJYf7dmK+55y/XHOrWtvOnfPqNpiN546FiwVHp3pFazFVXTvKZx5ovJqnIEvqVSGBSOL+bVdAMkvjqswqhrqcVI666QUwbEvyVpUWbQ+UUUOFayZmkA4rEIfvv8BB3DJJZcQXULBPDGVX3bt2o2Re+4Zfg6K+vp6rrr6apLJpG98GTTcY/XXrFy5kptuuinzOZJ53wMPPDDdoSWBxE5pvckbGEV4VaS5SBAsy+JnP/s5f/zDH7n++uu5/vrr+fOf/8wNN9zAjTfdxC6DB6c/d+HChSFU3IjBsiyuvPIqPvzwQ+6//35OOfXUdOgMUN/QiPY3HZWLzTOqwKHC9yCdOgUIYDJAp8oa+QvhMDn6tkUkGzUL5Mki4XTQdQz7jzHsu5eCpBc+b9wg3POY2aRBqs3wIe1S6gjZyOKXPe540PC9wy3yY96U0hnHK+540PBFpWCl2DrSu59Kt6xl+kfbl1NQ5P4vCe7IKipzGr4koSYRFR64EGlvBZPuw06VlRzXIRaL+eCTt1AvvfRSXnvtdRYsmJ8pIymVdW179dqJ7t27hxaDAmbPns2C+fMzRh9pOFBK4wq8/PIr1NbUUta5DCOZGeVBgwaRl59PW2sbYZobiVxHFd6QQuiNimxkmW3WtixOP/30du/9yy+/zJJFiwB4aMZDXHDBBRQWFmTye/+9+/bty0knncRJJ51EdXU177//Pv954AEeffQxGhvq0doKqVK0nyeGqZtyTXdKSsMoUHYMbgbKJwSI5rYqQpSfVmOQ3MvDiGDbip+eCnYekFCQr/m/GYalKzdtkMKmMaEvVUZSW2jA730iPP2G8rhvk4aKHsLZU1VmtC1EgRLt7VNZMLQK9LCFEoAcqihRhm3JCT+q0OYd/JYddvAE/tN1XG699VYaGhpDoV5BQQG33HILFRUV6XposNydArGKi4uJx2MBo/aetHrNan8z0ZnF6bNyBAcBqjdu8FFcf1PxvVxRUSF2WoQs3G5ITjQ/OBUUqIWG7kJmQYeHSHyEOlDPdfzwWlsWH334Ib/97dUYY/yUQqXbC1MlJRGhvLycww47jOn33sszTz/F4F12wRg3Z76jyG6nbC9iDFyusPBdKF4O9ExvCaykwn4bAePAQeO9gR4S3qBMXY3h7//P3WLbks37+M0z4C31x8bATfe6tDb7Li3hhdEDenkTNqEEN0vt3L+cgSEHiUoZojyyu0AYEyTDzAqFg9WUUK1QCHExSntXNdwu59WAbR599FFuuOGGdD1RfJ3dkSP34He/+10GcSYbYW5pbfVySQmH2yXFJTnqVZnvnSKKy8vPo6CwIMuzt7S0pnNU1ZHaeXZwkCEkl45SXL+urAN1dt84gzXkVPTxpz/9idN+cBpLliwJ1OQVWun070EEftKkScyY8TA9evTwN4ZwrUCCYm85mlPa7aSXcKUiuDdkRWgEqXKCfNoqtNel74m/5mMx4eIf4GlgCRCHB583Hc78ftlYV7Z2HTh6vD3b8OSrAnFvMLt7d7jwFPxc2N+JhUDDQvj0lOpASJggtUukshMhnMyaPpZgx44iG2aKghnZK0P5s79FRcX8+bo/895774U8qYhw7LHHUlFRkYWxpN5zXWWl50FVOKQdvvtwunTp4gEuKjshTxnKrrsOS9eOg59RWVlJIpEIdKhsAtfIMUMXLX+pSHq1csUKFixYwPz581mwYAELFixg4cKFfPrpQmr8qMCjNfJe+e/7/8348eP5wWk/YMaMGaxevTq7GSTVwGKE4SOGc8EFPwmwpoSXeruURkqFVkXwZZK6+cH+FdVeKBuNBrMnQESF14VxhaP2FQ4cC+KAshU1tZqb7hO25fGlDXhTYbUIXHe3oanJ72lMCj88XjFyKLhOMB+SSNdTR+LIEuoICpYB0+tYSRZGFeq1UbnK4blrwpFVlvWnWMympbmZ884/n+rq6pBX8fIy7aPgkm3A69ezbNnyQGjqqUL079+fU089NQK0CCmiVNf1wtGzzzor7e2C5zVnztwc+VuI3bXdJpVo6p+VGwu4rssZZ57JmDFjmDBhAuPGjWPs2LH+Yzzvvfd+xswCwxrV1dXcN/0+pk6dypix4zjqqKO49dZbWbFiRaY5JeDZjzjicAoKCn1CeOng3MLBviKH8LSKNPmoyPqJRIDRa9feypc0gCiUFAmXn+mJwCs873v3oy4Ll+2gBrw5p/XBJ8L9T4uPSAulZcKvf6TQ2vgtlu0x20dF0MLjI2HAK9zep7JCIzLPEZWzfxraGVOLdHxFj1So+tGHH3LppZeFPGmmwyeb5hYgmUjw3HPPhr2Kv5iuvPJKjj32WMS4GNfFuA7GcTBOEkvDVVdexYlTT8w0SPidWclkkqeefip0CUWyofXcHiybB0rlyiCMob6+nubmZhoaGmlsbKSpqYnGxkYaGhvSeX+q02zqd77DvvvuG+p+W7tmNU8//TQXXngh++67H59++mm44wuv3FRQkI8Yt2PgRwLG1A4CJBLBOyQDrEi77KjBccboDHt42zeu4QfHwKjhyhNCt2BtpXDr/YZtfeht/QHX323YsFGhLJA2OOZAxWF7E1KFz65ndAywi+TogJG0X85CrTPzyEGJ0OhMu2TDiu2YeibXz9ygO+/8F48+8mhYeBEVYKPIfv2/77+fdevWhcI2EaGsrIwHHniAO/55B4ceeiiDBg1i8ODBnHjiiTz11FNc8ZsrIvmj934vvPAi7737bqi00l4HW7Abqz3gJMhBllZqEMkAVemRSBUaaUx9SpcuXbnh+ht48cUXefChB5k8eTIFBfmhz1ixYgUbN24MWIP3o+M4uMakN89wBBFeM5IjDUpjHxIu+YQ7s1Q2q5Miot8UnC4OdCz4m43rCH17wi9P89k3lTe08Jf/CF+skW1uwPa2/oAlXwi3PSBcdYGGVoMdM/z2PMUbs4TGFm9yKGyE5KgV5SIBCAJeQUnT8K4rkYhc5WINjWqDZ1m4dJgyKKVwXZeLL76Y0WNG06dPHy+fS1HgBerAwWaCZZ99xh//eC0333xTgEvJe15+fj5nnXkWZ515FnV1dSgUpZ1KM55KMvVVpaCxoYHf/u63OI6THqhXtEfAlmlvDCNA4TKS5NhDbdvmlltupqGhkVgsg6JrrX2SBcPFl1zC3DlzmHriifTp0xuAqSdO5cQTTmTOnLm89dabLPJLTZMnH8qECRMyiK5/TqtWraKpqQkVYHVJhVgqm683a143zUGupP0iRxa9cLSEKVnXS4I5sPFy/UvPgD69PBpelQfzF7odIs/fKAMGuO1+w/cPsxnSHyRhGDVSc9734No7XURbgV7lHFIs4Ywji3cpsxBz146VyhGU5xCFCFMGRMCb0PSYRMYQU7ShFsuWL+NnP/s5//nPf/z8NHsAIDSWqBR/+9tf2WOPPTj99B9mj6b5OX+nTp0iRpfhlFLa2zwu+unPeP+999J5twrKgOTIgVVgWiuY56qgL4vUblEeyrzPPpM6vN/9+vRl6ZIl/Pi8H4fOWynFnnuOZM89R7a7oaTO5+GHH8ZJJr1+6FyocrQUnEOfl3YH8sPUTB28M2Fd4AAkLgrXMew3WvjhMdpj2/DZja7+u6G2frvY77YPoQE21gpX/d3FTakMJBWXTNMM30VwHRMoDUgklJMcuU8YXWwXcIjeoGBOKIHsxr/REQKXENiVDg0jiLJl25HyisWMGQ9x2223hbyjx84Q7ojySi+apOPy4/PO4+9//3vEU2d4q40xGeZFX5gsVcppaGjgvPPO4847/5Vpu1Qqa0ooPPKWG7jKGgRop2ktPZYYeaSOltYWevbsSc+ePTMgnck8LzgHHIwoUuf12muvc++994ZJ9ULpjeQuhUkYB5F01SHD2S4h1shgPSiMOEcjusyG769UIxQXGq69UJNf4Edb+YonXxUeeUnYXof+yl0bm3k8+Jzh8ZeBPMAVyrsIf7hIY1smQ+lCkMVT2oXPFEHZyVzGG54nzmptDfBOS7BRggBNaeBiaMunxFFBvmd82hfQvtdLfcbVV1/FRx99FJp3TRl0zI6l68HKn05qbW3hvPPO47TTvHop6fMhU2PN8pjw2muvcfhhh3P77bejLTvsTaM3OqUbqjqqIoUBvljMzsYTCMxYRx6po6CwgKVLl3LwwYfw2GOPkUgk0kBbeiRSqazaciqPP+WUU6ivr/c3u8g4ocpGnkVyf2sVMFol5MZRJICyoyKbVzucbSIY13D+92H8SEESgrKgphau+Ku7VelytjyE3kabhzHw61sM++6l6dpJoFU46gDND6bAXY+5iBXO21SO8k4IGWyHBT8YT0l7pI+ict2THNCrz7W1YSPzFywgZsdwHMdnyzCsq6z0nhfQQlVKU1dXx0UX/ZS//e2vxOPxtPfVSrHMH9UL7vpaaQRh+vTpPPPsc0w56kimTDmaEcN3p3uPHhQUFoIIzc3NrFmzlvfef4+HHnqIF198kURbm2e8hHmiQp5LKTZu3MjixUsyyLi/gVSuXZsVKaYinVWr1/DFF1+EhhdSaL6KQkgBj1pdXQNKMXfuHI4//ngmTJjISSd9nwMOOIC+/fpRWFCQjmocx6Gmpoa5c+cy/b77eOjBB2ltbU2HzsG2V6VyhFjBBhuVne7mJGaXgPeV9qrgkZHSgJCH6wh7DhV+eZpXHvV2O8VN9xk+Wbz9jLcjashtdlx4qsXNlyloE7CENes1+/3QsHSlp8uaFq9qh70jqG3bHsN+SIUwF3F80KtEFFYEyapTiAjFJcUoZWGML3jmujQ2NYXaGzPi016vdGFBvj8xpNCWjeskaW5q8p2dzkKGFQrjmjQUW1ZWRs+ePSkrK0MEampqqKyspK6uNr0aw43/koXIpYAXrRUFefmk+J6V1hjj0tzUkumHlgyQpJTCsmMUFeZjXJOtmErWPuS3SRqaW1szIbPJ0OuWlJbSt08fevbsSUlJKclkktq6WlauXMWqVStxHQeUzvLQqZw+24Bpl/YVFSbAyzLJHPPgKhdPNmEFD9d40i/P/UXYbxxIAlQ+vP+x4uCzXRqa2K7HlzbgL/vCvDg8+dcYh+wtSItBFSiefllx/E8NSdfyuKyUygaDQ1NKKeYDFchVpJ3GDNUuBBJCqSWU6ESG+v081OerFvFyUm1Z6UknE20WEcF13YAcivKddcecLyImwxQhuUM4FeCsUgHpFRUZLA8Ldvvnk3UNVNr4QzI4KtUZ5ba/+7VzjZV/XaKX3ZgoXW7g3SwrBLwRGK+ULMaUSAIcacsNkbWHJhtUDmkUyUniEF5nmbdwHcNlZwq//4lKh85NScXh57q88ZFsd8O0gKu21gduzuG68NECmHqIorhQEFczeLCmsVF4a5aEwZ+gpk2WM40ar9qMM8voFEdrsipQGwynQyqTkyrlK6j4eVxWI0iQSifVYKEDuZ8VAakyBHqhMDRNnaO9MopP4q4CtEAZw1PhUyVyzplv5ElpBho/lNYZpDmUx0qazC31vLRX9ME371r456gzdLxa+4YoKoPgpc4zdT3SnVeW/7MO8ZoFC9iK8Kx0CBnM2Xihwo0pEm5UyR71zfU+KuR1g8a77yjhH79RxJU/AZav+NO/DPc+LltsK+rr9MC59uAteaOzp2puv9JCHH8Xa1McdpbLm7N1euQw1MsruXM8cubKdFDkDQdLwZp+uJdEAg452DMtkW6rcNlJgoFYALXEiDdhs0VXKeNtA7oyAUOOVDmiJbiAHEhYW00yBHyRUk6uzqdNnqUKA20hA8odZmTaI6ItryrC/020vNjRSmxPWkZFoOSwjlFHaymFr7qO0LWTy0u3wx67Kq/fOU/xzmyYfLZDY/PWN8bNsamcz9keibFtwQPXWZx4hEJaQcU1n3wKB5/psL5GY1kqMOWTQwxwCy5JdoiUuz8pWzMoeycONRxItC4M0VG8dAeTMZSWlLBTr1706tWLXjv1pLRTKZ06lVFcVIxSHtFbTU0NGzZsYMXKlaxevZp1lZU0NWUSK6WtSMdTOJJUIVWCHOCML1iOGD9PzRisHYvTrWtXKnpW0LdPHyoqetKtW1dKS0vRWtPWlqCxsYG6ujr/HFdQubaStZXrSCTasmrQwfgkiLiEpogiUVXW9QyoDeb+Xu0ZcnZ4H9ThCoJwmfWlQpFRuuxkAHG580r44fHGm/O1FbXNmkPOdPhwvmx/79kRiLW9kK2duitevcdml36eKr0qgAcehVMvFwQrLUGSqzGDTdXf273V0qFnzl4mgf+V9jPt0LtLYN5ZFI6TZNddh/Lggw/Sr18/SoqLN+VScF2XmpoaVq9ezew5c3j99dd5+623WLpsuSedoqysdCNlPLk2lahUr3E82ZTOnTszevRoDjroYCZMGM/AQQMp71xOQUHBJu9fMpmkoaGBJ598kjPOOMMnNdChPFq118wppNONUBONZMqEYTXL3I48RI2TXc3vAAfJfZ+RkDimLzRnOPc7wt9+7Qmfg0BMuOBaxW33b8ea0TbYBL7yG06eqHj0LzEKLccrFcQ1l90k/PFfgrZ0YJZXRW5Wu2XiDrbp9m6cyvKem3TykRsdRkR97mXl1V+dRBt//OO1/OpXv9zMzSf3UVdfz7vvvsO//30/TzzxBPV1daT0hLI4syOGnAqbPbJ0xdixYzn55JM48sgj2XnnnXN69c09mpqamDBhAp988gnastOtlWkDVu3D19mbTXaFIJ3QtNutlz2BFL6zHW3mKpwMRcbVXUfYe6TLU3+1KCvyd/B8mP6I4YwrzHat+W4XA/4yxy/PtLj2p3jtaLYmITD1ApcnXlM5jThoQGqTBhG4QRIsKeSiS8lKN9sBwyQnSpkCYZJJB4xLSWkpTU3NdOnalffffYf+/fun2Sna2tqoqa2huamZRCIJIsTiMUpLSykuLt6kB/z444+56eab+b8HHqC1tRXLbxDJlDfDXDzGdRHjMnbMWC6++GKmTDmK/Byf0drSSlVVFWvWrqGyci319Q3+CKOirFMZPXfyOqy6d+uOHbPTzSbXXnstl156KQWFRYhxvXOKxdFRpL/DXDqCqWSJbEsAKJSsdRCl00mnFVk8azl6nQOfmcqL3aTQt6fhpds1u/QXJGlQBRbzFisOPCNJVTVf+7FDGHAsBg/8yeKEwxWSUChbWLMeJp9lmL/UA7VC/b0EjDdQx1XKU3kXd9MlpK921RReH38m7EsdxhhGjhzJTy+6iGXLlnLllVdx+g9P56677/LOwh9yeOKJJ3jjjTfS43jV1dW0trbS1pZAxNCprIyBAwcyftw4xo8fz8CBAzPEeK5B+11gb731Fpdddhmvv/46Slkoy0d6/e9sRDCOQ1lZZ37zmys4++yzKSoqCn2d5cuXM3PmTGbOnMmSJUu8TadLOT17VtCtW3e6detGaWkp5eXllJWVUVraiT322IPy8nKvLKa89xg1ajSWpbnjjjuYNXs2t/31b9TX13mdarmMVcBJbiqUki2AUSFXtdqyPamdXK+TSOdsqrfPuEJ+3PDIDXDYvhppM6iYUN1kccS5Lu/NNTuEAe4QBgzQvYvixX/ajBiameqYs0BxxLkua6t8Iw7WPiUiBStet9fgAZoj9hXEcbHSA+KC307c/oid5E6HU40lHkILdlyx4DPNc2+A1hkkV0QwrkssZvPqq68yfvx49t5nH957911mvjST/fbfL/1BjuPiGhdLW1i2hTGGZCKJ4zjU1tWyatUqli5dmma8qKyspHPnzhxwwP4ce+xxDBkyJHTujY2N/PqKX3PrLbciKE89MdV4kEyw++67c8cdd6SnfgBaW1t59tlnmT59OgsWLKBXr15MnDiRsePGseuQXenVuxeFhQUd1Kv9C6YzAfBpp53G9OnTuenmm7nowgu55JJLuP7667HsWGB4IgMWxWxh6qGKHl0VJun63VYZtpagcqAJEPOr4Jio32cdrC5J+l4rXBFmvACVG3y9rGj4HRh4SI8cGq8B5S+/FM47WXmRoQZjwbQrDPc8vkOYzI5lwAB7DVM8+w9N9zIQR6GKLJ59xTD1IoemNtsfPfQazVVKBFoyws3JBPx8Glx/pQ2txmubSe/+gcYI1Q4KrVQuFjxC5NQ2vPKaMPncMJ+X503aOPbY43j00Ud49plnOfKooxg/YQKvzJyZ5l9O7/qpUUO96aigqqqK999/nxdeeIH58+czdMgQzjzrLEaOHBl63i233MLFl/wC1011iznsu+9+/Pu+++jTt48n+q01zz//PNdddz1NTY1MmTKF4447jqFDh4YBQ0OHoy4pAw6e/2uvvcohkw9l4MBBvP/OO6zfUMXYsWOpqalF25bviX3yOxcqughzH9Z0q9CQdLN35I5oGkOMnZFaWfp3r0vt8HMcnnsTYnGVM7UKInxexGL4+anC9T8DXH9d5Gn+dKfhVzcZdqRjuxrw5nzYkftqHrzeojDP11nKhzvud/nxNYIhhbxKOA8isxOXFhn2HKaJxTVO0iuVtCtUFhaZz4q0o8wP2k/olq80fL5WhxohQGFZmueefZb99tuXKUcfzdNPPcXt/7ids8852w+vJaR19GWOxsZGZr78Ms8++wz9+vTjjGln+ARw3mjhDTfeyC8u+QXGuIwaNZqnnnrS4+YC6mpr+e0117Bk8WLOOussJh8ymbz8vFDOGDyam5tpbGykubmZRJtXJsrLz6O4uJjiouLMpuS/OJFIcMjkybz+2mvcc/c9nPbD07jgggu47bbbsOPxNO6Qxhi0Yo/BUN7JpLWJMiLnGVwiU7IL8n9nJ8ueB1Xp99Fa0dYGsz+FtiRhvaqI1lHqZ9cRTjpSuPsqTVx7wJ/K1zz6Anzvlw6JJP+7Bry5xzknWvztNxY6FRfnaf58O/zyZpMGtYKVoHQJRcAVwTgqd5Ns9GuHPG4O1WciqFbq0IJtqciNdzj6mGN57NGH+fCjD5m0zyS6d+/Ohx9+mOZ/TolnP/Pss6xevYqNGzfS2NiE6zgUlxTTpUsXevTowYCdBzBo0CD69utLaWlpux7wzTffZNZHszj00MkMHjIk7UGPPfZYnn76aV577XX23nuiZ7x1ddx+++307t2b73znO75YeeZrOq7Lss8+Y/bs2XzwwQcsWLCA1atX4xpDPB6jsLCIwoJ8yso60617dyp69GDE8BEcfsTh3mC/b5B33XUX06ZNY59Jk3jl5ZdZsnQpe++9D3X1DX4XWzAQUiSTtM860GG+K+2UCyUrj7Zj2XBISNTb/9d1hIPHG2bcoOhUKIjRqDzDB3OFI883VNXseEZrswMet89w2akH/OY8hbQpVAJ+cbZFQ4twze0BI04jkJnaoYVCxzILIkyu4d01UcHySlSnmJzlDckZWmcG623b5oLzz0Mpxd133U1bWxsnnjg1LVyWzt+1YuDAgQwZMhilFC0tLdQ3NFBbU8O6dZXMmTOHJ598kpraWsQYBg0axMEHH8whhxzCoEGDMuEtHgXr6FGjWbd+XQZZV55iYiwWYyd/HldEcByH008/PSRpohSsXLmSGQ8/zCMPP8zSpUspLy9n5J57ctBBB7HLLrvQp08funTpQmlpKTE7hmV7JSsnmSTpOJ6UaaChZcqUKfTt15d33n6bt956m/3225cTTziBf/7zDpQdS4vNpWhpUuA5W9SsI5E6sOTq/s4g8So3gBYcXHEdYfwIw79/j2e8rkLlCZ+t0JxyeXKHMd72eg92uIelkb9c6gmkydyYyCdxcefbcuHJSsATvbLseFq9PS0+lRIo83+3AyJqduCRW+E9I2Blh/713seKxbOE0axY3BNAm+QJoK1du1Yqeu4kBQVF8tFHs0LiZWLMZincO44j69evl3feeUf+cttf5Hvf/Z6MHTtOjjv+ePnPf/4jDQ0NnmiY46ZFx4LHueeeKwUFBfLZZ5/5wmRuRqTMP4dly5fLT35yoQwcOFAmTJgg1157rXz00UfS0NDY8ckZ/xH8U0C8TUTk5z//uQByxhnTRETkgw8+kPyCAlFai7Zj3nUMCJWFBcvC9ywsJBa4T0ExuqBAXixwj6MieoHPs2OegJ1lxwRs2WOIks+fs0Q+tkU+tETmWlL5SkzG7K5kR7WRYOzytTzUJv4/biP3/t4WWZQnZm5M5GNbkh/bct53tW/EmZsQVhhMGbT39/RNDN3QlCpdWIUupIAYeAQNN7gALTsmSml54IH/ExGRG2+6yVcDPNYz2oi635c9NmzYIDNmzJCTTj5JDj/icJk+fbq0tLSEDdM3oh/96EdSWFgoy5cvDxmtiEiiLSG33Xab7DVqLznnnHPk/fffF8dxQp/lbuG5ep+dUT2cO3eulJSWSrdu3WXZsuVijJFjjz3WU9OzY/6mm7oXAdXIWLZSpXeds1UC7XjYcO2I0qX3/3nh5wTuX9B4d91Zy+IntcgntpiPvHVW81ZMDp24YxqvCv/81XPgbZlIF+Yrpl8b44TDBWn2Bh9cUfz8z4Zb7sfvQgrrIYXgrSyqmHbiMyU52DAzQUqYozBDF+skk4wfP56XX55JMplkwoSJLFgwn0cffYxjjz0mU2IyhpaWVpqaGqmvr6e1tRXXdbEti/yCAq+Bo6iYwqLCTV6TRYsW8eCDD9LY2Mi0adMYPHhw6P/PPfdc7rvvPubNm0f//v3TfFOVlZVceeWVKKW4+OKLMyF5O2BZZWUlK1etYu3atWzcsIGmpmYSyTYK8guoqOhBRUVPevfqTe9evSguLQm9/jvf+Q4zZszgyiuv5KqrrmLmzJc57PDDcFMyK+kbE+jezkLS2m9c7bCgEAXlJNOmEw2bh/RzefgGxW67eJSwylY0J+CUy1wefWnHLxfZ2yIm35pG39wqnHF5gpgV5+hDFLQKlqW44VKF1i433edLY+pMGUGinT1hfY3cRiwqd1eQvxKyyQ1VmtLnxz/+MQUFBTz++OMsWDCfIUOGcuBBB6aNVynF8uXLufnmm9m4cSPNzc3U19fT2NREa2trGuHNz8+jR48eDNttGKP2GsXYsWMZOHBgllzJkCFDuOKKK1izZg2zZ82mU6dOHhItEqijhq9uIpHgheef5wen/oC999k7CxU3xvDxxx/zyiuv8Prrr7NgwQIaGhooKiqioqKCHj160KNHD8rKyrC0RW1dPa1tCdasXkPtkCGMGzc202ijFSeffDIzZsxg+vTpXHD+Bey3777st9/+zHzpxfCElYpMC5FpkFHt6r5Kzp4PieCSEhwfjbAvuY4wbJDhoes0wwb4s7220JaEH/3W7BDGqyI5bod2FML11KbFlbb30akYHvhznMMPwiMC0IJRht/8RfH7O7yaX0qoIFisz4yrBf1yeyWlHEhmoO0rw4/sPc9JJhk2bBjvvvsORUVFHH7E4bzw/AtcfdXV/ObK36RJ3DzaWYe2tgSWZWHbNq7rkkwmaW1rpbGxkeqN1axduzbdwLFw4UJqamro0qULBxxwAEcffQx77jkyJyGd4ziekftI8I9+9CPuu+8+5s+fn/bArutgjBCPx0Ov3bhhAzMefpjp06ezePFievbsybhx45g0aRIjRoygd+/edO7cOawC0d5Gbkx6Lri+vo6xY8exaNEi7rnnXk477Qc8/MgjTJ06NTN+SJhAIMjhrDYh0pyLdikLo5YgYJXhc3YdYa9dDQ9eDwP7Wl73n2VIOHDe713+9ah85ehye5Z3dugYP/h7WYmSp/4WF/nU9tTP51oi8/Lkpl/EJR7TArFATpzJs8K5VRAYyaXE3tEjlffG/fwJufXWW0VEZPac2ZJfUCClpZ1k0aeLQvlhMBfe3MN1XVm1apU88cQTcsEFP5GJe0+UE044QR5//HFJJBIhUMm4Roxj0nn2OeecE8qBU+8XPI+qqiq5+uqrZfCQwTJmzDj5/e9/L3PnzpXW1tZ2gCvv/Y1r0iBW+vcIQJZKua+66ioB5IADDhTHcaS5uVn23HMvD6TMiV3kZYNS8Tw/l819P8IgVypfDufJ4ZzXkkl7aVnxnBKZq8V8ZIt8HJe22TE56wS1Q67/HQLEUpv4v8096U7FyGN/yRNZFBeZExOZGxdZlC/Tf29JSaGHUFuWb8g5wat4DvS5ncWRFzHeABqtlJa+ffvJ2rVrRUTkoot+KoCcdNLJslWOCI7U2NgoL730kpx33vly+umny/PPP58xTsf1EGnfcs4+52wpKCiQZcuW5dxEZsx4WEaNGiXHH3+8zJw5M7wh5DD2L3ssWbJYysu7SF5enrz++hsiIvKPf/wjBGZZAeDR23CDBpsNamUZbyz8vJQBR6sF2vKM9+gDLKl6LSYy1xLzoSUy15bmD2Jy+rF6y9d0RoFvS41uqz2+cg4cKsx3EDbIVsqh6xrhlF8kuL3F5qSjxWuZbHE59Xio6KY58zeGFZVg2V5Dv5FAnTjQgROiJxWVJXCVnl6K1CdTebGI4fsnfZ+KigpWrVrNAw88gG3bnHnmmYBHQLd27VrWr19PVdUGNmyoora2lmQiCVoRi8XpVFpCly5d6NatGz169KCiooLy8vIsYW9BKCoq4qCDDuKggw5i2bJlPPzwDObMmcMpJ58S4l9O5d1RrmalFK2trdx6663MnjWbm2++mX322Sf0/NTrg6OFLS0trF+3jqqqKtatX8/69VU0NjbQ2NREItFGXl4+pSWllJQUU17ehe49utOjew8qKnowaNAuTJlyFPfeey93330Xkybtw9SpJ3Ldddfz2bLP0mG5hDjQJIAnhjltJPBdcjGUit9mK8HOWeUNJohxOedEuPFiTWEB4FqofKhrUJxzVZL/9/yWt0iGOrm2UXi9qed+aQNWORoctlfM39ginH55kuo6zfkne0TxtCkOmaR4/p82036d5O25gYYPXyFQ+bKmWeLMKqp6kGGxiCo7pIjWyzqXc8bpZwDw2OOPsW5dJeXl5TzyyMP8+c9/ZsnSJaxbt47m5mZ/BrejTVD7nVhd6de3D8N2G8bo0aMZO2YsQ4cO9ZolyPTdDxgwgEsu+QVLlixl9uzZdCrrFJowCqk/BAx71qxZjBgxgksuviTdwxyVWKmpqWHevHm89/4HfPD+eyxYuJC1a9bS1NREa2vLJu9NQUEhpZ060btXL4YN25XmlhaUUjz99DOsXrWaXr178f3vf49rrrkmtDkGmUQkB04RZIJNSaB4vM8qY9wS1UlSuEkhHjP87gK4+AcKjSBJQeUpKjdqTrssyQtvma3iwLYF6Cub+Zxv5EMr5IpzLXE+yRf5OCZmli0yz5YNb9hy0uFaQAs65oVrgXwrFouG0sH6YV7W73aO3Pf0088QEZGWlhYZP2GCL2j8ZXMoJUpb3vkG/l5cUiKTJu0rv//DH2TOnDmhsDb9s8n8nKrDTps2LSuE9sJoJ13ndZ1MjF5dXS2PPfaY/PD0H8qAAQPE9ptTguf35b8borUlgNx2219FRGTRosVSXt5VlLL8VMcW207V12Ohxg47UsO1o00csdT98e+vf6+1bQvYUtFVy8M3xUTmxUVmxbycd54li5/UMno3tVUxmq8jV/7KYNmO0Ex92jGaW3+pKS0yaXFl11hcd7fw29tdWtpSnNM5WuskqKOjsgD8zLyvpBvu8/LivPLyTMaNG8fTzzzDUUcemX47y7IoLi6ma7fu7LRTTzp37kxhQQGFhYXk5+ejlEqXkerr66mpraWqyguvmxobcRzHL8X4Xtd4vxcVFTNpn32YNu0MjjjyCAoLi7LDOQPKUpxzzjncf//96TqwMSaH1AosXryYe++9l4dmzPAUIdK5kE7TvyptUVJSTHFxCZ3LOtGta1e6dO1KcXEx+T5Bu+skaWtro7Gpmfq6OtZXVVG5di11dfUhrz1q1CjefPNNT7jtrLP417/+hWXbGc4ylSFzVmSmzKI13+AMdpDzS3zCeeMrJ4zaVfjXVYqRu2mPh1wpKFB8MMdw8q8clnyxYw8IbM55fOUceEf4ovc+bvhijXDnbzUD+gJtYCmXX52jGDlEce41Lp+v1WjbykhORor+YbqAsD5TsNfeuEkmTz6KsWPHIgjPP/cco0ePZty4cYzcc0+G7DKY3n1606OiB4UFmaaMZDJJU1MTNbW11GzcSGNzE21tSVpbW6mp2UhNdTUbq6tZ8cUK1qxZw8pVq1lbWUljfT0iQnNzC889/xzPPf8cY8aM4Ve/upTjjjs2ozsUoMuVXDlaSi5GKVasWMHNt9zCvffcQ3V1tZ/32ihLEY/nU9aphN69ezFol10YNGggPXv2TLOElJSUkJdfQF48TklxsT/gX0pJSUkoB9+wcQNr1qxl5cqVzPtkHh9++AHzFyxg1qzZTJw4gTOmTWP69Okkkw46VaJKYRNpUSPlG7aEMQgVnkKQQDOOR/VlOPMEuPYnFl06C9IqKG0grpjxrOK8axzWV2/bNb01NgHZUR3otvrQgX0V/7zK4oBxAi2uB13lK5atsPjZdS6Pv+LxGqfniqPMSSqbTTLYuZOiXX30kUc55thjcF3Dxo0b6data8i7baiq4tNFi5gzdy6LPl3EsuXLWbtmDVVVVVTX1NLa0urpQWnbk7MTB8u2KSgopKiwkNJOJeTl5ZNItLF27VoaGxogUDs1roPSNlOOOoKrr746ay542rRp/Oc//2H+/PkMGDAg/ffWllb+/o+/c/31N7BmzWqPf9rnnBZjsGM2vXv1plNZGcZ1aW5poaGxifq6elqam/xwxfYulHGwYzGKioooL+9MRY8KevfpzYABAxg+fHf2GDGCnXfeOZSb19XVAVBaWorruhx55FG88MLzGTqgdNk9wuncXv9GYEgkRT5XXib8/gL40YlegCnGi8hEa66/y+HXf3F3uJHAr2o3O3qda4sexYXIP67QInMskVlKzEdaZF5cknPz5YZfxKSkSAeGITLlJrudR/o5dkxAyYgRe3jDBIEyT3V1tbzyyity2eWXy377HyAVPXt7ujGhc9OiNVKYj3TrrKR3hS29e9jSs6uSbmVIWYmWosKYaMuO5J5e+QOlRVu2WLZXEkk9r6ysTP72t7+Fyjc/PP2HkpeXJ4sXLw6UdJbIIYcckhkWSeWKVkyUtv38O5iHKwFbYraSogKkS5mSnbpb0qu7Jd06KykrRorykby4EpSV3ceeXyKDdhkqJ5w4Vf7+93/I/PnzJekkQ+f5yCOPiNaZe2HbHs4QzHdz3hN/gMWKeQMtSnvXaOxwLR/8nxaZZ4l8ZImZ5f1c/VZczjje+sZiPR3ZzQ45D7w1jnOmav50kaJTJ7/HVSnI17zzrsuFf3b5YIHyOZaz29Ayeknh2VLXcbjlllv5yU8uoLKykpdfeYUnHn+SN958hzWrVwNJlIKKrtC3QjGkn2Jgb0Xv7tCz3NClDDqVKArybWKWxxhijEdUkBRFa5uhug5WVcIXlYbP1yqWV1p8scbwxVqhpVX5WY/rhYQoj4hdKc4680yuv/4GSktLmHbmmdz/7/uZP28eAwcN5IknnuD8889n5cqVPglBKvrUfreaoXu5sHMfzS59hJ0rDDtXKHr1gC6lUFykyItbxGzAGJyki2PAEUVrQqhtUKxZr1i5Hj5fKyxZCSvXKVZvgIYGD4HPy+/E8N2HcNBBBzJlylGMGzcOEPbaaxSffPKJlwuj2uENzvggCdaHANeBvLjhJyfB5dMUnUqMd78tBQWajxcKZ1/p8t4n/5XLfOtGs9tjN9gS2H7vPeG2y2OM3M3Li8X1iMnq6+GPd8Gt/4HmVo22AmyXSoUgrEzu69K5vDM3Xn8Db7z5Fk88+QxV69diW4Zd+sHoYYp9x8QYOVTo29WlcwnEivwTdj29IyzANyCMpOd6sXS4cJkiZzICrkVDk83ySpcPF8CrHxjemmNYtlqAmM9JZRDjcOihh/J/DzzA5VdcwT13382SJUt48cUXOffcc2lpaUHbcY/sgCSdigx7DVPsP0YzcQTsOkDRvVwTy3cCduPXrVRgl0uduyZMfWMCKyAh1DdbVNUrFizXvD3b4c2PXOYsgsZWgDzGjB3F6T88hVmzZnHnnXeGhbwjgr9hpQt/MzXeeYwcKvz5p4pDJihIetxn2jJgKe57xuKS65Os28h/7bHZNrc5hrO5bxZ9r81+3ZfYIMo7wR8vsjjzOIXGYBzQlkBM8+5ci0tvdnn1A+/drViEMymiyhCLxUgkXbRpY/wIOPZgm8mTLAbt5FIQd8BOsaYZcC1MAppaDBtrYUOtoqZBU9dsqG2EliZF0hPjIy8OBfmG0kIoK9Z0K1N07SyUlQiFeQpivvHj5fZVG2D2Upun3tE89RosX5WmteCoo6aQX5DHyzNf5uc/v5jf/f4aWps93Y+8PJsDxsJxB2n23yPJwF6CVehvKgpwFG4L1LcoNtYp1lcL1fVCXTM0NilaW71PiVlQUCh0KoKSAkVZCXQtFTqXCqWFFlYeoB3QlsdL5SZpazCs3qCYsyzOi++4PP2qw8r1UFxaRmtLi4+Uh2mtQuvFv/9GwDhCUYHLBd9T/PIMRVmZ8ogQEchTVG2AS//icucj8l/vSr9xHvjLHlMP1Vz7U82APsZjGURBzKKtVXPXo0muvVNYUemBXLb2kE/JAk0UF5ykuOD7ir5dWokVAjENojDNsHqd4dMVmk8/V8z/DBZ9bli9HqrrNU0tikTS4EkPRcW5MvMm2hby44qSIujWGfpVwJD+wl5DhT0GwcCdFAXFAnENrsX6SofHXoV7n9K8N9/CdZLE4hZiDNqOkXSgS4nDiQe4nHyEMGGkxiq1PPCsVaiuERZ+YTNnkTB7kbBoubBqvaKmXtPSBolkMGSNSpcIWnu0wIX5is6l0LML7NxHMaSfYWh/2LU/9O9hKCr0AgZiMUgKG9Y5vDdfceGNFstWeWF8WuBMopq+Kq3LC4aDxwu/O08zfoSAYzyva1sQU7z4FvzsOod5S7+C3Mk3KLH82g04IiC3RW+wpZ/Xu0Lxhws1pxxlo3A8ORcFxIWVqzXX3Svc/ZjQ2KxQlvZ1uzP5lnGF0btrHr45jz6921i30mHWp/D2J4p3PtbMWwLrqw1iwq1+nipfoOsoOuaYEsxWGTpVkw5LMwZeVARD+8P+o+DQCTB2mKFTFw12nEQjTP1ZG0+8rvx2Qi9m71wW47nbhLEjHEi6JNvgi3WKNz62ePE9w/ufKL5Ym+JnDhAGKi86UAFjjcrRSKBFyojkmHtzKSqEAb1h3G6Kffcy7L2nZkAvG5TDNbcLf7hb05aMEhWG82AvXDbs3Fv41elw+jGaWBwk4WkPqxjU1Fr88R7h1vtd2hL/xUb2DXKa2+zEv3O45urzNEP7C7R5QJKOKYhpZs2HP9whPPYyuEahreDYm+A6MGKoMHyI4u2PhOWrUtzQFmh84rZ2pLdU7hJAQJo8W2CcsLGkxAOVNuw6AKZOtvjhFKF/D4f5S+Con9l8vlrhhRmKP11o8Ysf5WES8OiLbdz9uMvbcxU19coDsbygI0yIkKUQKO1XdDrgXxdJaQKnXmnoUmYYv4eipFDzf895f9NaRRgjvU80fp7bqUQ4Zyr89BRFRTfxxMVSXQwKnn8DfnmLy9zF/M8dO5QBb8+T6dpZcdEPNBd8B0p95BIUKqbAaF54B66f7vLiOx69reeRVUhfCKV9L0XAyLO/UFBJQtqV+wrXpYMGFOxXDiLjruP9bexuDs/cZOjSRfHpijjTnzRsrDVMHC5852BDQZnNfU9anHa58WRFlUrXwsOsGEGDjfwtIgSXS6Q1NESAP1ggwU3Bi2JSIbm2Ap1XgY4r4wN4BfnC1EPg56fCiF0VOJ7qhrIE8mxWrYXf3+5y5yOGpPPNNrpvwtzxDmnwo3ZTXPkjzZR9NSi/FVM84MhJwpOvwU33ubwxR4NowKRZLJXWGYU9ifBPB/V6snScOqJIzaVXGw7lM9KnqfKWy+lT4B9X2MRLUjGnBuOAEd76SHHCL2Osr/ZYTMKSnkGyAxUVkArxZkvWzzleE9hkJLJ5pf6Wyg2U0n57qpf/erKnQmGBcMz+8NNTNWN297ywOP4mlgetLXDv04pr/+ny+WrZ4dfZDhlCb+kLNxd53l47Sqp7J3Vuxx2s+fVZmj1305A0npCVVpCnSDQLz70t/OUBeOV9gyt+/dTPbTOpo4pQTquA1GguRcQgBYUERK6jwuLtXUfvNWK80PqIfRU/nuqwa39FPM+mtgGefsPlxumG9dUaK6azZn4yO42E4F5FRks3eupBNYpcv0dLcEiEsSjSQWVcL3nuVAInToZzpypGDfVf6PgbREyBWLzwnstv/2F4a5b8VzmYLRH37mjL/8a77q9yXiWFcMYJFhd8XzOwtwEXxPVz2pjCTShe/Uhx1xOGJ18xNDQD6EwOp3InilGVw1wK9LkzYzrmMCf8ZZ2k1/Nb3kkRs6GxVdPY4LlB247q6AbC9jT0mtsYszwwGa5tyZkHB3qUJTB4ENyzjPiaRkKfCph6CJxxtGK3IX6tKDWBGfOu7QefwPX3Gh55yeC422pT/2pUUl+HTfzXdmJ9laNbOZw9VfOjEzS9ewKOz9KvUgsK5i023Pu44eGXhOWrPUBIaZXJiQOC0yqkJZwy9NQiVyFzateQg7dMSW4UzJ+YSo0DK0VGiiYrLM9RaO1gQW9ycad7OiQkDRoNq1NhsmUJo4bBaVMUxx+sqOjqb5iO/xXjCizNwqVw079d/v2koaV1OxmFUlmkgN+CWN/Ao1cPmHa8xbTjFH17K0+d3fEvl6XAUmzYCM+9Jdz3lOHN2dDcotLhdUjSUmV3FIUlmzbhalUOlDogLZPJO4XcssYqJ+7d3kaRq6Eil76YRGBykUyEkXpXNw1cCRVdhSP3VZx8pGbi7kJeIZAUD5xSytsgUXyyBG57UHjwWZfahm9R4h3SgL8pu0fPbnDK0RY/PFozbIB/xkkfqdWADaZV+GQpPPoKPPGa97PjtGPMZBs2HYbUKdmUDDqcUcVU6fw5qsYmZMpfm2O0IQ8UVBOTINyV5b8jCn/B8pH3t04lwt4jFccdIBw6XtGnj/9+Scm0ZcYU4ije+UTxj4dcHnvZ0ND0rRP5Wm3o6zbQrf35pcUwZX/FtOM0++xpESsA2lwPIRXxWiltRUuD8NEi4Zk3Fc+9JSxYBm0JH+1SKqvumnJn7YXSaUDMD8dDzRQq7ZcDRh026HbVGTdhyMGLGFX8lIycfUZX100hzEJ5J2HM7oojJsHk8Yqh/byNjoTxXqw9qVZsRUMtvPie8K9HDS+9I57g2bfHtyH0tjq0hol7WvzgWM2UvcVrLnB94CXliWIectTSIMxbanjlQ5j5PsxdJKzbGJRXjApPk61Y0J7hZSkoEhZlS1t0+wYq7bAwB3CtcOdV6k9G0vksCLGY0H8nGDscDp2omDgCBvTyxodxDKS605TxcQTN8lWKB54zPPC0Yd6Sb5fhN8aAd8Rd48ueU+8enqbxdw/VjB8OBUUeGIOrMvmo7eXLkoDVVYpZnwqvfyh8MM8bvVu7UYVlXUJGnUthTzJhNeQqDAWMub0cWyKGnEMUOcMm5IfEKu1h8/MUvbsbhg2EiSMV++whDBug6NzZ31hSRpuiQLEAbVFT401UPfgSvPSOYUONbPf7+t/ktXJ+l6+7cP1NvMBawx5D4ej9FVP204wYpIjl43tm5TUj+OwQWArExWnTrK+BeUuFOUtg7mLDwmWKlZVQ3QDGDQ48qHSRWCsJqU9krlkw1o1IHQSbLnJ4VU8YOzDiSCochngcupcLA3rBsIGw166KPYfAgAoo7yQQV96m5fi8VBqPF8AGlEVdnfDuPOGJ1+CFNw1LV8g2W8ywFWqk3xCDVd+G0NtmA8nPgz2GKg7dW3PYRM2IQd4ggufKFDiuj7pqD8BJ5YNG09IE62s8Dq8lK4QlK4VlqxWr1wnrq6GmXtHYAsmkBJo91Bbc8uASN+nNJx5XlBQKnUugohv02wkG9xUG9dUM6i306aHoUqqx434bqRGvtdGXc/HawVPfQ1FVDW9/LDz3puGV94XFX8h2kev5ygM1UexBdiwnsyUNH99M49vBdJ1iNgzur5i0Fxw4VjN6d0WfroId9z2i63vpNKoVGJb3VRdxNYk2RXObUNMA66oVG2qE2nphfY1QVeuVrxpboKHZa+hwjVdzVcoby43ZioI8KMyDogIoKRa6lAjlJYqu5Zru5ULXTlBaLBQVaO/8dGBY3/83ZLDKTw9QNDUJn61UvD3X8PKH8O5cw8q13/qGb3w6ui1zkK158ttrJyvvBLsOVIwbDhNHaHYfCH16KApLfIN1/YcRbywx3aIZMBrl9WSjfGMnpfan0q8N5c65HqnkVggYaQZS9tBtP+dVeAi75X9U0qK6Xli+2gv935xt+Gi+8NkKobl1x73237jdfzNShW+UB46WMjoMf8jGZHbEo6QYBvRSjBii2GOIZrcBMKi30L2zorRQvCF4dJhmJ4D+ppBs8f8/M1gRzZ0J1YCECIWrVhnPr33DNZBoVdQ2wop1wqIvNJ8sdZnzKSxZIayqlC1ieNyakiL/bRjKV75OX8dwwY5wobf2OWyN9ysrhZ7dFP16wqDeMKCPRZ8e0Lu70K0zlBRZFBV4VDy2bXwiyZSOZgeGG93SXEVbQtHcAo0thup6Q+VGzap1mi/WGj5b5bJsNaxeD+s2yDeWjnWHXz/tNaDvqDb0DYlUNiuE2Z6HZUFpEZQUKTqVKEqKhC5l0LkYCgoUxYWKogJFYb7HW5U2WYGkAy1tXo7c1GRoaIGqWqGm1hOMq2+E+iahte2/33C256Lf1mnejjXQn80jt9W/LNvovb/pkci3x/a9Z1vrnusdwZMFPcXW8mwdMdhv7fdW2+Bcd8SI45vwuWo7fR/5Gq/LVjNg9RVe184E2ybfX0XShh1h8ch/sRFtzw1GbYXPjTY5bEvjkx3gmm6X6O2rFNe/qfnKt8e2x0b+1++X2l4htHwJryLb+ULwP7QY1A76fl9GKFv9DxuwbMqA1ddk2NvbkOV/8MZvTSP9b+w33t6fpb7k5+v/xQv9defPahsuFrUDGf32OPet1dGXYzJzu26m8iW/0391GrG1m1MiIoY7dC3723z+f+M6b5PP/3bx/Pddr/92nGCLaZJ3kGuxTUJo+YqLZFveJPU15DtqG12v7R1C75A0wmrrfH/ZCs9X/y0G/GVz0G29QHItQtkORrK9cyq1HY3960aBs+hrt/J5bc1+gG1xrbZrJPBtaP2/Gcp/e9+3kwfeEcpG3x5fTxi/JfdHfXvfd5j6c0gd49vj2+Pb45t1/H9dhIYU+XXUbAAAAABJRU5ErkJggg==" alt="SSC Free Notes" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">
+    </div>
+    <h3>Get Every Note — No Interruptions</h3>
+    <p>Join our Telegram channel to download all notes directly, with tests 100% unlocked and lifetime access — no sharing, no waiting.</p>
+    <div class="gate-actions">
+      <button class="btn-primary" style="background:#229ED9; color:#fff;" onclick="joinTelegram()">✈️ Join Telegram Channel</button>
+      <button class="btn-ghost" onclick="closeOverlay('tgOverlay')">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ CHAPTER + QUIZ DATA ============ */
+const chapters = [
+{
+  id:1, icon:"🧬", title:"जीव विज्ञान का परिचय", tagline:"विज्ञान की वह शाखा जो जीवन का अध्ययन करती है",
+  content:`
+    <div class="paper-card">
+      <h3>विज्ञान क्या है?</h3>
+      <p>"विज्ञान" शब्द लैटिन भाषा के शब्द <b>साइंटिया</b> से लिया गया है, जिसका अर्थ है "ज्ञान"। विज्ञान की दो मुख्य शाखाएं हैं — प्राकृतिक विज्ञान (जीव विज्ञान) और भौतिक विज्ञान (भौतिकी + रसायन विज्ञान)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>जीव विज्ञान क्या है?</h3>
+      <p>"जीव विज्ञान" शब्द ग्रीक भाषा के दो शब्दों से मिलकर बना है — <b>Bios</b> (जीवन) + <b>Logos</b> (अध्ययन)। यानी सजीवों का अध्ययन ही जीव विज्ञान कहलाता है। यह नाम सबसे पहले <b>लैमार्क और ट्रेविरेनस</b> ने दिया था।</p>
+      <div class="note-box"><strong>याद रखें:</strong> जीव विज्ञान के जनक — <b>अरस्तू</b> हैं।</div>
+    </div>
+    <div class="paper-card">
+      <h3>जीव विज्ञान की शाखाएं</h3>
+      <ul>
+        <li><b>वनस्पति विज्ञान (Botany)</b> — पौधों का अध्ययन। जनक: थियोफ्रेस्टस</li>
+        <li><b>जंतु विज्ञान (Zoology)</b> — जंतुओं का अध्ययन। जनक: अरस्तू</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>सजीवों के लक्षण</h3>
+      <p>हर सजीव में कुछ खास जैविक प्रक्रम पाए जाते हैं, जिनके लिए ऊर्जा और पोषण जरूरी होते हैं:</p>
+      <ul>
+        <li>श्वसन (Respiration)</li>
+        <li>वृद्धि (Growth)</li>
+        <li>प्रचलन (Movement)</li>
+        <li>प्रजनन (Reproduction)</li>
+        <li>उत्सर्जन (Excretion)</li>
+      </ul>
+    </div>
+  `,
+  quiz:[
+    {q:"'जीव विज्ञान' शब्द किस भाषा के शब्दों से बना है?", options:["लैटिन","ग्रीक","संस्कृत","फ्रेंच"], a:1},
+    {q:"'Bios' का अर्थ क्या है?", options:["अध्ययन","विज्ञान","जीवन","ज्ञान"], a:2},
+    {q:"'Logos' का अर्थ है —", options:["जीवन","अध्ययन","शक्ति","रचना"], a:1},
+    {q:"जीव विज्ञान के जनक किसे माना जाता है?", options:["थियोफ्रेस्टस","लैमार्क","अरस्तू","डार्विन"], a:2},
+    {q:"वनस्पति विज्ञान (Botany) के जनक कौन हैं?", options:["अरस्तू","थियोफ्रेस्टस","मेंडल","लैमार्क"], a:1},
+    {q:"जंतु विज्ञान (Zoology) के जनक कौन हैं?", options:["अरस्तू","डार्विन","थियोफ्रेस्टस","ट्रेविरेनस"], a:0},
+    {q:"'विज्ञान' शब्द किस भाषा से लिया गया है?", options:["ग्रीक","लैटिन","जर्मन","अरबी"], a:1},
+    {q:"'जीव विज्ञान' शब्द सबसे पहले किसने दिया?", options:["अरस्तू व डार्विन","लैमार्क व ट्रेविरेनस","मेंडल व वाटसन","थियोफ्रेस्टस व अरस्तू"], a:1},
+    {q:"निम्न में से सजीवों का लक्षण नहीं है?", options:["श्वसन","वृद्धि","पत्थर का स्थिर रहना","प्रजनन"], a:2},
+    {q:"जीव विज्ञान किस विज्ञान की शाखा है?", options:["भौतिक विज्ञान","प्राकृतिक विज्ञान","सामाजिक विज्ञान","गणित"], a:1}
+  ]
+},
+{
+  id:2, icon:"🌿", title:"पादपों में पोषण", tagline:"पौधे अपना भोजन स्वयं कैसे बनाते हैं",
+  content:`
+    <div class="paper-card">
+      <h3>प्रकाश संश्लेषण</h3>
+      <p>पौधे <b>स्वपोषी</b> होते हैं, यानी वे अपना भोजन स्वयं बनाते हैं। हरे पौधे सूर्य के प्रकाश और क्लोरोफिल (पर्णहरित) की उपस्थिति में कार्बनडाइऑक्साइड और पानी से अपना भोजन (ग्लूकोज) बनाते हैं — इसी प्रक्रिया को <b>प्रकाश संश्लेषण</b> कहते हैं।</p>
+      <div class="formula">CO₂ + H₂O — (सूर्य प्रकाश + पर्णहरित) → C₆H₁₂O₆ + O₂</div>
+      <p>आवश्यक चीज़ें: CO₂, पानी, सूर्य का प्रकाश और पर्णहरित (क्लोरोफिल)। यह क्रिया पौधे के हरे भागों में होती है, क्योंकि वहीं हरितलवक (क्लोरोप्लास्ट) पाए जाते हैं जिन्हें कोशिका का "स्टोरहाउस" भी कहा जाता है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>दो चरण</h3>
+      <ul>
+        <li><b>प्रकाशीय अभिक्रिया</b> — हरितलवक के थैलेकॉइड में होती है, प्रकाश आवश्यक है।</li>
+        <li><b>अप्रकाशीय अभिक्रिया / कैल्विन चक्र / C3 चक्र</b> — स्ट्रोमा में होती है, प्रकाश आवश्यक नहीं।</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> स्टार्च की पहचान आयोडीन से होती है — गहरा नीला रंग बनता है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>परपोषी (विषमपोषी) पौधे</h3>
+      <p>जो पौधे अपना भोजन दूसरे जीवों से प्राप्त करते हैं वे परपोषी कहलाते हैं। ये दो प्रकार के होते हैं:</p>
+      <ul>
+        <li><b>परजीवी पौधे</b> — अमरबेल (पूर्ण तना परजीवी), विस्कम एल्बम/मिस्टलेटो, रैफ्लेशिया (पूर्ण मूल परजीवी), चंदन (आंशिक मूल परजीवी)</li>
+        <li><b>कीटभक्षी/मांसाहारी पौधे</b> — नेपेन्थिस (पिचर प्लांट), यूट्रीकुलेरिया, ड्रोसेरा (सनड्यू), डायोनिया (वीनस फ्लाई ट्रैप)</li>
+      </ul>
+      <p>कीटभक्षी पौधे उस मिट्टी में उगते हैं जहाँ नाइट्रोजन की कमी होती है।</p>
+    </div>
+  `,
+  quiz:[
+    {q:"प्रकाश संश्लेषण की क्रिया पौधे के किस भाग में होती है?", options:["जड़ों में","हरे भागों में","तने की छाल में","बीज में"], a:1},
+    {q:"निम्न में से कौन प्रकाश संश्लेषण के लिए आवश्यक नहीं है?", options:["CO₂","सूर्य प्रकाश","O₂","पर्णहरित"], a:2},
+    {q:"हरितलवक को कोशिका का क्या कहा जाता है?", options:["ऊर्जागृह","स्टोरहाउस","नियंत्रण कक्ष","रसोईघर"], a:1},
+    {q:"पर्णहरित में कौन सी धातु पाई जाती है?", options:["लोहा","कैल्शियम","मैग्नीशियम","सोडियम"], a:2},
+    {q:"स्टार्च की पहचान किस रसायन से होती है?", options:["आयोडीन","बेनेडिक्ट","लिटमस","फेनोल्फ्थेलिन"], a:0},
+    {q:"सर्वाधिक प्रकाश संश्लेषण कहाँ होता है?", options:["शैवालों में","फफूंद में","जड़ों में","फूलों में"], a:0},
+    {q:"कैल्विन चक्र को और किस नाम से जाना जाता है?", options:["प्रकाशीय अभिक्रिया","C3 चक्र","क्रेब चक्र","ग्लाइकोलिसिस"], a:1},
+    {q:"अमरबेल किस प्रकार का पौधा है?", options:["कीटभक्षी","पूर्ण तना परजीवी","स्वपोषी","आंशिक मूल परजीवी"], a:1},
+    {q:"निम्न में से कीटभक्षी पौधा कौन-सा नहीं है?", options:["ड्रोसेरा","डायोनिया","चंदन","नेपेन्थिस"], a:2},
+    {q:"प्रकाशीय अभिक्रिया हरितलवक के किस भाग में होती है?", options:["स्ट्रोमा","थैलेकॉइड","बाहरी झिल्ली","केंद्रक"], a:1}
+  ]
+},
+{
+  id:3, icon:"🍽️", title:"जंतुओं में पोषण", tagline:"भोजन ग्रहण करने से पचाने तक की पूरी यात्रा",
+  content:`
+    <div class="paper-card">
+      <h3>पोषण और पोषक तत्व</h3>
+      <p>भोजन ग्रहण करने एवं इसके उपयोग की विधि <b>पोषण</b> कहलाती है। पोषक तत्व हैं — कार्बोहाइड्रेट, वसा, प्रोटीन, विटामिन, खनिज और जल। इनमें से केवल कार्बोहाइड्रेट, वसा और प्रोटीन ही ऊर्जा प्रदान करते हैं।</p>
+      <div class="note-box"><strong>याद रखें:</strong> ऊर्जा देने का क्रम — कार्बोहाइड्रेट &gt; वसा &gt; प्रोटीन। कार्बोहाइड्रेट से सबसे तात्कालिक ऊर्जा मिलती है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>पोषण के 5 चरण</h3>
+      <p>अंतर्ग्रहण → पाचन → अवशोषण → स्वांगीकरण → निष्कासन</p>
+      <p>पाचन तंत्र दो भागों में बंटा है: <b>आहारनाल</b> (मुँह से गुदा तक लंबी नली) और <b>संबद्ध ग्रंथियां</b> (यकृत, अग्नाशय, लार ग्रंथियां)।</p>
+      <ul>
+        <li>आहारनाल के भाग: मुँह → मुखगुहिका → ग्रसनी → ग्रासनली → आमाशय → छोटी आंत → बड़ी आंत → गुदा</li>
+        <li>छोटी आंत के भाग: ग्रहणी, मध्यांत्र (जेजुनम), शुद्धांत (इलियम)</li>
+        <li>बड़ी आंत के भाग: अंधनाल, वृहदांत, मलाशय</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>दांत और एंजाइम</h3>
+      <p>दांतों के प्रकार: कृंतक (काटने के लिए), रदनक (चीरने-फाड़ने के लिए), अग्र चवर्णक व चवर्णक (चबाने के लिए)। मनुष्य में स्थायी दांत <b>32</b> और दूध के दांत <b>20</b> होते हैं।</p>
+      <ul>
+        <li>लार में <b>टायलिन</b> — स्टार्च को माल्टोज में बदलता है</li>
+        <li>आमाशय में <b>पेप्सिन</b> — प्रोटीन का पाचन करता है</li>
+        <li>आमाशय में <b>रेनिन</b> — दूध को दही में बदलता है</li>
+        <li>यकृत का <b>पित्त रस</b> — वसा के इमल्सीकरण में मदद करता है (एंजाइम नहीं होता)</li>
+        <li>अग्नाशयी रस को <b>सम्पूर्ण पाचक रस</b> माना जाता है</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> इनेमल शरीर का सबसे कठोर पदार्थ है। सबसे मीठा शर्करा फ्रक्टोज है।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"पोषण के चरणों का सही क्रम क्या है?", options:["पाचन→अंतर्ग्रहण→अवशोषण→निष्कासन→स्वांगीकरण","अंतर्ग्रहण→पाचन→अवशोषण→स्वांगीकरण→निष्कासन","अवशोषण→पाचन→अंतर्ग्रहण→स्वांगीकरण→निष्कासन","निष्कासन→पाचन→अंतर्ग्रहण→अवशोषण→स्वांगीकरण"], a:1},
+    {q:"शरीर का सबसे कठोर पदार्थ कौन-सा है?", options:["हड्डी","इनेमल","डेंटीन","केराटिन"], a:1},
+    {q:"आहारनाल का सबसे लंबा भाग कौन-सा है?", options:["बड़ी आंत","आमाशय","छोटी आंत","ग्रासनली"], a:2},
+    {q:"दूध को दही में बदलने वाला एंजाइम कौन-सा है?", options:["पेप्सिन","टायलिन","रेनिन","लाइपेज"], a:2},
+    {q:"आमाशय में किसका पाचन नहीं होता?", options:["प्रोटीन","कार्बोहाइड्रेट","वसा का आंशिक पाचन","दूध"], a:1},
+    {q:"मनुष्य में स्थायी दांतों की कुल संख्या कितनी है?", options:["20","28","32","36"], a:2},
+    {q:"सम्पूर्ण पाचक रस किसे कहा जाता है?", options:["लार","पित्त रस","अग्नाशयी रस","आंत्र रस"], a:2},
+    {q:"वसा के इमल्सीकरण में कौन मदद करता है?", options:["पित्त रस","टायलिन","पेप्सिन","रेनिन"], a:0},
+    {q:"सबसे मीठा शर्करा कौन-सा है?", options:["ग्लूकोज","सुक्रोज","लैक्टोज","फ्रक्टोज"], a:3},
+    {q:"मनुष्य में दूध के दांतों की संख्या कितनी है?", options:["32","20","28","24"], a:1}
+  ]
+},
+{
+  id:4, icon:"🫁", title:"श्वसन", tagline:"भोजन से ऊर्जा मुक्त करने की प्रक्रिया",
+  content:`
+    <div class="paper-card">
+      <h3>श्वसन क्या है?</h3>
+      <p>भोजन से ऊर्जा मुक्त करने की क्रिया को <b>श्वसन</b> कहते हैं। यह एक ऊष्माक्षेपी व अपचय (Catabolic) प्रक्रिया है, और <b>प्रकाश संश्लेषण की विपरीत क्रिया</b> है।</p>
+      <div class="formula">C₆H₁₂O₆ + O₂ → CO₂ + H₂O + ऊर्जा (ATP)</div>
+      <p>श्वसन की क्रिया <b>माइटोकॉन्ड्रिया</b> में होती है, इसीलिए इसे "कोशिका का ऊर्जा गृह" कहा जाता है। ऊर्जा की मुद्रा <b>ATP</b> (Adenosine Triphosphate) कहलाती है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>श्वसन के प्रकार</h3>
+      <ul>
+        <li><b>ऑक्सी श्वसन</b> — ऑक्सीजन की उपस्थिति में, भोजन का पूर्ण दहन, अधिक ऊर्जा (38 ATP) मिलती है, अंतिम उत्पाद CO₂+H₂O</li>
+        <li><b>अनॉक्सी श्वसन</b> — ऑक्सीजन के बिना, अपूर्ण दहन, कम ऊर्जा (2 ATP) मिलती है; मांसपेशियों में लैक्टिक अम्ल तथा यीस्ट में एथेनॉल + CO₂ बनता है</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> मांसपेशियों में लैक्टिक अम्ल जमा होने से ऐंठन या थकान होती है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>श्वसन अंग व अन्य तथ्य</h3>
+      <ul>
+        <li>शरीर की सतह से — स्पंज</li>
+        <li>गलफड़ों से — मछली, मेंढक का लार्वा (टैडपोल)</li>
+        <li>त्वचा से — केंचुआ, मेंढक (वयस्क)</li>
+        <li>श्वसन नलिकाओं से — कीट</li>
+        <li>फेफड़ों से — स्तनधारी, पक्षी, सरीसृप</li>
+      </ul>
+      <p>वयस्क मनुष्य की श्वसन दर 12-20 प्रति मिनट होती है। श्वसन केंद्र <b>मेडुला ऑब्लांगेटा</b> में स्थित होता है।</p>
+      <div class="formula">RQ = मुक्त हुई CO₂ का आयतन / प्रयुक्त O₂ का आयतन (कार्बोहाइड्रेट के लिए RQ = 1)</div>
+    </div>
+  `,
+  quiz:[
+    {q:"श्वसन की क्रिया किस कोशिकांग में होती है?", options:["केंद्रक","माइटोकॉन्ड्रिया","राइबोसोम","गॉल्जीकाय"], a:1},
+    {q:"ATP का पूरा नाम क्या है?", options:["Adenosine Triphosphate","Amino Tri Phosphate","Active Transport Protein","Adenine Total Phosphate"], a:0},
+    {q:"ऑक्सी श्वसन में कुल कितनी ATP प्राप्त होती है?", options:["2","4","38","10"], a:2},
+    {q:"अनॉक्सी श्वसन में मांसपेशियों में क्या बनता है?", options:["एथेनॉल","लैक्टिक अम्ल","ग्लूकोज","पाइरुवेट"], a:1},
+    {q:"वयस्क मनुष्य की सामान्य श्वसन दर प्रति मिनट कितनी है?", options:["12-20","25-40","40-60","5-10"], a:0},
+    {q:"श्वसन केंद्र कहाँ स्थित होता है?", options:["सेरिबैलम","मेडुला ऑब्लांगेटा","हाइपोथैलेमस","पिट्यूटरी"], a:1},
+    {q:"मछली में श्वसन किसके द्वारा होता है?", options:["फेफड़े","त्वचा","गलफड़े","श्वसन नलिकाएं"], a:2},
+    {q:"कीटों में श्वसन किसके द्वारा होता है?", options:["फेफड़े","गलफड़े","श्वसन नलिकाएं (ट्रैकिया)","त्वचा"], a:2},
+    {q:"कार्बोहाइड्रेट के लिए श्वसन गुणांक (RQ) का मान कितना होता है?", options:["0.5","1","2","अनंत"], a:1},
+    {q:"मेंढक के टैडपोल (लार्वा) में श्वसन अंग कौन-सा है?", options:["फेफड़े","गलफड़े","त्वचा","श्वसन नलिकाएं"], a:1}
+  ]
+},
+{
+  id:5, icon:"❤️", title:"परिसंचरण", tagline:"रक्त और हृदय द्वारा पोषक तत्वों का परिवहन",
+  content:`
+    <div class="paper-card">
+      <h3>रक्त वाहिकाएं</h3>
+      <p>मानव परिसंचरण तंत्र के 3 मुख्य अंग हैं — हृदय, रक्त वाहिकाएं और रक्त। रक्त वाहिकाएं तीन प्रकार की होती हैं:</p>
+      <ul>
+        <li><b>धमनी</b> — हृदय से अंगों तक शुद्ध रक्त ले जाती है, मोटी भित्ति, कपाट नहीं होते (अपवाद — फुफ्फुस धमनी)</li>
+        <li><b>शिरा</b> — अंगों से हृदय तक अशुद्ध रक्त लाती है, पतली भित्ति, कपाट होते हैं (अपवाद — फुफ्फुस शिरा)</li>
+        <li><b>केशिकाएं</b> — धमनियों व शिराओं को जोड़ती हैं</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>हृदय</h3>
+      <p>हृदय का औसत वजन 250-350 ग्राम होता है। यह <b>पेरीकार्डियम</b> झिल्ली से घिरा होता है और हृदय पेशी का बना होता है। मनुष्य के हृदय में <b>4 कोष्ठ</b> होते हैं — 2 आलिंद (Atria) + 2 निलय (Ventricles)।</p>
+      <ul>
+        <li>मछली — 2 कोष्ठ</li>
+        <li>उभयचर व सरीसृप (मगरमच्छ को छोड़कर) — 3 कोष्ठ</li>
+        <li>मगरमच्छ, पक्षी व स्तनधारी — 4 कोष्ठ</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> हृदय की धड़कन <b>SA नोड</b> से शुरू होती है, इसलिए इसे "पेसमेकर" कहते हैं। हृदय की सामान्य ध्वनि "लब-डब" कपाट बंद होने से बनती है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>परिसंचरण तंत्र के प्रकार</h3>
+      <ul>
+        <li><b>खुला परिसंचरण तंत्र</b> — कीट, तिलचट्टा (रक्त हिमोसील में जाता है)</li>
+        <li><b>बंद परिसंचरण तंत्र</b> — मछली, उभयचर, सरीसृप, पक्षी, स्तनधारी</li>
+        <li><b>दोहरा परिसंचरण</b> — रक्त हृदय से दो बार गुजरता है (पक्षी, स्तनधारी)</li>
+        <li><b>एकल परिसंचरण</b> — रक्त हृदय से एक बार गुजरता है (मछली)</li>
+      </ul>
+      <p>विश्व का पहला सफल हृदय प्रत्यारोपण <b>डॉ. क्रिस्टियन बर्नार्ड</b> (दक्षिण अफ्रीका, 1967) ने किया था। भारत में यह <b>डॉ. वेणुगोपाल</b> (1994) ने किया। ECG के जनक <b>आइंथोवेन</b> हैं।</p>
+    </div>
+  `,
+  quiz:[
+    {q:"रक्त को हृदय से विभिन्न अंगों तक ले जाने वाली वाहिका कौन-सी है?", options:["शिरा","धमनी","केशिका","लसीका वाहिनी"], a:1},
+    {q:"हृदय को घेरने वाली झिल्ली को क्या कहते हैं?", options:["प्लूरा","पेरीकार्डियम","पेरिटोनियम","मस्तिष्कावरण"], a:1},
+    {q:"विश्व का प्रथम सफल हृदय प्रत्यारोपण किसने किया था?", options:["डॉ. वेणुगोपाल","डॉ. क्रिस्टियन बर्नार्ड","डॉ. इयान विल्मुट","आइंथोवेन"], a:1},
+    {q:"भारत में प्रथम हृदय प्रत्यारोपण किसने किया था?", options:["डॉ. सुभाष मुखोपाध्याय","डॉ. वेणुगोपाल","डॉ. क्रिस्टियन बर्नार्ड","डॉ. रॉबर्ट जार्विक"], a:1},
+    {q:"हृदय का पेसमेकर किसे कहा जाता है?", options:["AV नोड","SA नोड","पर्किंजे तंतु","बंडल ऑफ हिस"], a:1},
+    {q:"मनुष्य के हृदय में कुल कितने कोष्ठ होते हैं?", options:["2","3","4","6"], a:2},
+    {q:"मगरमच्छ को छोड़कर सरीसृपों के हृदय में सामान्यतः कितने कोष्ठ होते हैं?", options:["2","3","4","5"], a:1},
+    {q:"हृदय की सामान्य ध्वनि क्या कहलाती है?", options:["लब-डब","सिस्टोल","डायस्टोल","बीट-बीट"], a:0},
+    {q:"एकल परिसंचरण तंत्र किसमें पाया जाता है?", options:["मनुष्य","पक्षी","मछली","स्तनधारी"], a:2},
+    {q:"ECG के जनक कौन हैं?", options:["आइंथोवेन","डार्विन","हार्वे","मेंडल"], a:0}
+  ]
+},
+{
+  id:6, icon:"🚰", title:"उत्सर्जन", tagline:"शरीर से हानिकारक अपशिष्ट पदार्थों को बाहर निकालना",
+  content:`
+    <div class="paper-card">
+      <h3>उत्सर्जन क्या है?</h3>
+      <p>शरीर से हानिकारक पदार्थों को बाहर निकालना <b>उत्सर्जन</b> कहलाता है। उत्सर्जी पदार्थ के आधार पर जंतुओं का वर्गीकरण इस प्रकार है:</p>
+      <ul>
+        <li><b>अमीनोटैलिक</b> (अमोनिया उत्सर्जित) — अमीबा, मछली</li>
+        <li><b>यूरियोटैलिक</b> (यूरिया उत्सर्जित) — मानव, मेंढक</li>
+        <li><b>यूरिकोटैलिक</b> (यूरिक अम्ल उत्सर्जित) — कीट, पक्षी, सरीसृप</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> यूरिया का निर्माण <b>यकृत</b> में होता है, जबकि मूत्र का निर्माण <b>वृक्क (किडनी)</b> में होता है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>मानव उत्सर्जन तंत्र</h3>
+      <p>अंग: वृक्क (गुर्दा), मूत्र वाहिनी, मूत्राशय, मूत्रमार्ग। हर वृक्क लगभग <b>10 लाख (1 मिलियन) नेफ्रॉन</b> से बना होता है — नेफ्रॉन को वृक्क की रचनात्मक व क्रियात्मक इकाई कहा जाता है।</p>
+      <p>वृक्क के कार्य: उत्सर्जी पदार्थों का निष्कासन, जल का अवशोषण, रक्तदाब का नियंत्रण, इलेक्ट्रोलाइट का नियंत्रण।</p>
+    </div>
+    <div class="paper-card">
+      <h3>जुड़े हुए शब्द</h3>
+      <ul>
+        <li><b>पथरी</b> — कैल्शियम ऑक्सलेट के जमाव से बनती है</li>
+        <li><b>डायलिसिस</b> — मशीन द्वारा हानिकारक पदार्थों को बाहर निकालना, यह परासरण के सिद्धांत पर काम करता है</li>
+        <li><b>गठिया/गाउट</b> — रक्त में यूरिक अम्ल का स्तर बढ़ना</li>
+        <li><b>यूरोक्रोम</b> — मूत्र का हल्का पीला रंग इसी के कारण होता है (मूत्र हल्का अम्लीय होता है)</li>
+      </ul>
+    </div>
+  `,
+  quiz:[
+    {q:"मानव का मुख्य उत्सर्जी पदार्थ क्या है?", options:["अमोनिया","यूरिया","यूरिक अम्ल","कार्बन डाइऑक्साइड"], a:1},
+    {q:"यूरिया का निर्माण कहाँ होता है?", options:["वृक्क","यकृत","अग्नाशय","फेफड़े"], a:1},
+    {q:"मूत्र का निर्माण कहाँ होता है?", options:["यकृत","वृक्क","आमाशय","हृदय"], a:1},
+    {q:"वृक्क की रचनात्मक व क्रियात्मक इकाई क्या कहलाती है?", options:["न्यूरॉन","नेफ्रॉन","एल्वियोली","विलाई"], a:1},
+    {q:"कीट व पक्षियों का मुख्य उत्सर्जी पदार्थ क्या है?", options:["अमोनिया","यूरिया","यूरिक अम्ल","जल"], a:2},
+    {q:"अमीबा का उत्सर्जी पदार्थ क्या है?", options:["यूरिया","अमोनिया","यूरिक अम्ल","CO₂"], a:1},
+    {q:"डायलिसिस किस सिद्धांत पर कार्य करता है?", options:["विसरण","परासरण","अवसादन","वाष्पीकरण"], a:1},
+    {q:"वृक्क में पथरी मुख्यतः किसकी बनी होती है?", options:["सोडियम क्लोराइड","कैल्शियम ऑक्सलेट","पोटैशियम सल्फेट","यूरिया"], a:1},
+    {q:"रक्त में यूरिक अम्ल बढ़ने से कौन-सा रोग होता है?", options:["डायबिटीज़","गठिया/गाउट","एनीमिया","पीलिया"], a:1},
+    {q:"मूत्र का हल्का पीला रंग किसके कारण होता है?", options:["यूरिया","यूरोक्रोम","हीमोग्लोबिन","बिलीरुबिन"], a:1}
+  ]
+},
+{
+  id:7, icon:"👶", title:"जंतुओं में प्रजनन", tagline:"अपनी जाति को आगे बढ़ाने की प्रक्रिया",
+  content:`
+    <div class="paper-card">
+      <h3>जनन के प्रकार</h3>
+      <p>अपने ही सदृश किसी दूसरे जीव को जन्म देकर जाति की वृद्धि करना <b>जनन</b> कहलाता है।</p>
+      <ul>
+        <li><b>अलैंगिक जनन</b> — एक ही अभिभावक की आवश्यकता, संतान अभिभावक के समान, युग्मक की जरूरत नहीं (उदा. बैक्टीरिया, यीस्ट, अमीबा)</li>
+        <li><b>लैंगिक जनन</b> — दो अभिभावकों की आवश्यकता, युग्मकों का योगदान (उदा. मानव, कुत्ता, गधा)</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>युग्मक व निषेचन</h3>
+      <p>वे कोशिकाएं जो लैंगिक जनन में भाग लेती हैं, <b>युग्मक</b> कहलाती हैं — नर युग्मक (शुक्राणु) व मादा युग्मक (अंडाणु)। नर व मादा युग्मकों का मिलन <b>निषेचन</b> कहलाता है, जिसके फलस्वरूप युग्मनज बनता है जो आगे भ्रूण में विकसित होता है।</p>
+      <p>क्रम: युग्मक निर्माण → निषेचन → युग्मनज → भ्रूण</p>
+      <ul>
+        <li><b>आंतरिक निषेचन</b> — मादा के शरीर के अंदर (मानव, कुत्ता, पक्षी)</li>
+        <li><b>बाह्य निषेचन</b> — मादा के शरीर के बाहर (मछली, मेंढक)</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>प्रजनन तंत्र</h3>
+      <ul>
+        <li><b>नर प्रजनन तंत्र</b> — वृषण (शुक्राणु व टेस्टोस्टेरोन बनाता है), अधिवृषण, शुक्रवाहिका, शुक्राशय, पुरःस्थ ग्रंथि, मूत्रमार्ग, शिश्न</li>
+        <li><b>मादा प्रजनन तंत्र</b> — अंडाशय (अंडाणु व हार्मोन बनाता है), अंडवाहिनी (निषेचन यहीं होता है), गर्भाशय (भ्रूण का विकास), ग्रीवा, योनि</li>
+      </ul>
+      <p>मानव में गुणसूत्रों की संख्या <b>46</b> होती है — 22 जोड़े ऑटोसोम + 1 जोड़ी सेक्स क्रोमोसोम (जो लिंग निर्धारण करते हैं)।</p>
+      <div class="note-box"><strong>विशेष तथ्य:</strong> विश्व की प्रथम टेस्ट ट्यूब बेबी — लुई जॉय ब्राउन (1978, ब्रिटेन)। भारत की प्रथम — कनुप्रिया अग्रवाल/दुर्गा (1978, डॉ. सुभाष मुखोपाध्याय)। प्रथम क्लोन भेड़ — डॉली (डॉ. इयान विल्मुट, 1996)।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"अलैंगिक जनन में कितने अभिभावक की आवश्यकता होती है?", options:["एक","दो","तीन","कोई नहीं"], a:0},
+    {q:"नर युग्मक को क्या कहते हैं?", options:["अंडाणु","शुक्राणु","युग्मनज","भ्रूण"], a:1},
+    {q:"वृषण में किसका निर्माण होता है?", options:["अंडाणु व एस्ट्रोजन","शुक्राणु व टेस्टोस्टेरोन","केवल शुक्राणु","केवल हार्मोन"], a:1},
+    {q:"निषेचन के फलस्वरूप क्या बनता है?", options:["भ्रूण सीधे","युग्मनज","अंडाणु","गर्भाशय"], a:1},
+    {q:"विश्व की प्रथम टेस्ट ट्यूब बेबी कौन थी?", options:["कनुप्रिया अग्रवाल","लुई जॉय ब्राउन","डॉली","इंदिरा"], a:1},
+    {q:"भारत की प्रथम टेस्ट ट्यूब बेबी कौन थी?", options:["लुई जॉय ब्राउन","कनुप्रिया अग्रवाल (दुर्गा)","गारिमा","डॉली"], a:1},
+    {q:"प्रथम क्लोन भेड़ का नाम क्या था?", options:["गारिमा","डॉली","दुर्गा","मौली"], a:1},
+    {q:"डॉली भेड़ को किसने बनाया था?", options:["डॉ. इयान विल्मुट","डॉ. वेणुगोपाल","डॉ. सुभाष मुखोपाध्याय","डॉ. क्रिस्टियन बर्नार्ड"], a:0},
+    {q:"मानव में गुणसूत्रों की कुल संख्या कितनी होती है?", options:["44","46","48","23"], a:1},
+    {q:"आंतरिक निषेचन किसमें होता है?", options:["मछली","मेंढक","मानव","स्टारफिश"], a:2}
+  ]
+},
+{
+  id:8, icon:"🌸", title:"पौधों में प्रजनन", tagline:"फूलों के माध्यम से पौधों में लैंगिक जनन",
+  content:`
+    <div class="paper-card">
+      <h3>पुष्प की संरचना</h3>
+      <p>पुष्पीय पौधों में लैंगिक जनन के अंग <b>पुष्प (फूल)</b> होते हैं। पुष्प के मुख्य भाग: पुष्पासन, बाह्यदल (Sepals), दल (Petals), पुंकेसर (नर प्रजनन अंग), अंडप (मादा प्रजनन अंग)।</p>
+      <ul>
+        <li><b>पुंकेसर</b> के दो भाग — परागकोष (परागकण बनाता है) व तंतु</li>
+        <li><b>अंडप</b> के तीन भाग — वर्तिकाग्र (Stigma), वर्तिका (Style), अंडाशय (Ovary, जिसमें बीजांड होते हैं)</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>पुष्प के प्रकार व परागण</h3>
+      <ul>
+        <li><b>एकलिंगी पुष्प</b> — नर व मादा भाग अलग-अलग फूल में (पपीता, तरबूज)</li>
+        <li><b>उभयलिंगी पुष्प</b> — एक ही फूल में दोनों भाग (गुड़हल, गुलाब, सरसों)</li>
+      </ul>
+      <p><b>परागण</b> — परागकणों का वर्तिकाग्र तक पहुँचना। <b>स्वपरागण</b> (उसी पौधे के फूल में) व <b>पर-परागण/संकर परागण</b> (दूसरे पौधे के फूल में — जो स्वपरागण से बेहतर माना जाता है)।</p>
+      <p>परागण के माध्यम: वायु (Anemophily), जल (Hydrophily), कीट (Entomophily), पक्षी (Ornithophily), चमगादड़ (Chiropterophily) आदि।</p>
+    </div>
+    <div class="paper-card">
+      <h3>निषेचन के बाद</h3>
+      <p>निषेचन के बाद अंडाशय <b>फल</b> में और बीजांड <b>बीज</b> में बदल जाता है।</p>
+      <ul>
+        <li><b>सत्य फल</b> — अंडाशय से विकसित होते हैं (आम, केला)</li>
+        <li><b>असत्य फल</b> — फूल के अन्य भागों से बनते हैं (सेब, काजू, स्ट्रॉबेरी)</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> बिना निषेचन के फल बनना <b>अनिषेक फलन (Parthenocarpy)</b> कहलाता है — ऐसे फल बीज रहित होते हैं (उदा. अंगूर, केला)।</div>
+      <p><b>तने का रूपांतरण</b> — आलू, अदरक, हल्दी (भूमिगत तना)। <b>जड़ का रूपांतरण</b> — गाजर, मूली, शकरकंद। <b>जरायुज्ता (Vivipary)</b> — जब बीज का अंकुरण मातृ पौधे पर ही हो जाए (उदा. राइज़ोफोरा)।</p>
+    </div>
+  `,
+  quiz:[
+    {q:"पुष्प का नर प्रजनन अंग कौन-सा है?", options:["अंडप","पुंकेसर","बाह्यदल","दल"], a:1},
+    {q:"पुष्प का मादा प्रजनन अंग कौन-सा है?", options:["पुंकेसर","अंडप","पुष्पासन","तंतु"], a:1},
+    {q:"स्वपरागण किसे कहते हैं?", options:["दूसरे पौधे के फूल में परागकण जाना","उसी पौधे के फूल में परागकण पहुँचना","बीज का अंकुरण","फल का बनना"], a:1},
+    {q:"वायु द्वारा परागण को क्या कहते हैं?", options:["Hydrophily","Entomophily","Anemophily","Ornithophily"], a:2},
+    {q:"सत्य फल किससे विकसित होते हैं?", options:["बाह्यदल से","अंडाशय से","पुष्पासन से","परागकोष से"], a:1},
+    {q:"बिना निषेचन के फल बनने की प्रक्रिया क्या कहलाती है?", options:["परागण","निषेचन","अनिषेक फलन (Parthenocarpy)","जरायुज्ता"], a:2},
+    {q:"आलू पौधे के किस भाग का रूपांतरण है?", options:["जड़","तना","पत्ती","फूल"], a:1},
+    {q:"गाजर किसका रूपांतरित रूप है?", options:["तना","पत्ती","जड़","पुष्प"], a:2},
+    {q:"वनस्पति जगत का सबसे बड़ा बीजाणु किसमें पाया जाता है?", options:["आम","साइकस","गेहूं","धान"], a:1},
+    {q:"जरायुज्ता (Vivipary) का उदाहरण कौन-सा है?", options:["आम","राइज़ोफोरा","गेहूं","गुड़हल"], a:1}
+  ]
+},
+{
+  id:9, icon:"🔬", title:"कोशिका एवं कोशिकांग", tagline:"जीवन की सबसे छोटी संरचनात्मक व क्रियात्मक इकाई",
+  content:`
+    <div class="paper-card">
+      <h3>जंतु कोशिका की संरचना</h3>
+      <p>कोशिका जीवन की सबसे छोटी संरचनात्मक व क्रियात्मक इकाई है। जंतु कोशिका में मुख्य रूप से कोशिका झिल्ली (CM/PM), कोशिकाद्रव्य (Cytoplasm), केंद्रक (Nucleus), केंद्रिका (Nucleolus), माइटोकॉन्ड्रिया, गॉल्जीकाय, लाइसोसोम, राइबोसोम, अंतःप्रद्रव्यी जालिका (ER), तारककाय (Centriole) व रिक्तिका (Vacuole) पाई जाती है।</p>
+      <ul>
+        <li>पादप कोशिका में कोशिका भित्ति उपस्थित होती है, जंतु कोशिका में अनुपस्थित।</li>
+        <li>पादप कोशिका में लवक (Plastids) उपस्थित होते हैं, जंतु कोशिका में अनुपस्थित।</li>
+        <li>तारककाय जंतु कोशिका में उपस्थित होता है, पादप कोशिका में अनुपस्थित।</li>
+        <li>पादप कोशिका में एक बड़ी रिक्तिका पाई जाती है, जंतु कोशिका में कई छोटी-छोटी रिक्तिकाएं।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>कोशिका झिल्ली एवं कोशिका भित्ति</h3>
+      <p><b>कोशिका झिल्ली (Plasma Membrane)</b> प्रोटीन एवं वसा (लाइपोप्रोटीन/फॉस्फोलिपिड) की बनी होती है। यह एक अर्धपारगम्य, चयनात्मक तथा जीवित झिल्ली है।</p>
+      <p><b>कोशिका भित्ति (Cell Wall)</b> केवल पादप कोशिकाओं में पाई जाती है व सेलुलोज की बनी होती है। कवकों की कोशिका भित्ति काइटिन की तथा जीवाणुओं की कोशिका भित्ति पेप्टिडोग्लाइकन की बनी होती है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>माइटोकॉन्ड्रिया एवं लवक</h3>
+      <p><b>माइटोकॉन्ड्रिया</b> को कोशिका का पावर हाउस/रसोई/चूल्हा कहा जाता है — यहां श्वसन क्रिया संपन्न होती है। इसमें DNA व राइबोसोम पाए जाते हैं तथा यह दोहरी झिल्ली से घिरा रहता है।</p>
+      <p><b>लवक (Plastids)</b> केवल पादप कोशिकाओं में पाए जाते हैं — हरित लवक (प्रकाश संश्लेषण, वर्णक: पर्णहरित), वर्णी लवक (रंग प्रदान करते हैं — लाइकोपीन, कैरोटिन आदि) व अवर्णी लवक (भोजन संग्रहित करते हैं)। क्लोरोप्लास्ट व माइटोकॉन्ड्रिया को <b>अर्ध-स्वायत्त अंग</b> कहते हैं क्योंकि इनका अपना DNA होता है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>गॉल्जीकाय, राइबोसोम, तारककाय, रिक्तिका व केंद्रक</h3>
+      <ul>
+        <li><b>गॉल्जीकाय</b> — इसे कोशिका का पोस्ट ऑफिस कहा जाता है; यह पदार्थों को संचित, पैकिंग व स्रावित करता है।</li>
+        <li><b>राइबोसोम</b> — इसे कोशिका की प्रोटीन फैक्ट्री कहा जाता है; दो प्रकार — 70S व 80S।</li>
+        <li><b>तारककाय</b> — केवल जंतु कोशिकाओं में पाया जाता है, कोशिका विभाजन में भाग लेता है।</li>
+        <li><b>रिक्तिका</b> — एक झिल्ली (टोनोप्लास्ट) से घिरी होती है, अंदर कोशिका रस भरा होता है।</li>
+        <li><b>केंद्रक</b> — इसे कोशिका का मस्तिष्क/नियंत्रक कहा जाता है; इसमें DNA पाया जाता है जो गुणसूत्र बनाता है।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>DNA एवं RNA</h3>
+      <p>DNA व RNA दोनों न्यूक्लियोटाइड के बहुलक हैं, जो शर्करा, क्षार व फॉस्फेट से बने होते हैं। DNA में डिऑक्सीराइबोज शर्करा तथा क्षार A,T,C,G होते हैं (A=T, C≡G); यह द्विकुंडलित (Double Helix, वाटसन व क्रिक) संरचना है। RNA में राइबोज शर्करा तथा क्षार A,U,C,G होते हैं और यह एकल रज्जुक होता है।</p>
+      <div class="note-box"><strong>याद रखें:</strong> DNA फिंगरप्रिंटिंग की खोज 1984 में सर एलेक जेफ्रीस ने की थी। सेंट्रल डोगमा (DNA→RNA→प्रोटीन) सर्वप्रथम 1958 में फ्रांसिस क्रिक ने प्रस्तावित किया था।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"कोशिका का पावर हाउस किसे कहा जाता है?", options:["राइबोसोम","माइटोकॉन्ड्रिया","गॉल्जीकाय","लाइसोसोम"], a:1},
+    {q:"कोशिका की आत्महत्या की थैली किसे कहा जाता है?", options:["माइटोकॉन्ड्रिया","लाइसोसोम","रिक्तिका","केंद्रक"], a:1},
+    {q:"पादप कोशिका भित्ति किसकी बनी होती है?", options:["काइटिन","पेप्टिडोग्लाइकन","सेलुलोज","लिग्निन"], a:2},
+    {q:"कवक की कोशिका भित्ति किसकी बनी होती है?", options:["सेलुलोज","काइटिन","पेप्टिडोग्लाइकन","लिपिड"], a:1},
+    {q:"जीवाणु की कोशिका भित्ति किसकी बनी होती है?", options:["सेलुलोज","काइटिन","पेप्टिडोग्लाइकन","प्रोटीन"], a:2},
+    {q:"तारककाय किस कोशिका में पाया जाता है?", options:["पादप कोशिका","जंतु कोशिका","दोनों में","किसी में नहीं"], a:1},
+    {q:"कोशिका के पोस्ट ऑफिस के रूप में किसे जाना जाता है?", options:["गॉल्जीकाय","राइबोसोम","माइटोकॉन्ड्रिया","रिक्तिका"], a:0},
+    {q:"DNA फिंगरप्रिंटिंग की खोज किसने की थी?", options:["वाटसन एवं क्रिक","एलेक जेफ्रीस","फ्रांसिस क्रिक","लुइस पाश्चर"], a:1},
+    {q:"सेंट्रल डोगमा का सिद्धांत किसने प्रस्तावित किया?", options:["फ्रांसिस क्रिक","वाटसन","जेफ्रीस","मेंडल"], a:0},
+    {q:"DNA में कौन-सी शर्करा पाई जाती है?", options:["राइबोज शर्करा","डिऑक्सीराइबोज शर्करा","ग्लूकोज","सुक्रोज"], a:1}
+  ]
+},
+{
+  id:10, icon:"🧫", title:"जंतु ऊतक", tagline:"समान संरचना व कार्य वाली कोशिकाओं का समूह",
+  content:`
+    <div class="paper-card">
+      <h3>ऊतक का परिचय</h3>
+      <p>कोशिकाओं का वह समूह जो संरचना व कार्यों में समान हो, <b>ऊतक (Tissue)</b> कहलाता है। जंतु ऊतक चार प्रकार के होते हैं — उपकला ऊतक, संयोजी ऊतक, पेशी ऊतक व तंत्रिका ऊतक।</p>
+    </div>
+    <div class="paper-card">
+      <h3>उपकला ऊतक एवं संयोजी ऊतक</h3>
+      <p><b>उपकला ऊतक</b> का कार्य रक्षात्मक है; इसका उदाहरण त्वचा है। शरीर का सबसे बड़ा अंग त्वचा है, इसके अध्ययन को Dermatology कहते हैं। शरीर का सबसे बड़ा आंतरिक भाग/ग्रंथि यकृत (Liver) है।</p>
+      <p><b>संयोजी ऊतक</b> का कार्य संयोजन करना है। इसके प्रकार — ऐरियोलर ऊतक (त्वचा को मांसपेशियों से जोड़ता है), वसा/क्ष्तिय ऊतक (वसा संचित करता है), कंडरा/Tendon (मांसपेशियों को अस्थियों से जोड़ता है), स्नायु/Ligament (अस्थियों को अस्थियों से जोड़ता है), उपास्थि, हड्डी व रक्त।</p>
+    </div>
+    <div class="paper-card">
+      <h3>पेशी ऊतक</h3>
+      <ul>
+        <li><b>रेखित/ऐच्छिक पेशियां</b> — इच्छानुसार कार्य करती हैं, जल्दी थकती हैं, हाथ-पैर-जिह्वा में पाई जाती हैं; कोशिकाएं लंबी, बेलनाकार, शाखारहित व बहुकेंद्रकी।</li>
+        <li><b>अरेखित/अनैच्छिक पेशियां</b> — इच्छानुसार कार्य नहीं करतीं, आंतरिक भागों में पाई जाती हैं; कोशिकाएं तर्कुरूपी व एककेंद्रीय।</li>
+        <li><b>हृदय पेशी ऊतक</b> — इच्छानुसार कार्य नहीं करती, कभी नहीं थकती, हृदय में पाई जाती है; कोशिकाएं बेलनाकार शाखाओं वाली एककेंद्रीय।</li>
+      </ul>
+      <p>मांसपेशियों में पाए जाने वाले प्रोटीन — एक्टिन (Actin), मायोसिन (Myosin), मायोग्लोबिन (Myoglobin)।</p>
+      <div class="note-box"><strong>याद रखें:</strong> Myology — पेशियों का अध्ययन, Mycology — कवकों का अध्ययन, Phycology — शैवालों का अध्ययन। मानव शरीर में कुल मांसपेशियों की संख्या 639 है, नेत्रगति को 6 मांसपेशियां नियंत्रित करती हैं।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"मानव शरीर का सबसे बड़ा अंग कौन-सा है?", options:["यकृत","त्वचा","फेफड़े","हृदय"], a:1},
+    {q:"त्वचा के अध्ययन को क्या कहते हैं?", options:["Osteology","Dermatology","Myology","Cardiology"], a:1},
+    {q:"शरीर का सबसे बड़ा आंतरिक अंग कौन-सा है?", options:["वृक्क","फेफड़े","यकृत","प्लीहा"], a:2},
+    {q:"रेखित पेशियां कहाँ पाई जाती हैं?", options:["आंतरिक अंगों में","हाथ, पैर, जिह्वा में","केवल हृदय में","केवल आंतों में"], a:1},
+    {q:"हृदय पेशी ऊतक की मुख्य विशेषता क्या है?", options:["जल्दी थकना","कभी न थकना","इच्छानुसार कार्य करना","शाखारहित होना"], a:1},
+    {q:"मांसपेशियों में पाया जाने वाला प्रोटीन कौन-सा नहीं है?", options:["एक्टिन","मायोसिन","मायोग्लोबिन","कैरोटिन"], a:3},
+    {q:"Myology किसका अध्ययन है?", options:["पेशियों का","कवकों का","शैवालों का","हड्डियों का"], a:0},
+    {q:"Mycology किसका अध्ययन है?", options:["पेशियों का","कवकों का","शैवालों का","रक्त का"], a:1},
+    {q:"कंडरा (Tendon) क्या जोड़ता है?", options:["हड्डी को हड्डी से","मांसपेशी को हड्डी से","त्वचा को हड्डी से","तंत्रिका को मांसपेशी से"], a:1},
+    {q:"स्नायु (Ligament) क्या जोड़ता है?", options:["मांसपेशी को हड्डी से","हड्डी को हड्डी से","त्वचा को मांसपेशी से","तंत्रिका को हड्डी से"], a:1}
+  ]
+},
+{
+  id:11, icon:"🧠", title:"तंत्रिका तंत्र", tagline:"न्यूरॉन, मस्तिष्क एवं प्रतिवर्ती क्रिया की कहानी",
+  content:`
+    <div class="paper-card">
+      <h3>तंत्रिका ऊतक एवं न्यूरॉन</h3>
+      <p>तंत्रिका ऊतक न्यूरॉन (तंत्रिका कोशिकाओं) का बना होता है। यह शरीर की सबसे लंबी कोशिका है। जन्म के बाद इन कोशिकाओं में विभाजन नहीं होता तथा इनमें पुनरुद्भवन की क्षमता नहीं होती (यकृत की कोशिकाओं में सबसे अधिक पुनरुद्भवन क्षमता होती है)।</p>
+      <p>न्यूरॉन के तीन भाग होते हैं — कोशिका काय (Cyton/Cell body), एक्सॉन (तंत्रिकाक्ष) व डेंड्राइट्स (द्रुमिका)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>न्यूरॉन के प्रकार एवं तंत्रिका तंत्र</h3>
+      <ul>
+        <li><b>संवेदी न्यूरॉन</b> — शरीर के विभिन्न अंगों से संदेश केंद्रीय तंत्रिका तंत्र को भेजते हैं।</li>
+        <li><b>मोटर न्यूरॉन</b> — केंद्रीय तंत्रिका तंत्र से संदेश विभिन्न अंगों तक भेजते हैं।</li>
+        <li><b>रिले न्यूरॉन</b> — अन्य न्यूरॉन्स के बीच कड़ी का काम करते हैं।</li>
+      </ul>
+      <p>दो न्यूरॉन की संधि को <b>Synapse</b> कहते हैं। तंत्रिका तंत्र दो भागों में बंटा है — केंद्रीय तंत्रिका तंत्र (मस्तिष्क + मेरुरज्जु) व परिधीय तंत्रिका तंत्र (कैनियल तंत्रिका + स्पाइनल तंत्रिका)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>मस्तिष्क (Brain)</h3>
+      <p>मस्तिष्क का औसत वजन 1300-1400 g होता है, यह तीन झिल्लियों (मेनिन्जेज) से घिरा रहता है। मस्तिष्क के तीन मुख्य भाग हैं:</p>
+      <ul>
+        <li><b>अग्र मस्तिष्क/प्रमस्तिष्क (Cerebrum)</b> — सबसे बड़ा भाग, ऐच्छिक क्रियाओं का नियंत्रण; सीखना, तर्कशक्ति, स्मरण शक्ति, बुद्धिमत्ता, भावनाएं, व्यक्तित्व, कल्पना व निर्णय क्षमता का केंद्र।</li>
+        <li><b>मध्य मस्तिष्क (ऑप्टिक लोब)</b> — देखने की क्षमता प्रदान/नियंत्रित करता है।</li>
+        <li><b>पश्च मस्तिष्क</b> — तीन भाग: अनुमस्तिष्क (Cerebellum — शरीर की मुद्रा व संतुलन नियंत्रित करता है — चलना, साइकिल चलाना, नाचना, तैराकी), पोन्स वेरोलाई (श्वसन नियंत्रण), मेडुला ऑब्लांगेटा (अनैच्छिक क्रियाएं — उल्टी, छींकना, खांसना, निगलना, लार स्राव, हृदय गति, श्वसन, रक्तचाप)।</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> शराब पीने से अनुमस्तिष्क प्रभावित होता है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>प्रतिवर्ती क्रिया एवं रिफ्लेक्स आर्क</h3>
+      <p>किसी अचानक परिवर्तन के कारण मस्तिष्क के हस्तक्षेप के बिना स्वतः घटित होने वाली क्रिया <b>प्रतिवर्ती क्रिया</b> कहलाती है, जो मेरुरज्जु द्वारा नियंत्रित होती है (उदा. सुई चुभने पर हाथ का हट जाना)। आवेग संचरण के संपूर्ण पथ को <b>रिफ्लेक्स आर्क</b> कहते हैं:</p>
+      <p>रिसेप्टर → संवेदी न्यूरॉन → रिले न्यूरॉन → मोटर न्यूरॉन → प्रभावक (मांसपेशी)</p>
+    </div>
+  `,
+  quiz:[
+    {q:"शरीर की सबसे लंबी कोशिका कौन-सी है?", options:["RBC","न्यूरॉन","मांसपेशी कोशिका","उपकला कोशिका"], a:1},
+    {q:"न्यूरॉन के कितने मुख्य भाग होते हैं?", options:["2","3","4","5"], a:1},
+    {q:"दो न्यूरॉन के बीच की संधि को क्या कहते हैं?", options:["Axon","Synapse","Dendrite","Cyton"], a:1},
+    {q:"मस्तिष्क का सबसे बड़ा भाग कौन-सा है?", options:["अनुमस्तिष्क","मध्य मस्तिष्क","प्रमस्तिष्क","मेडुला ऑब्लांगेटा"], a:2},
+    {q:"शरीर की मुद्रा व संतुलन को कौन नियंत्रित करता है?", options:["प्रमस्तिष्क","अनुमस्तिष्क","मध्य मस्तिष्क","मेरुरज्जु"], a:1},
+    {q:"हृदय गति व श्वसन को कौन नियंत्रित करता है?", options:["प्रमस्तिष्क","अनुमस्तिष्क","मेडुला ऑब्लांगेटा","मध्य मस्तिष्क"], a:2},
+    {q:"देखने की क्षमता किस भाग से संबंधित है?", options:["प्रमस्तिष्क","मध्य मस्तिष्क (ऑप्टिक लोब)","पोन्स वेरोलाई","मेरुरज्जु"], a:1},
+    {q:"प्रतिवर्ती क्रियाएं किसके द्वारा नियंत्रित होती हैं?", options:["प्रमस्तिष्क","मेरुरज्जु","अनुमस्तिष्क","हाइपोथैलेमस"], a:1},
+    {q:"मानव मस्तिष्क का औसत वजन कितना होता है?", options:["500-600 g","900-1000 g","1300-1400 g","2000-2100 g"], a:2},
+    {q:"रिफ्लेक्स आर्क का सही क्रम क्या है?", options:["मोटर न्यूरॉन→रिसेप्टर→संवेदी न्यूरॉन","रिसेप्टर→संवेदी न्यूरॉन→रिले न्यूरॉन→मोटर न्यूरॉन→प्रभावक","प्रभावक→रिले न्यूरॉन→रिसेप्टर","संवेदी न्यूरॉन→प्रभावक→रिसेप्टर"], a:1}
+  ]
+},
+{
+  id:12, icon:"🩸", title:"रक्त (Blood)", tagline:"तरल संयोजी ऊतक — रक्त कणिकाएं व रक्त समूह",
+  content:`
+    <div class="paper-card">
+      <h3>रक्त की संरचना</h3>
+      <p>रक्त एक तरल संयोजी ऊतक है, इसका अध्ययन Hematology कहलाता है। इसका pH मान 7.4 होता है, आयतन 5-6 लीटर तथा यह शरीर भार का लगभग 7% होता है। रक्त वाहिकाओं के भीतर रक्त हेपैरिन के कारण नहीं जमता।</p>
+      <p>रक्त के दो घटक हैं — प्लाज्मा (55%, तरल भाग जिसमें जल, प्रोटीन व ग्लूकोज़ होता है) व रक्त कणिकाएं (45% — RBC, WBC व प्लेटलेट्स)। प्लाज्मा प्रोटीन तीन प्रकार के होते हैं — एल्बुमिन (परासरण दाब बनाए रखता है), ग्लोब्युलिन (एंटीबॉडी निर्माण) व फाइब्रिनोजेन (रक्त स्कंदन में सहायक)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>RBC, WBC एवं प्लेटलेट्स</h3>
+      <ul>
+        <li><b>RBC (लाल रक्त कोशिकाएं/Erythrocytes)</b> — निर्माण अस्थि मज्जा में (भ्रूण अवस्था में यकृत व प्लीहा में); संख्या 5-5.5 मिलियन/ml; जीवनकाल 120 दिन; मृत RBC यकृत व प्लीहा में नष्ट होती हैं (प्लीहा को लाल रक्त कोशिकाओं का कब्रिस्तान कहा जाता है)। इनमें हीमोग्लोबिन (Hb) पाया जाता है जो ऑक्सीजन का परिवहन करता है। परिपक्व RBC में केंद्रक व कोशिकांग नहीं होते।</li>
+        <li><b>WBC (श्वेत रक्त कोशिकाएं/Leucocytes)</b> — निर्माण अस्थि मज्जा में; संख्या 6000-8000/ml; जीवनकाल 1-4 दिन; इन्हें शरीर की सेना कहा जाता है, ये रोग प्रतिरोधक क्षमता प्रदान करती हैं। RBC व WBC का अनुपात 600:1 होता है।</li>
+        <li><b>प्लेटलेट्स (बिम्बाणु/Thrombocytes)</b> — निर्माण अस्थि मज्जा में; संख्या 1.5-3.5 लाख/ml; जीवनकाल 5-8 दिन; कार्य — रक्त का थक्का जमाना।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>रक्त समूह (Blood Group)</h3>
+      <p>रक्त समूह की खोज 1900 में लैंडस्टीनर ने की थी। दो प्रणालियां हैं — ABO प्रणाली (A, B, AB, O) व Rh प्रणाली (Rh+, Rh−, खोज 1940 में लैंडस्टीनर व वीनर ने बंदर पर की)। AB+ को सार्वत्रिक ग्राही (Universal Receiver) व O− को सार्वत्रिक दाता (Universal Donor) कहा जाता है।</p>
+      <p>रक्त स्कंदन के लिए आवश्यक — बिम्बाणु (Platelets), विटामिन-K, फाइब्रिनोजेन, प्रोथ्रोम्बिन व कैल्शियम।</p>
+    </div>
+  `,
+  quiz:[
+    {q:"रक्त का pH मान कितना होता है?", options:["6.4","7.0","7.4","8.0"], a:2},
+    {q:"रक्त वाहिकाओं में रक्त किसके कारण नहीं जमता?", options:["फाइब्रिनोजेन","हेपैरिन","विटामिन K","प्लेटलेट्स"], a:1},
+    {q:"RBC का निर्माण कहाँ होता है?", options:["यकृत","अस्थि मज्जा","प्लीहा","हृदय"], a:1},
+    {q:"RBC का सामान्य जीवनकाल कितना होता है?", options:["30 दिन","60 दिन","120 दिन","200 दिन"], a:2},
+    {q:"किसे रक्त कोशिकाओं का कब्रिस्तान कहा जाता है?", options:["यकृत","प्लीहा","वृक्क","फेफड़े"], a:1},
+    {q:"शरीर की सेना किसे कहा जाता है?", options:["RBC","WBC","प्लेटलेट्स","प्लाज्मा"], a:1},
+    {q:"प्लेटलेट्स का मुख्य कार्य क्या है?", options:["ऑक्सीजन परिवहन","रक्त का थक्का जमाना","रोग प्रतिरोधक क्षमता","पोषक तत्व परिवहन"], a:1},
+    {q:"सार्वत्रिक दाता (Universal Donor) कौन-सा रक्त समूह है?", options:["AB+","O-","A+","B-"], a:1},
+    {q:"सार्वत्रिक ग्राही (Universal Receiver) कौन-सा रक्त समूह है?", options:["O-","AB+","A-","B+"], a:1},
+    {q:"रक्त समूह की खोज किसने की थी?", options:["वाटसन","लैंडस्टीनर","फ्रांसिस क्रिक","मेंडल"], a:1}
+  ]
+},
+{
+  id:13, icon:"🦴", title:"मानव का कंकाल तंत्र", tagline:"शरीर को आकार व सहारा देने वाली अस्थियां",
+  content:`
+    <div class="paper-card">
+      <h3>कंकाल तंत्र का विभाजन</h3>
+      <p>मानव कंकाल तंत्र को दो भागों में बांटा गया है — अक्षीय कंकाल (Axial Skeleton — 80 हड्डियां) व उपांग कंकाल (Appendicular Skeleton — 126 हड्डियां)। वयस्क में कुल 206 हड्डियां तथा नवजात शिशु में लगभग 300 हड्डियां होती हैं।</p>
+    </div>
+    <div class="paper-card">
+      <h3>अक्षीय कंकाल (80 हड्डियां)</h3>
+      <p>इसमें खोपड़ी (Skull), कशेरुक दंड (Vertebral Column), पसलियां (Ribs) व उरोस्थि (Sternum) शामिल हैं। सिर में कुल 29 हड्डियां — कपाल 8, चेहरा 14, कान 6, ह्योइड 1। कशेरुक दंड में 33 (वयस्क में 26), पसलियां 12 जोड़ी (24), उरोस्थि 1। कर्ण अस्थियां — मैलियस, इंकस व स्टेप्स (प्रत्येक कान में एक-एक); स्टेपिज़ शरीर की सबसे छोटी हड्डी है। ह्योइड किसी अन्य हड्डी से जुड़ी नहीं होती।</p>
+    </div>
+    <div class="paper-card">
+      <h3>उपांग कंकाल (126 हड्डियां)</h3>
+      <p>इसमें मेखलाएं (Girdles) तथा हाथ-पैर की अस्थियां शामिल हैं — अग्रपाद (Forelimb) 60, पश्च पाद (Hindlimb) 60, अंस मेखला/Pectoral girdle 4 तथा श्रोणि मेखला/Pelvic girdle 2। अंस मेखला की अस्थियां — क्लेविकल (कॉलर बोन) व स्कैपुला (कंधे का ब्लेड, जिसमें ग्लीनॉइड गुहा होती है)। श्रोणि मेखला तीन हड्डियों से बनती है — इलियम, इश्चियम व प्यूबिस (जहां मिलती हैं वहां गड्ढा ऐसीटैबुलम कहलाता है)।</p>
+      <p>अग्रपाद में ह्यूमरस, रेडियस-अलना, कार्पल्स, मेटाकार्पल्स व फैलेंजेज होती हैं। पश्च पाद में फीमर (शरीर की सबसे बड़ी हड्डी), टिबियो-फिबुला, पटेला (घुटने की हड्डी), टार्सल्स, मेटाटार्सल्स व फैलेंजेज होती हैं।</p>
+      <div class="note-box"><strong>याद रखें:</strong> सबसे बड़ी हड्डी — फीमर (जांघ की हड्डी); सबसे छोटी हड्डी — स्टेपिज़ (कान की हड्डी)।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"वयस्क मानव शरीर में कुल कितनी हड्डियां होती हैं?", options:["186","206","226","246"], a:1},
+    {q:"नवजात शिशु में लगभग कितनी हड्डियां होती हैं?", options:["206","250","300","350"], a:2},
+    {q:"शरीर की सबसे बड़ी हड्डी कौन-सी है?", options:["ह्यूमरस","फीमर","टिबिया","पटेला"], a:1},
+    {q:"शरीर की सबसे छोटी हड्डी कौन-सी है?", options:["इंकस","मैलियस","स्टेपिज़","पटेला"], a:2},
+    {q:"अक्षीय कंकाल में कुल कितनी हड्डियां होती हैं?", options:["60","80","100","126"], a:1},
+    {q:"उपांग कंकाल में कुल कितनी हड्डियां होती हैं?", options:["80","100","126","150"], a:2},
+    {q:"पसलियों को आपस में जोड़ने वाली हड्डी क्या कहलाती है?", options:["स्टर्नम","स्कैपुला","क्लेविकल","फीमर"], a:0},
+    {q:"घुटने की हड्डी को क्या कहते हैं?", options:["फीमर","पटेला","टिबिया","फिबुला"], a:1},
+    {q:"कंधे के ब्लेड को क्या कहते हैं?", options:["क्लेविकल","स्कैपुला","ह्यूमरस","स्टर्नम"], a:1},
+    {q:"मानव हाथ (अग्रपाद) में कुल कितनी हड्डियां होती हैं?", options:["20","30","40","50"], a:1}
+  ]
+},
+{
+  id:14, icon:"🌿", title:"पादप ऊतक", tagline:"विभज्योतक व स्थायी ऊतक — पौधों की निर्माण इकाई",
+  content:`
+    <div class="paper-card">
+      <h3>पादप ऊतक के प्रकार</h3>
+      <p>विभाजन क्षमता के आधार पर पादप ऊतक को दो प्रमुख वर्गों में बांटा गया है — विभज्योतक/विभाज्योतकी ऊतक व स्थायी ऊतक। विभज्योतक में विभाजन की क्षमता होती है व ये पौधों के उन भागों में पाए जाते हैं, जो वृद्धि करते हैं। इसके तीन प्रकार हैं — शीर्षस्थ विभज्योतक (जड़ों व तनों के शीर्ष पर, प्राथमिक वृद्धि करता है), पार्श्व विभज्योतक (तने-जड़ों के पार्श्व भागों में, पौधे का व्यास बढ़ाता है — द्वितीयक वृद्धि) व अंतर्वेशी विभज्योतक (पर्वसंधियों व पत्तियों के आधार पर, पत्तियों-फूलों का आकार व सौधियों की लंबाई बढ़ाता है)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>स्थायी ऊतक — सरल स्थायी ऊतक</h3>
+      <p>इनमें विभाजन की क्षमता नहीं होती। ये दो प्रकार के होते हैं — सरल स्थायी ऊतक व जटिल स्थायी ऊतक। सरल स्थायी ऊतक केवल एक ही प्रकार की कोशिकाओं से मिलकर बने होते हैं:</p>
+      <ul>
+        <li><b>मृदूतक (Parenchyma)</b> — सबसे अधिक पाया जाने वाला पादप ऊतक; क्लोरेनकाइमा (पर्णहरित युक्त, प्रकाश संश्लेषण करता है) व एरेनकाइमा (कोशिकाओं के मध्य रिक्त स्थान, जलीय पौधों को उत्प्लावकता प्रदान करता है)।</li>
+        <li><b>स्थूलकोण ऊतक (Collenchyma)</b> — पौधों को दृढ़ता व लचीलापन प्रदान करता है, जीवित होता है (जीवित यांत्रिक ऊतक); कोशिका भित्ति सेलुलोज, हेमीसेलुलोज व पेक्टिन की बनी होती है।</li>
+        <li><b>दृढ़ ऊतक (Sclerenchyma)</b> — पौधों को दृढ़ता प्रदान करता है, मृत होता है; कोशिका भित्ति सेलुलोज, हेमीसेलुलोज व लिग्निन की बनी होती है।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>जटिल स्थायी ऊतक</h3>
+      <p>ये एक से अधिक प्रकार की कोशिकाओं से मिलकर बनते हैं — जाइलम व फ्लोएम।</p>
+      <p><b>जाइलम</b> चार प्रकार की कोशिकाओं से बना होता है — वाहिनिकाएं व वाहिकाएं (जीवित), जाइलम तंतु व जाइलम मृदूतक (मृत)। यह जल व खनिज लवणों का संवहन करता है। <b>फ्लोएम</b> भोजन व हार्मोन का संवहन करता है। मानव परिसंचरण तंत्र में जाइलम व फ्लोएम के समान संवहन ऊतक (Conduction Tissue) का कार्य करते हैं।</p>
+      <div class="note-box"><strong>याद रखें:</strong> वार्षिक वलय (Annual Ring) को गिनकर पौधों की आयु निर्धारित की जाती है — इसका अध्ययन डेंड्रोक्रोनोलॉजी कहलाता है।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"विभज्योतक ऊतक के कितने प्रकार होते हैं?", options:["2","3","4","5"], a:1},
+    {q:"जड़ों व तनों के शीर्ष पर पाया जाने वाला ऊतक कौन-सा है?", options:["पार्श्व विभज्योतक","शीर्षस्थ विभज्योतक","अंतर्वेशी विभज्योतक","फ्लोएम"], a:1},
+    {q:"पौधे का व्यास बढ़ाने वाला ऊतक कौन-सा है?", options:["शीर्षस्थ विभज्योतक","पार्श्व विभज्योतक","जाइलम","मृदूतक"], a:1},
+    {q:"सबसे अधिक पाया जाने वाला पादप ऊतक कौन-सा है?", options:["स्थूलकोण ऊतक","दृढ़ ऊतक","मृदूतक (Parenchyma)","जाइलम"], a:2},
+    {q:"पौधों को लचीलापन देने वाला जीवित ऊतक कौन-सा है?", options:["दृढ़ ऊतक","स्थूलकोण ऊतक (Collenchyma)","जाइलम","फ्लोएम"], a:1},
+    {q:"दृढ़ ऊतक (Sclerenchyma) की कोशिकाएं कैसी होती हैं?", options:["जीवित","मृत","अर्ध-जीवित","खोखली जीवित"], a:1},
+    {q:"जल व खनिज लवणों का संवहन कौन करता है?", options:["फ्लोएम","जाइलम","मृदूतक","स्थूलकोण ऊतक"], a:1},
+    {q:"भोजन का संवहन कौन करता है?", options:["जाइलम","फ्लोएम","दृढ़ ऊतक","एपिडर्मिस"], a:1},
+    {q:"वार्षिक वलय से क्या ज्ञात किया जाता है?", options:["पौधे की ऊंचाई","पौधे की आयु","पौधे का रंग","पौधे की जाति"], a:1},
+    {q:"क्लोरेनकाइमा किसमें पाया जाता है?", options:["दृढ़ ऊतक में","मृदूतक में","जाइलम में","फ्लोएम में"], a:1}
+  ]
+},
+{
+  id:15, icon:"💉", title:"अंतःस्रावी तंत्र — भाग 1", tagline:"हाइपोथैलेमस, पीयूष ग्रंथि व उनके हार्मोन",
+  content:`
+    <div class="paper-card">
+      <h3>ग्रंथि के प्रकार</h3>
+      <p>वे अंग जो विशेष प्रकार के रसायन स्रावित करते हैं, <b>ग्रंथि</b> कहलाते हैं। ग्रंथियां तीन प्रकार की होती हैं:</p>
+      <ul>
+        <li><b>अंतःस्रावी ग्रंथि</b> — नालिका विहीन, हार्मोन स्रावित करती है (हाइपोथैलेमस, पीयूष, थायरॉइड, पैराथायरॉइड, थाइमस, अधिवृक्क)।</li>
+        <li><b>बहिःस्रावी ग्रंथि</b> — नालिका युक्त, एंजाइम स्रावित करती है (अश्रुग्रंथि, स्वेदग्रंथि, लारग्रंथि, मैइबोमियम ग्रंथि, स्तन ग्रंथि)।</li>
+        <li><b>मिश्रित ग्रंथि</b> — हार्मोन व एंजाइम दोनों स्रावित करती है (अग्नाशय, वृषण, अंडाशय)।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>हाइपोथैलेमस एवं पीयूष ग्रंथि</h3>
+      <p><b>हाइपोथैलेमस</b> मस्तिष्क में पाया जाता है। यह पीयूष ग्रंथि के कार्यों को नियंत्रित करता है, भूख-प्यास व शरीर के तापमान को नियंत्रित करता है तथा प्रेम, घृणा, क्रोध व भावनात्मक प्रतिक्रियाओं का केंद्र है।</p>
+      <p><b>पीयूष ग्रंथि</b> मस्तिष्क में स्थित है, आकार मटर के दाने के बराबर व वजन लगभग 0.5 ग्राम है। इसे <b>मास्टर ग्रंथि</b> भी कहा जाता है क्योंकि यह अन्य ग्रंथियों को नियंत्रित करती है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>पीयूष ग्रंथि के हार्मोन</h3>
+      <ul>
+        <li><b>STH (वृद्धि हार्मोन)</b> — शरीर की वृद्धि में भाग लेता है। अति स्रावण से भीमकायता (Gigantism), अल्प स्रावण से बौनापन (Dwarfism) होता है।</li>
+        <li><b>ऑक्सीटोसिन (Birth Hormone)</b> — प्रसव पीड़ा उत्पन्न करता है, जन्म के बाद दूध निष्कासित करता है (बच्चे के स्तनपान करने व मां के गले लगाने पर स्रावित होता है)। गायों में अधिक दुग्ध उत्पादन हेतु भी इंजेक्ट किया जाता है।</li>
+        <li><b>LTH (प्रोलैक्टिन/Lactogenic hormone)</b> — दुग्ध उत्पादन में भाग लेता है।</li>
+        <li><b>ADH</b> — Antidiuretic Hormone; इसकी कमी से मूत्रमेह (Diabetes Insipidus) होता है (लक्षण — अत्यधिक प्यास, अत्यधिक मूत्र उत्पादन, रंगहीन मूत्र)।</li>
+        <li><b>ACTH, LH, TSH, FSH, MSH</b> — क्रमशः Adrenocorticotropic, Luteinizing, Thyroid Stimulating, Follicle Stimulating व Melanocyte Stimulating हार्मोन।</li>
+      </ul>
+      <div class="note-box"><strong>याद रखें:</strong> मूत्रल (Diuretic) वे पदार्थ हैं जो मूत्र के अधिक निर्माण में सहायक होते हैं — जैसे चाय, कॉफी, एल्कोहल।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"किस ग्रंथि को मास्टर ग्रंथि कहा जाता है?", options:["थायरॉइड","पीयूष ग्रंथि","अधिवृक्क","अग्नाशय"], a:1},
+    {q:"वृद्धि हार्मोन का नाम क्या है?", options:["ऑक्सीटोसिन","STH","ADH","LTH"], a:1},
+    {q:"STH की अधिकता से कौन-सा रोग होता है?", options:["बौनापन","भीमकायता (Gigantism)","मधुमेह","घेंघा"], a:1},
+    {q:"STH की कमी से कौन-सा रोग होता है?", options:["भीमकायता","बौनापन (Dwarfism)","गठिया","मूत्रमेह"], a:1},
+    {q:"प्रसव पीड़ा उत्पन्न करने वाला हार्मोन कौन-सा है?", options:["ऑक्सीटोसिन","STH","इंसुलिन","थायरोक्सिन"], a:0},
+    {q:"दुग्ध उत्पादन में सहायक हार्मोन कौन-सा है?", options:["ADH","LTH (प्रोलैक्टिन)","ACTH","TSH"], a:1},
+    {q:"मूत्रमेह (Diabetes Insipidus) किस हार्मोन की कमी से होता है?", options:["इंसुलिन","ADH","ऑक्सीटोसिन","STH"], a:1},
+    {q:"हाइपोथैलेमस भूख, प्यास व किसे नियंत्रित करता है?", options:["रक्तदाब","शरीर के तापमान को","पाचन को","श्वसन को"], a:1},
+    {q:"TSH का पूरा नाम क्या है?", options:["Thyroid Stimulating Hormone","Testosterone Secreting Hormone","Thymus Stimulating Hormone","Thyroxine Suppressing Hormone"], a:0},
+    {q:"गायों में अधिक दुग्ध उत्पादन के लिए कौन-सा हार्मोन इंजेक्ट किया जाता है?", options:["इंसुलिन","ऑक्सीटोसिन","थायरोक्सिन","ग्लूकागोन"], a:1}
+  ]
+},
+{
+  id:16, icon:"⚗️", title:"अंतःस्रावी तंत्र — भाग 2", tagline:"थायरॉइड, अधिवृक्क, अग्नाशय व पादप हार्मोन",
+  content:`
+    <div class="paper-card">
+      <h3>पीनियल, थायरॉइड, पैराथायरॉइड व थाइमस ग्रंथि</h3>
+      <ul>
+        <li><b>पीनियल ग्रंथि</b> — मस्तिष्क में स्थित, शरीर की सबसे छोटी अंतःस्रावी ग्रंथि, इसे शरीर की तीसरी आंख भी कहा जाता है; हार्मोन — मेलाटोनिन, जो जैविक घड़ी को नियंत्रित करता है।</li>
+        <li><b>थायरॉइड/अवटु ग्रंथि</b> — गर्दन/गले में स्थित, शरीर की सबसे बड़ी अंतःस्रावी ग्रंथि; हार्मोन — थायरोक्सिन, जो शर्करा, वसा व प्रोटीन का ऑक्सीकरण करता है और टेडपोल लार्वा के कायांतरण में भाग लेता है। थायरोक्सिन के निर्माण हेतु आयोडीन आवश्यक है; भोजन में आयोडीन की कमी से घेंघा (Goitre) रोग होता है।</li>
+        <li><b>पैराथायरॉइड ग्रंथि</b> — अवटु ग्रंथि पर स्थित; हार्मोन पैराथार्मोन रक्त में कैल्शियम व फॉस्फेट का स्तर नियंत्रित करता है।</li>
+        <li><b>थाइमस ग्रंथि</b> — गर्दन के नीचे/सीने के ऊपरी भाग में स्थित, आयु बढ़ने के साथ आकार घटता है; हार्मोन थाइमोसिन शरीर को रोग प्रतिरोधक क्षमता प्रदान करता है।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>अधिवृक्क ग्रंथि एवं अग्नाशय</h3>
+      <p><b>अधिवृक्क ग्रंथि</b> वृक्क के ऊपर स्थित होती है, इसे इमरजेंसी/आपातकालीन ग्रंथि या 3F/4S ग्रंथि भी कहा जाता है (Fight, Flight, Fear / Sugar, Salt, Sex, Stress)। एड्रेनालीन (इमरजेंसी हार्मोन) शरीर को आपातकालीन अवस्था के लिए तैयार करता है, जबकि नॉर-एड्रेनालीन शरीर को सामान्य अवस्था में वापस लाता है।</p>
+      <p><b>अग्नाशय</b> एक मिश्रित ग्रंथि है, आमाशय के नीचे स्थित होता है। इसमें α-कोशिकाएं ग्लूकागोन तथा β-कोशिकाएं इंसुलिन बनाती हैं। इंसुलिन ग्लूकोज को ग्लाइकोजन में बदलकर यकृत व मांसपेशियों में संचित करता है; इसकी कमी से मधुमेह (Diabetes Mellitus) होता है। ग्लूकागोन ग्लाइकोजन को पुनः ग्लूकोज में बदलता है।</p>
+      <div class="note-box"><strong>याद रखें:</strong> 1921 में टोरंटो विश्वविद्यालय में सर फ्रेडरिक बैंटिंग व चार्ल्स बेस्ट द्वारा इंसुलिन की खोज की गई थी। Humulin संश्लेषित इंसुलिन है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>पादप हार्मोन</h3>
+      <ul>
+        <li>ऑक्सिन, जिबरेलिन, साइटोकाइनिन — वृद्धिवर्धक (Growth Promoters)</li>
+        <li>एब्सिसिक अम्ल — वृद्धिरोधक (Growth Inhibitor)</li>
+        <li>एथिलीन — फलों को पकाता है</li>
+        <li>फ्लोरीजेन (Florigens) — फूल खिलाने वाला हार्मोन (Flowering)</li>
+      </ul>
+    </div>
+  `,
+  quiz:[
+    {q:"शरीर की तीसरी आंख किसे कहा जाता है?", options:["थायरॉइड ग्रंथि","पीनियल ग्रंथि","पीयूष ग्रंथि","थाइमस ग्रंथि"], a:1},
+    {q:"शरीर की सबसे बड़ी अंतःस्रावी ग्रंथि कौन-सी है?", options:["पीयूष","थायरॉइड","अधिवृक्क","पैराथायरॉइड"], a:1},
+    {q:"थायरोक्सिन के निर्माण के लिए किस तत्व की आवश्यकता होती है?", options:["आयरन","आयोडीन","कैल्शियम","सोडियम"], a:1},
+    {q:"आयोडीन की कमी से कौन-सा रोग होता है?", options:["घेंघा (Goitre)","रिकेट्स","मधुमेह","एनीमिया"], a:0},
+    {q:"अधिवृक्क ग्रंथि को किस नाम से भी जाना जाता है?", options:["मास्टर ग्रंथि","इमरजेंसी ग्रंथि","तीसरी आंख","लार ग्रंथि"], a:1},
+    {q:"इंसुलिन की कमी से कौन-सा रोग होता है?", options:["घेंघा","मधुमेह (Diabetes Mellitus)","रिकेट्स","स्कर्वी"], a:1},
+    {q:"इंसुलिन ग्लूकोज को किसमें बदलता है?", options:["ग्लाइकोजन में","फ्रक्टोज में","स्टार्च में","प्रोटीन में"], a:0},
+    {q:"ग्लूकागोन का मुख्य कार्य क्या है?", options:["ग्लूकोज को ग्लाइकोजन में बदलना","ग्लाइकोजन को ग्लूकोज में बदलना","वसा का पाचन","प्रोटीन संश्लेषण"], a:1},
+    {q:"फूल खिलाने वाला पादप हार्मोन कौन-सा है?", options:["ऑक्सिन","एथिलीन","फ्लोरीजेन","एब्सिसिक अम्ल"], a:2},
+    {q:"पौधों की वृद्धि को रोकने वाला हार्मोन कौन-सा है?", options:["जिबरेलिन","साइटोकाइनिन","एब्सिसिक अम्ल","ऑक्सिन"], a:2}
+  ]
+},
+{
+  id:17, icon:"🦠", title:"स्वास्थ्य और रोग — भाग 1", tagline:"जीवाणु व विषाणु जनित रोग",
+  content:`
+    <div class="paper-card">
+      <h3>स्वास्थ्य का परिचय</h3>
+      <p>विश्व स्वास्थ्य संगठन (WHO) के अनुसार, स्वस्थ व्यक्ति की शारीरिक, मानसिक तथा सामाजिक अवस्था स्वस्थ है। रोग उत्पन्न करने वाले कारकों को <b>रोगाणु</b> तथा रोगों के अध्ययन को <b>Pathology</b> कहा जाता है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>जीवाणुओं से होने वाले रोग</h3>
+      <ul>
+        <li>क्षयरोग/यक्ष्मा/तपेदिक (TB) — Mycobacterium tuberculosis (इसे सफेद प्लेग भी कहते हैं)</li>
+        <li>कुष्ठरोग (Leprosy) — Mycobacterium leprae</li>
+        <li>धनुषकार (Tetanus) — Clostridium tetani</li>
+        <li>खाद्य विषाक्तता (Food Poisoning) — Clostridium botulinum</li>
+        <li>आंत्रज्वर/टाइफाइड — Salmonella typhi</li>
+        <li>हैजा (Cholera) — Vibrio cholerae</li>
+        <li>प्लेग (कालीमौत) — Pasteurella pestis</li>
+        <li>एन्थ्रेक्स — Bacillus anthracis</li>
+        <li>डिप्थीरिया — Corynebacterium diphtheriae</li>
+        <li>निमोनिया — Streptococcus pneumoniae</li>
+        <li>काली खांसी (Pertussis) — Bordetella pertussis</li>
+        <li>सिफलिस व गोनोरिया — क्रमशः Treponema pallidum व Neisseria gonorrhoeae</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>विषाणुओं से होने वाले रोग</h3>
+      <p>AIDS, हेपेटाइटिस, रैबीज़ (हाइड्रोफोबिया), पोलियो, डेंगू, चिकनगुनिया (वाहक — स्वाइन फ्लू H1N1, बर्ड फ्लू H5N1), मम्प्स, मीज़ल्स, रूबेला (जर्मन मीज़ल्स), स्मॉलपॉक्स (चेचक), चिकनपॉक्स (छोटी माता), हर्पीज़, यलो फीवर, इबोला, ज़ीका, निपाह व कोविड-19 (सबसे पहले 31 दिसंबर 2019 को वुहान, चीन से रिपोर्ट हुआ)।</p>
+      <div class="note-box"><strong>AIDS विशेष:</strong> Acquired Immune Deficiency Syndrome; विषाणु — HIV (Human Immunodeficiency Virus); आनुवंशिक पदार्थ — ssRNA। Zidovudine (AZT) HIV/AIDS की रोकथाम व उपचार में प्रयुक्त एक एंटीरेट्रोवाइरल दवा है।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"WHO के अनुसार स्वास्थ्य की परिभाषा में क्या शामिल है?", options:["केवल शारीरिक अवस्था","शारीरिक, मानसिक व सामाजिक अवस्था","केवल मानसिक अवस्था","केवल सामाजिक अवस्था"], a:1},
+    {q:"क्षयरोग (TB) किस जीवाणु से होता है?", options:["Vibrio cholerae","Mycobacterium tuberculosis","Salmonella typhi","Bacillus anthracis"], a:1},
+    {q:"कुष्ठ रोग किस जीवाणु से होता है?", options:["Mycobacterium leprae","Clostridium tetani","Neisseria gonorrhoeae","Corynebacterium diphtheriae"], a:0},
+    {q:"हैजा (Cholera) किस जीवाणु से होता है?", options:["Vibrio cholerae","Salmonella typhi","Bordetella pertussis","Treponema pallidum"], a:0},
+    {q:"आंत्रज्वर (टाइफाइड) किस जीवाणु से होता है?", options:["Salmonella typhi","Vibrio cholerae","Mycobacterium leprae","Pasteurella pestis"], a:0},
+    {q:"AIDS किस विषाणु से होता है?", options:["HIV","H1N1","HPV","H5N1"], a:0},
+    {q:"HIV का आनुवंशिक पदार्थ क्या है?", options:["dsDNA","ssRNA","dsRNA","ssDNA"], a:1},
+    {q:"कोविड-19 सबसे पहले कहाँ से रिपोर्ट हुआ था?", options:["दिल्ली, भारत","वुहान, चीन","न्यूयॉर्क, अमेरिका","लंदन, ब्रिटेन"], a:1},
+    {q:"रैबीज़ को अन्य किस नाम से जाना जाता है?", options:["Hydrophobia","Hepatitis","Rubella","Herpes"], a:0},
+    {q:"जर्मन मीज़ल्स के नाम से कौन-सा रोग जाना जाता है?", options:["Measles","Rubella","Mumps","Chickenpox"], a:1}
+  ]
+},
+{
+  id:18, icon:"💊", title:"स्वास्थ्य और रोग — भाग 2", tagline:"प्रोटोजोआ, कृमि जनित रोग, परीक्षण व टीके",
+  content:`
+    <div class="paper-card">
+      <h3>प्रोटोजोआ से होने वाले रोग</h3>
+      <ul>
+        <li>मलेरिया — प्लाज्मोडियम (Plasmodium), वाहक — मादा एनाफिलीज मच्छर</li>
+        <li>कालाजार — लीशमानिया (Leishmania), वाहक — Sandfly (बालू मक्खी)</li>
+        <li>निद्रा रोग — ट्रिपैनोसोमा (Trypanosoma), वाहक — Tse-Tse Fly</li>
+        <li>अमीबिय पेचिश (Dysentery) — Entamoeba histolytica</li>
+        <li>पायरिया — Entamoeba gingivalis</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>कृमि जनित रोग एवं वाहक</h3>
+      <p>फाइलेरिया/हाथी पांव/फील पांव — कुचैरेरिया, वाहक मादा क्यूलेक्स मच्छर। टिनियासिस — टीनिया सोलियम। डेंगू, चिकनगुनिया व पीत ज्वर का वाहक मादा एडीज़ मच्छर है।</p>
+      <div class="note-box"><strong>याद रखें:</strong> पहली एंटीमलेरियल दवा क्विनीन थी, जो सिनकोना वृक्ष की छाल से आवृत बीजी पौधे से प्राप्त होती है। Gambusia मीठे पानी की मछली है, जो मच्छरों के लार्वा को खाकर उन्हें नष्ट करती है, इसलिए इसे mosquitofish कहा जाता है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>परीक्षण (Tests)</h3>
+      <ul>
+        <li>Widal Test — टाइफाइड</li>
+        <li>Mantoux Test — TB</li>
+        <li>ELISA Test — AIDS</li>
+        <li>Mazzini Test — सिफलिस</li>
+        <li>BMD Test (Bone Mineral Density) — ऑस्टियोपोरोसिस</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>टीका (Vaccine)</h3>
+      <p>शब्द 'वैक्सीन' लैटिन शब्द 'Vacca' से बना है जिसका अर्थ है — गाय। प्रथम वैक्सीन एडवर्ड जेनर ने चेचक रोग के लिए तैयार की थी। कुछ महत्वपूर्ण टीके — BCG (TB), DPT (डिप्थीरिया+काली खांसी+टिटनेस), MMR (गलसुआ+खसरा+रूबेला), MIP Vaccine (कुष्ठ रोग), OPV (Oral Polio Vaccine)। पोलियो का प्रथम टीका जोनास साल्क (Father of Polio Vaccine) ने तैयार किया था।</p>
+    </div>
+  `,
+  quiz:[
+    {q:"मलेरिया किस परजीवी से होता है?", options:["ट्रिपैनोसोमा","प्लाज्मोडियम","लीशमानिया","एंटअमीबा"], a:1},
+    {q:"मलेरिया का वाहक कौन है?", options:["मादा क्यूलेक्स मच्छर","मादा एनाफिलीज मच्छर","सैंडफ्लाई","सी-सी मक्खी"], a:1},
+    {q:"कालाजार किस परजीवी से होता है?", options:["लीशमानिया","प्लाज्मोडियम","ट्रिपैनोसोमा","टीनिया"], a:0},
+    {q:"निद्रा रोग किस परजीवी से होता है?", options:["प्लाज्मोडियम","ट्रिपैनोसोमा","लीशमानिया","एंटअमीबा"], a:1},
+    {q:"फाइलेरिया रोग का वाहक कौन है?", options:["मादा एनाफिलीज मच्छर","मादा क्यूलेक्स मच्छर","सैंडफ्लाई","सी-सी मक्खी"], a:1},
+    {q:"टाइफाइड की जांच के लिए कौन-सा टेस्ट किया जाता है?", options:["मानटू टेस्ट","विडाल टेस्ट","ELISA","मैज़िनी टेस्ट"], a:1},
+    {q:"TB की जांच के लिए कौन-सा टेस्ट किया जाता है?", options:["विडाल टेस्ट","मानटू टेस्ट","BMD टेस्ट","मैज़िनी टेस्ट"], a:1},
+    {q:"AIDS की जांच के लिए कौन-सा टेस्ट किया जाता है?", options:["विडाल टेस्ट","मानटू टेस्ट","ELISA टेस्ट","BMD टेस्ट"], a:2},
+    {q:"BCG वैक्सीन किस रोग से बचाव के लिए दी जाती है?", options:["टिटनेस","TB (क्षयरोग)","पोलियो","खसरा"], a:1},
+    {q:"पोलियो का प्रथम टीका किसने बनाया था?", options:["एडवर्ड जेनर","जोनास साल्क","अलेक्जेंडर फ्लेमिंग","लुई पाश्चर"], a:1}
+  ]
+},
+{
+  id:19, icon:"🎗️", title:"कैंसर एवं पोषण संबंधी रोग", tagline:"कैंसर, कुपोषण व प्रदूषण जनित रोग",
+  content:`
+    <div class="paper-card">
+      <h3>कैंसर या कर्क रोग</h3>
+      <p>कैंसर अनियंत्रित कोशिका विभाजन के कारण होता है। इसके अध्ययन को <b>Oncology</b> कहते हैं। कैंसर उत्पन्न करने वाले जीन <b>Oncogenes</b> तथा कैंसर उत्पन्न करने वाले पदार्थ/कारक <b>Carcinogenes</b> कहलाते हैं (उदाहरण — X-rays, UV-rays, तंबाकू आदि)।</p>
+      <p>उपचार — रेडियोथेरेपी, कीमोथेरेपी व सर्जरी। रक्त कैंसर को Leukemia कहते हैं, इसका उपचार P-32 (रेडियो आइसोटोप) से किया जाता है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>कुपोषण जनित रोग — क्वाशिओरकोर व मैरासमस</h3>
+      <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:8px;">
+        <tr style="background:#F3F4EA;"><th style="text-align:left; padding:8px; border:1px solid var(--border);">क्वाशिओरकोर</th><th style="text-align:left; padding:8px; border:1px solid var(--border);">मैरासमस</th></tr>
+        <tr><td style="padding:8px; border:1px solid var(--border);">प्रोटीन की कमी</td><td style="padding:8px; border:1px solid var(--border);">प्रोटीन एवं कैलोरी दोनों की कमी</td></tr>
+        <tr><td style="padding:8px; border:1px solid var(--border);">6 माह से 3 साल के बच्चों में होता है</td><td style="padding:8px; border:1px solid var(--border);">1 साल से कम उम्र के नवजातों में सामान्यतः</td></tr>
+        <tr><td style="padding:8px; border:1px solid var(--border);">पसलियां अधिक स्पष्ट नहीं होतीं</td><td style="padding:8px; border:1px solid var(--border);">पसलियां बहुत स्पष्ट हो जाती हैं</td></tr>
+      </table>
+    </div>
+    <div class="paper-card">
+      <h3>प्रदूषण जनित रोग</h3>
+      <ul>
+        <li><b>इटाई-इटाई/ओच-ओच रोग</b> — कैडमियम की विषाक्तता के कारण</li>
+        <li><b>ब्लू-बेबी सिंड्रोम</b> — पेयजल में नाइट्रेट की अधिकता के कारण</li>
+        <li><b>मिनामाता रोग</b> — पारा (Mercury) की विषाक्तता के कारण</li>
+        <li><b>फ्लोरोसिस</b> — पेयजल में फ्लोराइड की अधिक मात्रा के कारण, इससे दांत व हड्डी प्रभावित होते हैं (फ्लोराइड हड्डी व दांतों की देखभाल के लिए आवश्यक तत्व है, पर अधिक मात्रा हानिकारक है)</li>
+      </ul>
+    </div>
+  `,
+  quiz:[
+    {q:"कैंसर के अध्ययन को क्या कहते हैं?", options:["Pathology","Oncology","Cardiology","Nephrology"], a:1},
+    {q:"कैंसर उत्पन्न करने वाले जीन को क्या कहते हैं?", options:["Carcinogenes","Oncogenes","Antigens","Antibodies"], a:1},
+    {q:"कैंसर उत्पन्न करने वाले पदार्थों/कारकों को क्या कहते हैं?", options:["Oncogenes","Carcinogenes","Pathogens","Mutagens (केवल)"], a:1},
+    {q:"रक्त कैंसर को क्या कहते हैं?", options:["Leukemia","Anemia","Thalassemia","Hemophilia"], a:0},
+    {q:"क्वाशिओरकोर किसकी कमी से होता है?", options:["कैलोरी","प्रोटीन","विटामिन C","आयरन"], a:1},
+    {q:"मैरासमस किसकी कमी से होता है?", options:["केवल प्रोटीन","केवल कैलोरी","प्रोटीन एवं कैलोरी दोनों","केवल आयोडीन"], a:2},
+    {q:"इटाई-इटाई रोग किसकी विषाक्तता के कारण होता है?", options:["पारा","कैडमियम","सीसा","फ्लोराइड"], a:1},
+    {q:"मिनामाता रोग किसकी विषाक्तता के कारण होता है?", options:["कैडमियम","आर्सेनिक","पारा (Mercury)","नाइट्रेट"], a:2},
+    {q:"फ्लोरोसिस रोग किसकी अधिक मात्रा के कारण होता है?", options:["फ्लोराइड","आयोडीन","कैल्शियम","पारा"], a:0},
+    {q:"ब्लू-बेबी सिंड्रोम किसकी अधिकता के कारण होता है?", options:["आर्सेनिक","नाइट्रेट","फ्लोराइड","कैडमियम"], a:1}
+  ]
+},
+{
+  id:20, icon:"🧬", title:"आनुवंशिक रोग", tagline:"गुणसूत्रों की गड़बड़ी से उत्पन्न रोग",
+  content:`
+    <div class="paper-card">
+      <h3>आनुवंशिक रोग का परिचय</h3>
+      <p>वे रोग जो एक पीढ़ी से दूसरी पीढ़ी में स्थानांतरित होते हैं, आनुवंशिक रोग कहलाते हैं। ये रोग DNA में गड़बड़ी के कारण होते हैं, जो उत्परिवर्तन (Mutation) के कारण होती है। उत्परिवर्तन केवल एक जीन या गुणसूत्र में होता है।</p>
+    </div>
+    <div class="paper-card">
+      <h3>गुणसूत्र संख्या से संबंधित रोग</h3>
+      <ul>
+        <li><b>टर्नर सिंड्रोम</b> (44+XO, कुल 45) — स्त्री महिला में महिलाओं के गुण कम पाए जाते हैं; प्रभावित स्त्री बांझ होती है।</li>
+        <li><b>क्लाइनफेल्टर सिंड्रोम</b> (44+XXY, कुल 47) — पुरुषों में महिलाओं के गुण पाए जाते हैं; प्रभावित पुरुष नपुंसक होता है।</li>
+        <li><b>सुपर वूमन सिंड्रोम</b> (44+XXX, कुल 47) — Super female, शारीरिक रूप से सशक्त पर बांझ (Sterile)।</li>
+        <li><b>जैकब सिंड्रोम</b> (44+XYY, कुल 47) — Super male, शारीरिक रूप से सशक्त, आपराधिक प्रवृत्ति (Criminal mind), नपुंसक।</li>
+        <li><b>डाउन सिंड्रोम</b> (गुणसूत्र संख्या 47) — छोटा कद, गोल चेहरा, मंद बुद्धि।</li>
+        <li><b>पटाऊ सिंड्रोम (ट्राइसोमी-13)</b> — गंभीर आनुवंशिक बीमारी; क्रोमोसोम 13 की अतिरिक्त प्रति; यह 5000-7000 नवजातों में से 1 को प्रभावित करता है, पहले वर्ष में 10 में से 9 बच्चों की मृत्यु हो जाती है।</li>
+        <li><b>एडवर्ड सिंड्रोम (ट्राइसोमी-18)</b> — क्रोमोसोम 18 की 2 की जगह 3 प्रतियां; लक्षण — बंद मुट्ठी, अविकसित अंगूठे, फांक तालु, दूध पिलाने में परेशानी, हृदय दोष व धीमी गति से विकास।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>अन्य आनुवंशिक रोग</h3>
+      <ul>
+        <li><b>एल्बिनिज्म</b> — त्वचा, बाल व पुतली में मेलानिन की कमी के कारण।</li>
+        <li><b>हीमोफीलिया (शाही रोग)</b> — X-गुणसूत्र से संबंधित; महिलाओं की अपेक्षा पुरुषों में अधिक; रक्त का थक्का नहीं बनता।</li>
+        <li><b>वर्णांधता (Colour Blindness)</b> — X-गुणसूत्र से संबंधित; पुरुषों में अधिक; रंग पहचानने में कठिनाई।</li>
+        <li><b>थैलेसीमिया</b> — रक्त कोशिकाओं से संबंधित रोग; हीमोग्लोबिन निर्माण में गड़बड़ी; लाल रक्त कोशिकाएं तेजी से नष्ट होती हैं, बार-बार रक्त की आवश्यकता होती है।</li>
+        <li><b>सिकल सेल एनीमिया</b> — लाल रक्त कोशिकाओं की आनुवंशिक बीमारी; RBC का आकार बदलकर हंसिया/अर्धचंद्राकार हो जाता है।</li>
+      </ul>
+    </div>
+  `,
+  quiz:[
+    {q:"टर्नर सिंड्रोम में गुणसूत्र संरचना क्या होती है?", options:["44+XXY","44+XO","44+XXX","44+XYY"], a:1},
+    {q:"क्लाइनफेल्टर सिंड्रोम में गुणसूत्र संरचना क्या होती है?", options:["44+XO","44+XXY","44+XXX","44+XYY"], a:1},
+    {q:"जैकब सिंड्रोम में गुणसूत्र संरचना क्या होती है?", options:["44+XO","44+XXX","44+XYY","44+XXY"], a:2},
+    {q:"डाउन सिंड्रोम में कुल गुणसूत्र संख्या कितनी होती है?", options:["45","46","47","48"], a:2},
+    {q:"पटाऊ सिंड्रोम किस गुणसूत्र की त्रिसूत्रता (Trisomy) है?", options:["गुणसूत्र 13","गुणसूत्र 18","गुणसूत्र 21","गुणसूत्र X"], a:0},
+    {q:"एडवर्ड सिंड्रोम किस गुणसूत्र की त्रिसूत्रता है?", options:["गुणसूत्र 13","गुणसूत्र 18","गुणसूत्र 21","गुणसूत्र Y"], a:1},
+    {q:"हीमोफीलिया किस गुणसूत्र से संबंधित रोग है?", options:["Y गुणसूत्र","X गुणसूत्र","गुणसूत्र 21","गुणसूत्र 13"], a:1},
+    {q:"वर्णांधता (Colour Blindness) पुरुषों व महिलाओं में से किसमें अधिक पाई जाती है?", options:["महिलाओं में","पुरुषों में","दोनों में समान","किसी में नहीं"], a:1},
+    {q:"सिकल सेल एनीमिया में RBC का आकार कैसा हो जाता है?", options:["गोलाकार","हंसिया/अर्धचंद्राकार","चपटा","त्रिकोणीय"], a:1},
+    {q:"एल्बिनिज्म किसकी कमी के कारण होता है?", options:["हीमोग्लोबिन","मेलानिन","इंसुलिन","कैल्शियम"], a:1}
+  ]
+},
+{
+  id:21, icon:"🐾", title:"प्राणी जगत", tagline:"वर्गिकी से लेकर स्तनधारी वर्ग तक जंतुओं का वर्गीकरण",
+  content:`
+    <div class="paper-card">
+      <h3>वर्गिकी (Taxonomy)</h3>
+      <p>जीव विज्ञान की वह शाखा जिसके अंतर्गत विभिन्न प्रकार के जीव-जंतुओं का नामकरण एवं वर्गीकरण किया जाता है, <b>वर्गिकी</b> कहलाती है। वर्गिकी के जनक कैरोलस लिनियस हैं (पुस्तकें — Systema Naturae, Genera Plantarum, Philosophia Botanica)।</p>
+      <p>द्विजगत वर्गीकरण — लिनियस (1758): पादप (Plantae) व जंतु (Animalia)। त्रिजगत वर्गीकरण — अर्नेस्ट हेकल (1866): प्रोटिस्टा, प्लांटी व एनिमेलिया। पंचजगत वर्गीकरण — आर.एच. व्हिटेकर (1969): मोनेरा, प्रोटिस्टा, कवक, जंतु व पादप।</p>
+      <p>वर्गीकरण का पदानुक्रम — जगत (Kingdom) → संघ (Phylum) → वर्ग (Class) → गण (Order) → कुल (Family) → वंश (Genus) → जाति (Species)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>मोनेरा, प्रोटिस्टा एवं कवक जगत (संक्षेप में)</h3>
+      <p><b>मोनेरा</b> — एककोशिकीय प्रोकैरियोटिक जीव (जीवाणु, साइनोबैक्टीरिया, माइकोप्लाज्मा)। <b>प्रोटिस्टा</b> — एककोशिकीय यूकैरियोटिक जीव (अमीबा, पैरामीशियम, यूग्लीना, डायटम)। <b>कवक</b> — बहुकोशिकीय मृतोपजीवी (अपघटक) जीव।</p>
+    </div>
+    <div class="paper-card">
+      <h3>प्राणी जगत के संघ</h3>
+      <p>प्राणी जगत को 11 प्रमुख संघों में विभाजित किया गया है:</p>
+      <ul>
+        <li><b>पोरीफेरा</b> — स्पंज (Sycon, Euspongia, Euplectella)</li>
+        <li><b>सीलेंट्रेटा/निडेरिया</b> — Hydra, Aurelia (जेलीफिश), Physalia</li>
+        <li><b>टिनोफोरा</b> — समुद्री अखरोट/केकड़ा जेली (Ctenoplana)</li>
+        <li><b>प्लेटिहेल्मिंथिस</b> — चपटे कृमि (Taenia — फीताकृमि, Fasciola — लिवर फ्लूक)</li>
+        <li><b>एस्केहेल्मिंथिस</b> — गोल कृमि (Ascaris, Wuchereria)</li>
+        <li><b>ऐनेलिडा</b> — खंडयुक्त शरीर (केंचुआ, जोंक)</li>
+        <li><b>आर्थ्रोपोडा</b> — प्राणी जगत का सबसे बड़ा संघ (मधुमक्खी, तितली, मच्छर); Limulus (हॉर्सशू क्रैब) एक जीवित जीवाश्म है</li>
+        <li><b>मोलस्का</b> — प्राणी जगत का दूसरा सबसे बड़ा संघ (घोंघा, ऑक्टोपस, कटलफिश)</li>
+        <li><b>इकाइनोडर्मेटा</b> — कांटेदार त्वचा (स्टारफिश, सी-अर्चिन)</li>
+        <li><b>हेमीकॉर्डेटा</b> — कृमि जैसा शरीर (Balanoglossus)</li>
+        <li><b>कॉर्डेटा</b> — नोटोकॉर्ड व नालदार तंत्रिका रज्जु युक्त (मछली, उभयचर, सरीसृप, पक्षी, स्तनधारी)</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>कॉर्डेटा वर्ग — मछली से स्तनधारी तक</h3>
+      <p>Class Chondrichthyes (अंतःकंकाल उपास्थिल — शार्क, स्टिंग रे), Class Osteichthyes (अस्थिल कंकाल, वायुकोष उपस्थित — रोहू, सैल्मन)। Class Amphibia (जलीय व स्थलीय दोनों में रहना — मेंढक), Class Reptilia (रेंगने वाले — सांप, छिपकली), Class Aves (पक्षी वर्ग — अंडप्रजक), Class Mammalia (स्तनधारी — स्तन ग्रंथियां, बच्चों को जन्म देना; अपवाद — प्लेटिपस व एकिडना अंडे देते हैं)।</p>
+    </div>
+  `,
+  quiz:[
+    {q:"वर्गिकी के जनक कौन हैं?", options:["चार्ल्स डार्विन","कैरोलस लिनियस","अर्नेस्ट हेकल","आर.एच. व्हिटेकर"], a:1},
+    {q:"द्विजगत वर्गीकरण किसने दिया था?", options:["लिनियस","हेकल","व्हिटेकर","डार्विन"], a:0},
+    {q:"पंचजगत वर्गीकरण किसने दिया था?", options:["लिनियस","हेकल","आर.एच. व्हिटेकर","मेंडल"], a:2},
+    {q:"मोनेरा जगत के जीव किस प्रकार के होते हैं?", options:["बहुकोशिकीय यूकैरियोटिक","एककोशिकीय प्रोकैरियोटिक","बहुकोशिकीय प्रोकैरियोटिक","एककोशिकीय यूकैरियोटिक"], a:1},
+    {q:"संघ पोरीफेरा के जंतुओं को क्या कहा जाता है?", options:["स्पंज","जेलीफिश","कोरल","कृमि"], a:0},
+    {q:"प्राणी जगत का सबसे बड़ा संघ कौन-सा है?", options:["मोलस्का","आर्थ्रोपोडा","कॉर्डेटा","ऐनेलिडा"], a:1},
+    {q:"प्राणी जगत का दूसरा सबसे बड़ा संघ कौन-सा है?", options:["आर्थ्रोपोडा","मोलस्का","इकाइनोडर्मेटा","कॉर्डेटा"], a:1},
+    {q:"जीवित जीवाश्म (Living Fossil) का उदाहरण कौन-सा है?", options:["तारामीन","लिमुलस (हॉर्सशू क्रैब)","केंचुआ","घोंघा"], a:1},
+    {q:"नोटोकॉर्ड किस संघ में पाया जाता है?", options:["आर्थ्रोपोडा","मोलस्का","कॉर्डेटा","ऐनेलिडा"], a:2},
+    {q:"अंडे देने वाले स्तनधारी का उदाहरण कौन-सा है?", options:["व्हेल","प्लेटिपस","डॉल्फिन","बल्ला"], a:1}
+  ]
+},
+{
+  id:22, icon:"🍄", title:"पादप जगत एवं कवक जगत", tagline:"शैवाल से आवृतबीजी पौधों तक तथा कवक की दुनिया",
+  content:`
+    <div class="paper-card">
+      <h3>पादप जगत का वर्गीकरण</h3>
+      <p>पुष्प की उपस्थिति व अनुपस्थिति के आधार पर पादप जगत को दो उप-जगत में बांटा गया है — Cryptogams (अपुष्पीय पादप) व Phanerogams (पुष्पीय पादप)। अपुष्पीय पादप तीन समूहों में विभाजित हैं — थैलोफाइटा (शैवाल — पत्तियां, तना, जड़ अनुपस्थित; उदा. क्लोरेला, लैमिनेरिया, जिलीडियम), ब्रायोफाइटा (राइज़ॉइड उपस्थित लेकिन संवहन ऊतक अनुपस्थित; इसे वनस्पति जगत का उभयचर कहा जाता है; उदा. रिक्सिया, फ्यूनेरिया, मार्केन्शिया, स्फैगनम) व टैरिडोफाइटा (पत्तियां-तना-जड़ व संवहन ऊतक उपस्थित; इन्हें फर्न भी कहा जाता है; उदा. ड्रायोप्टेरिस, इक्वीसीटम, सेलाजिनेला)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>जिम्नोस्पर्म एवं एंजियोस्पर्म</h3>
+      <p>पुष्पीय पादप को दो विभागों में बांटा गया है — <b>Gymnosperms (अनावृतबीजी)</b>, जिनमें बीज फल के अंदर स्थित नहीं होते (उदा. साइकस — वनस्पति जगत का सबसे बड़ा बीजांड इसी में पाया जाता है; पाइनस, एफेड्रा, जिंको बिलोबा — जीवित जीवाश्म) व <b>Angiosperms (आवृतबीजी)</b>, जिनमें बीज फल के भीतर स्थित होते हैं — इसे दो वर्गों में बांटा गया है: एकबीजपत्री पौधे (मक्का, बांस, गेहूं, प्याज) व द्विबीजपत्री पौधे (सूरजमुखी, मटर, बैंगन, चना, टमाटर)।</p>
+    </div>
+    <div class="paper-card">
+      <h3>पौधों में अनुकूलन (Adaptations)</h3>
+      <ul>
+        <li><b>जलोद्भिद (Hydrophytes)</b> — जलीय पर्यावरण में उगने वाले</li>
+        <li><b>मरुद्भिद (Xerophytes)</b> — शुष्क स्थानों में उगने वाले</li>
+        <li><b>शैलोद्भिद (Lithophytes)</b> — पत्थर पर उगने वाले</li>
+        <li><b>लवणोद्भिद (Halophytes)</b> — लवणीय मिट्टी में उगने वाले</li>
+        <li><b>आश्रयीपादप (Epiphytes)</b> — अन्य पौधों पर उगने वाले</li>
+        <li><b>समोद्भिद (Mesophytes)</b> — औसत मात्रा में जल वाले स्थानों में उगने वाले</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>कवक जगत (Kingdom Fungi)</h3>
+      <p>कवक विषमपोषी होते हैं — मृतोपजीवी या परजीवी; अपघटक का कार्य करते हैं। कवक की कोशिका भित्ति काइटिन की बनी होती है, कवक के धागों जैसी संरचनाओं को हाइफा कहते हैं। कवक की आरक्षित खाद्य सामग्री ग्लाइकोजन है। उदाहरण — यीस्ट (एककोशिकीय, विटामिन B-12 युक्त, ब्रेड व एल्कोहल बनाने में प्रयुक्त), मशरूम (प्रोटीन युक्त), राइज़ोपस (ब्रेड मोल्ड), न्यूरोस्पोरा (पिंक मोल्ड), पेनिसिलियम (पेनिसिलिन प्रतिजैविक — खोज एलेक्जेंडर फ्लेमिंग)।</p>
+      <div class="note-box"><strong>याद रखें:</strong> लाइकेन — कवक व शैवाल के बीच सहजीविता; यह वायु प्रदूषण के सूचक हैं। माइकोराइज़ा — कवक व वृक्ष की जड़ों के बीच सहजीविता।</div>
+    </div>
+  `,
+  quiz:[
+    {q:"अपुष्पीय पौधों को कितने समूहों में बांटा गया है?", options:["2","3","4","5"], a:1},
+    {q:"वनस्पति जगत का उभयचर किसे कहा जाता है?", options:["थैलोफाइटा","ब्रायोफाइटा","टैरिडोफाइटा","जिम्नोस्पर्म"], a:1},
+    {q:"फर्न किस विभाग में आते हैं?", options:["थैलोफाइटा","ब्रायोफाइटा","टैरिडोफाइटा","एंजियोस्पर्म"], a:2},
+    {q:"जिम्नोस्पर्म का उदाहरण कौन-सा है?", options:["गेहूं","साइकस","मटर","सूरजमुखी"], a:1},
+    {q:"मरुद्भिद पौधे कहाँ उगते हैं?", options:["जलीय पर्यावरण में","शुष्क स्थानों में","लवणीय मिट्टी में","अन्य पौधों पर"], a:1},
+    {q:"जलोद्भिद पौधे कहाँ उगते हैं?", options:["शुष्क स्थानों में","जलीय पर्यावरण में","पत्थर पर","अन्य पौधों पर"], a:1},
+    {q:"कवक का अध्ययन क्या कहलाता है?", options:["माइकोलॉजी","फाइकोलॉजी","पैथोलॉजी","ओंकोलॉजी"], a:0},
+    {q:"पेनिसिलियम से क्या प्राप्त किया जाता है?", options:["इंसुलिन","पेनिसिलिन","थायरोक्सिन","विटामिन D"], a:1},
+    {q:"लाइकेन किसका सहजीवी संबंध है?", options:["कवक व शैवाल का","कवक व जीवाणु का","शैवाल व जीवाणु का","कवक व पौधे की जड़ का"], a:0},
+    {q:"माइकोराइज़ा किसके बीच सहजीविता है?", options:["कवक व शैवाल","कवक व वृक्ष की जड़ें","शैवाल व जीवाणु","कवक व जीवाणु"], a:1}
+  ]
+},
+{
+  id:23, icon:"🐒", title:"अनुवांशिकी एवं जैव विकास", tagline:"मेंडल के नियम एवं जैविक विकास के सिद्धांत",
+  content:`
+    <div class="paper-card">
+      <h3>अनुवांशिकी (Genetics)</h3>
+      <p>लक्षणों का एक पीढ़ी से दूसरी पीढ़ी में वंशागत होना <b>आनुवंशिकता</b> कहलाता है। मेंडल को अनुवांशिकी का जनक कहा जाता है। जेनेटिक शब्द का प्रयोग सर्वप्रथम बेटसन (1905) ने किया था। जीन को आनुवंशिकता की इकाई भी कहा जाता है; जीन को डॉ. हरगोविंद खुराना ने संश्लेषित किया था।</p>
+    </div>
+    <div class="paper-card">
+      <h3>मेंडल का प्रयोग</h3>
+      <p>मेंडल ने अपना प्रयोग मटर के पौधे पर सात सालों तक किया तथा मटर के सात जोड़ी गुणों का अध्ययन कर आनुवंशिकता के नियमों का प्रतिपादन किया। मेंडल ने आनुवंशिकी के तीन नियमों का प्रतिपादन किया — प्रभाविता का नियम (Law of Dominance), पृथक्करण का नियम (Law of Segregation) व स्वतंत्र अपव्यूहन का नियम (Law of Independent Assortment)।</p>
+      <p>मेंडल ने मटर के पौधे को इसलिए चुना क्योंकि यह आसानी से उपलब्ध था, इसके पुष्प बड़े आकार के थे तथा इसकी परागण क्षमता बहुत स्पष्ट थी। शुद्ध लंबे व बौने पौधों के संकरण से F1 पीढ़ी में सभी संकर लंबे पौधे प्राप्त होते हैं (फिनोटाइप अनुपात 3:1 व जीनोटाइप अनुपात 1:2:1, F2 पीढ़ी में)।</p>
+      <div class="note-box"><strong>याद रखें:</strong> मटर के एक शुद्ध लंबे पौधे (TT) का संकरण एक बौने पौधे (tt) से कराने पर F1 पीढ़ी में सभी पौधे संकर लंबे होते हैं तथा टेस्ट क्रॉस (Tt × tt) में लंबे व बौने पौधों का अनुपात 1:1 प्राप्त होता है।</div>
+    </div>
+    <div class="paper-card">
+      <h3>जैव विकास के सिद्धांत</h3>
+      <p>जीव विज्ञान की वह शाखा जिसके अंतर्गत जीवों की उत्पत्ति तथा उनके पूर्वजों के इतिहास व समय-समय पर हुए क्रमिक परिवर्तनों का अध्ययन किया जाता है, <b>जैव विकास/उद्विकास</b> कहलाता है।</p>
+      <ul>
+        <li><b>लैमार्कवाद</b> — जॉन बैप्टिस्ट डी लैमार्क द्वारा प्रतिपादित (पुस्तक: फिलॉसफी ज्यूलॉजिक, 1809); मुख्य बिंदु — आंतरिक जीवन शक्ति, पर्यावरण का प्रभाव व नई आवश्यकता, अंगों का उपयोग-अनुपयोग तथा उपार्जित लक्षणों की वंशानुगति। आलोचना — जर्मन वैज्ञानिक वाइज़मेन ने 22 पीढ़ियों तक चूहे की पूंछ काटकर दिखाया कि पूंछ कटे चूहों की संतानों में हर पीढ़ी में पूंछ बनी रहती है।</li>
+        <li><b>डार्विनवाद</b> — प्राकृतिक चयनवाद का सिद्धांत भी कहलाता है; मुख्य विशेषताएं — अधिक से अधिक संतान उत्पन्न करने की क्षमता, अस्तित्व के लिए आपसी संघर्ष, भिन्नताओं से नई जातियों की उत्पत्ति, योग्यतम की अतिजीविता व प्राकृतिक चयन।</li>
+        <li><b>उत्परिवर्तनवाद (Mutation Theory)</b> — ह्यूगो द ब्रीज द्वारा प्रतिपादित; उत्परिवर्तन अचानक उत्पन्न होने वाले आनुवंशिक परिवर्तन हैं जो पीढ़ी-दर-पीढ़ी स्थानांतरित होते रहते हैं।</li>
+      </ul>
+    </div>
+    <div class="paper-card">
+      <h3>जैविक विकास के साक्ष्य</h3>
+      <ul>
+        <li><b>समजात अंग (Homologous Organ)</b> — मूल रचना व उद्भव में समान लेकिन कार्य में भिन्न (मनुष्य, चीता, व्हेल व चमगादड़ के अग्रपाद)</li>
+        <li><b>समरूप अंग (Analogous Organ)</b> — उत्पत्ति में भिन्न पर कार्य में समान (कीट व पक्षी के पंख)</li>
+        <li><b>अवशेषी अंग (Vestigial Organ)</b> — शरीर में उपस्थित परंतु निष्क्रिय (अकल दांत, परिशेषिका, नर में निपल्स)</li>
+        <li><b>योजक कड़ी (Connecting Links)</b> — दो वर्गों के गुण रखने वाले जीव (यूग्लीना — जंतु व पौधों के बीच; अंडे देने वाले स्तनधारी — सरीसृप व स्तनधारी के बीच)</li>
+      </ul>
+    </div>
+  `,
+  quiz:[
+    {q:"अनुवांशिकी का जनक किसे कहा जाता है?", options:["डार्विन","ग्रेगर मेंडल","लैमार्क","ह्यूगो द ब्रीज"], a:1},
+    {q:"मेंडल ने अपने प्रयोग के लिए किस पौधे को चुना था?", options:["गेहूं","मटर","चना","धान"], a:1},
+    {q:"जेनेटिक शब्द का प्रयोग सर्वप्रथम किसने किया था?", options:["मेंडल","बेटसन","डार्विन","लैमार्क"], a:1},
+    {q:"मेंडल ने आनुवंशिकी के कितने नियम दिए थे?", options:["2","3","4","5"], a:1},
+    {q:"लैमार्कवाद का सिद्धांत किसने दिया था?", options:["चार्ल्स डार्विन","जॉन बैप्टिस्ट डी लैमार्क","ह्यूगो द ब्रीज","ग्रेगर मेंडल"], a:1},
+    {q:"डार्विनवाद को अन्य किस नाम से जाना जाता है?", options:["उत्परिवर्तनवाद","प्राकृतिक चयनवाद","आनुवंशिकतावाद","उपार्जित लक्षणवाद"], a:1},
+    {q:"उत्परिवर्तनवाद का सिद्धांत किसने दिया था?", options:["लैमार्क","डार्विन","ह्यूगो द ब्रीज","मेंडल"], a:2},
+    {q:"समजात अंग (Homologous Organ) की मुख्य विशेषता क्या है?", options:["समान संरचना पर भिन्न कार्य","भिन्न संरचना पर समान कार्य","दोनों में समानता","कोई कार्य नहीं"], a:0},
+    {q:"समरूप अंग (Analogous Organ) का उदाहरण कौन-सा है?", options:["मनुष्य व चीते के अग्रपाद","कीट व पक्षी के पंख","व्हेल के फ्लिपर्स","चमगादड़ के पंख"], a:1},
+    {q:"अवशेषी अंग (Vestigial Organ) का उदाहरण कौन-सा है?", options:["अकल दांत","हृदय","फेफड़े","यकृत"], a:0}
+  ]
+}
+];
+
+/* ============ STATE ============ */
+let currentChapter = null;
+let quiz = null; // {chapterId, questions, idx, score, answers[], timeLeft, timerHandle}
+
+/* ============ SHARE-TO-UNLOCK ============ */
+const SHARE_LINK = "https://tinyurl.com/SSCSCINECENOTES";
+const SHARE_MSG = "जीव विज्ञान — SSC हिंदी नोट्स + मॉक टेस्ट, मुफ्त पढ़ें: " + SHARE_LINK;
+const UNLOCKED_KEY = "jv_unlocked_chapters_v1"; // JSON array of unlocked chapter ids
+const FULLSHARE_KEY = "jv_fulltest_shares_v1"; // total shares toward full-test unlock
+const FULLTEST_UNLOCK_NEED = 5;
+let unlockedChapters = [], fullShareCount = 0, shareLock = false, gatePending = null;
+
+function loadShareState(){
+  try{ unlockedChapters = JSON.parse(localStorage.getItem(UNLOCKED_KEY)) || []; }catch(e){ unlockedChapters = []; }
+  try{ fullShareCount = parseInt(localStorage.getItem(FULLSHARE_KEY)) || 0; }catch(e){ fullShareCount = 0; }
+}
+function saveUnlocked(){ try{ localStorage.setItem(UNLOCKED_KEY, JSON.stringify(unlockedChapters)); }catch(e){} }
+function saveFullShareCount(){ try{ localStorage.setItem(FULLSHARE_KEY, fullShareCount); }catch(e){} }
+function isChapterUnlocked(id){ return unlockedChapters.includes(id); }
+function fullTestUnlocked(){ return fullShareCount >= FULLTEST_UNLOCK_NEED; }
+
+function openGate(kind){
+  gatePending = kind; // 'full' or a chapter id (number)
+  document.getElementById('gateOverlay').classList.add('show');
+  renderGate();
+}
+
+function renderGate(){
+  const isFull = gatePending === 'full';
+  const need = isFull ? FULLTEST_UNLOCK_NEED : 1;
+  const have = isFull ? fullShareCount : 0;
+  document.getElementById('gateTitle').textContent = isFull ? 'फुल मॉक टेस्ट लॉक है' : 'इस अध्याय का टेस्ट लॉक है';
+  document.getElementById('gateDesc').textContent = isFull
+    ? `सभी 23 अध्यायों का फुल टेस्ट खोलने के लिए इस लिंक को कम-से-कम ${FULLTEST_UNLOCK_NEED} दोस्तों के साथ शेयर करें।`
+    : `इस अध्याय का टेस्ट खोलने के लिए इस लिंक को एक बार किसी दोस्त के साथ शेयर करें। बाकी अध्यायों के लिए अलग से शेयर करना होगा।`;
+  const dots = [];
+  for(let i=0;i<need;i++) dots.push(`<div class="gate-dot${i<have?' filled':''}"></div>`);
+  document.getElementById('gateProgress').innerHTML = dots.join('');
+}
+
+async function doShare(){
+  if(shareLock) return;
+  shareLock = true; setTimeout(()=>shareLock=false, 2500);
+  let shared = false;
+  if(navigator.share){
+    try{ await navigator.share({title:"जीव विज्ञान — SSC नोट्स", text:SHARE_MSG, url:SHARE_LINK}); shared = true; }
+    catch(e){ shared = false; }
+  }else{
+    window.open("https://wa.me/?text=" + encodeURIComponent(SHARE_MSG), "_blank");
+    shared = true;
+  }
+  if(!shared) return;
+
+  if(gatePending === 'full'){
+    fullShareCount++; saveFullShareCount();
+    renderGate();
+    if(fullTestUnlocked()){
+      updateLockUI();
+      setTimeout(()=>{ closeOverlay('gateOverlay'); startFullTest(); gatePending = null; }, 500);
+    }
+  } else if(gatePending !== null){
+    const id = gatePending;
+    if(!unlockedChapters.includes(id)) unlockedChapters.push(id);
+    saveUnlocked();
+    renderGate();
+    updateLockUI();
+    setTimeout(()=>{ closeOverlay('gateOverlay'); startQuiz(id); gatePending = null; }, 500);
+  }
+}
+
+function copyGateLink(){
+  const btn = document.getElementById('gateCopyBtn');
+  navigator.clipboard.writeText(SHARE_LINK).then(()=>{
+    const old = btn.textContent; btn.textContent = 'कॉपी हुआ ✓';
+    setTimeout(()=>btn.textContent = old, 1500);
+  }).catch(()=>{});
+}
+
+function updateLockUI(){
+  const fLock = document.getElementById('lockFull');
+  if(fLock) fLock.style.display = fullTestUnlocked() ? 'none' : 'inline-flex';
+  document.querySelectorAll('.qp-lock-full').forEach(el=>el.style.display = fullTestUnlocked() ? 'none' : 'inline-flex');
+  document.querySelectorAll('[data-chapter-lock]').forEach(el=>{
+    const id = parseInt(el.getAttribute('data-chapter-lock'));
+    el.style.display = isChapterUnlocked(id) ? 'none' : 'inline-flex';
+  });
+}
+loadShareState();
+
+/* ============ TELEGRAM PROMO ============ */
+const TG_LINK = "https://t.me/sscnotespaidforfree";
+function joinTelegram(){ window.open(TG_LINK, "_blank"); closeOverlay('tgOverlay'); }
+
+/* ============ SIDEBAR ============ */
+function renderSidebar(){
+  const nav = document.getElementById('chapterNav');
+  nav.innerHTML = chapters.map(c => `
+    <div class="nav-item ${currentChapter===c.id?'active':''}" onclick="showChapter(${c.id})">
+      <span class="nav-num">${String(c.id).padStart(2,'0')}</span>
+      <span class="nav-title">${c.title}</span>
+    </div>
+  `).join('');
+}
+
+/* ============ HOME ============ */
+function showHome(){
+  currentChapter = null;
+  document.getElementById('crumbs').innerHTML = 'होम';
+  renderSidebar();
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div class="hero fade-in">
+      <div class="eyebrow">जीव विज्ञान · हिंदी नोट्स</div>
+      <h2>अपने अध्याय चुनें और आसान भाषा में पढ़ें</h2>
+      <p>यहाँ 23 अध्याय सरल हिंदी में समझाए गए हैं। हर अध्याय पढ़ने के बाद उसका टेस्ट देकर अपनी तैयारी जांचें — हर टेस्ट में 10 प्रश्न व 2 मिनट का समय होगा।</p>
+    </div>
+    <div class="full-test-banner fade-in" onclick="startFullTest()">
+      <div class="ftb-left">
+        <div class="ftb-icon">🏆</div>
+        <div>
+          <h3>संपूर्ण मॉक टेस्ट — सभी 23 अध्याय <span class="lock-badge qp-lock-full">🔒 5 शेयर</span></h3>
+          <p>सभी अध्यायों में से मिलाकर 40 प्रश्न · 10 मिनट का समय — अपनी पूरी तैयारी परखें</p>
+        </div>
+      </div>
+      <button class="btn-primary ftb-btn" onclick="event.stopPropagation(); startFullTest()">🚀 फुल टेस्ट शुरू करें</button>
+    </div>
+    <div class="card-grid" id="homeGrid"></div>
+  `;
+  const grid = document.getElementById('homeGrid');
+  grid.innerHTML = chapters.map((c,i) => `
+    <div class="chap-card" style="animation-delay:${i*0.06}s" onclick="showChapter(${c.id})">
+      <div class="icon">${c.icon}</div>
+      <div class="num">अध्याय ${String(c.id).padStart(2,'0')}</div>
+      <h3>${c.title}</h3>
+      <p>${c.tagline}</p>
+      <div class="row">
+        <span class="pill">10 MCQ · 2 मिनट</span>
+        <span class="go">पढ़ें →</span>
+      </div>
+    </div>
+  `).join('');
+  updateLockUI();
+}
+
+/* ============ CHAPTER VIEW ============ */
+function showChapter(id){
+  currentChapter = id;
+  const c = chapters.find(x=>x.id===id);
+  document.getElementById('crumbs').innerHTML = `होम &nbsp;/&nbsp; <b>${c.title}</b>`;
+  renderSidebar();
+  const content = document.getElementById('content');
+  content.innerHTML = `
+    <div class="chapter-hero fade-in">
+      <div class="tag">अध्याय ${String(c.id).padStart(2,'0')}</div>
+      <h2>${c.title}</h2>
+      <p>${c.tagline}</p>
+      <div class="icon-badge">${c.icon}</div>
+    </div>
+    <div class="fade-in">${c.content}</div>
+    <div class="chapter-footer-actions fade-in">
+      <button class="btn-primary" onclick="startQuiz(${c.id})">📝 इस अध्याय का टेस्ट लें <span class="lock-badge" data-chapter-lock="${c.id}">🔒</span></button>
+      <button class="btn-ghost" onclick="showHome()">← सभी अध्याय</button>
+    </div>
+  `;
+  window.scrollTo({top:0, behavior:'smooth'});
+  updateLockUI();
+}
+
+/* ============ QUIZ SELECT OVERLAY ============ */
+function openQuizSelect(){
+  const list = document.getElementById('quizPickList');
+  const fullTestSection = `
+    <div class="nav-label" style="padding:0; margin:0 0 8px;">संपूर्ण मॉक टेस्ट</div>
+    <div class="quiz-pick-item" style="border-color:var(--marigold); background:#FCF7EC;" onclick="startFullTest()">
+      <div class="left">
+        <span class="qi-icon">🏆</span>
+        <div>
+          <div class="qi-title">सभी 23 अध्याय — फुल टेस्ट <span class="lock-badge qp-lock-full">🔒 5 शेयर</span></div>
+          <div class="qi-sub">40 प्रश्न · 10 मिनट</div>
+        </div>
+      </div>
+      <span class="go">शुरू करें →</span>
+    </div>
+    <div class="nav-label" style="padding:0; margin:18px 0 8px;">अध्याय अनुसार टेस्ट</div>
+  `;
+  const chapterItems = chapters.map(c => `
+    <div class="quiz-pick-item" onclick="startQuiz(${c.id})">
+      <div class="left">
+        <span class="qi-icon">${c.icon}</span>
+        <div>
+          <div class="qi-title">${c.title} <span class="lock-badge" data-chapter-lock="${c.id}">🔒</span></div>
+          <div class="qi-sub">10 प्रश्न · 2 मिनट</div>
+        </div>
+      </div>
+      <span class="go">शुरू करें →</span>
+    </div>
+  `).join('');
+  list.innerHTML = fullTestSection + chapterItems;
+  document.getElementById('quizSelectOverlay').classList.add('show');
+  updateLockUI();
+}
+function closeOverlay(id){ document.getElementById(id).classList.remove('show'); }
+
+/* ============ QUIZ ENGINE ============ */
+const QUIZ_TIME = 120; // seconds, per-chapter test
+const FULL_TEST_QUESTIONS = 40;
+const FULL_TEST_TIME = 600; // seconds, 10 minutes
+const CIRC = 2*Math.PI*42;
+
+function startQuiz(chapterId){
+  if(!isChapterUnlocked(chapterId)){ closeOverlay('quizSelectOverlay'); openGate(chapterId); return; }
+  closeOverlay('quizSelectOverlay');
+  const c = chapters.find(x=>x.id===chapterId);
+  quiz = {
+    chapterId,
+    isFullTest:false,
+    title:c.title,
+    questions:c.quiz,
+    idx:0,
+    score:0,
+    answers:new Array(c.quiz.length).fill(null),
+    locked:false,
+    totalTime:QUIZ_TIME,
+    timeLeft:QUIZ_TIME
+  };
+  document.getElementById('quizTitle').textContent = c.title + ' — टेस्ट';
+  launchQuizUI();
+}
+
+function startFullTest(){
+  if(!fullTestUnlocked()){ closeOverlay('quizSelectOverlay'); openGate('full'); return; }
+  closeOverlay('quizSelectOverlay');
+  // Pool all questions from every chapter, tag with chapter for review context, shuffle, take 40
+  const pool = [];
+  chapters.forEach(c => c.quiz.forEach(q => pool.push({...q, chapterTitle:c.title})));
+  for(let i=pool.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const selected = pool.slice(0, Math.min(FULL_TEST_QUESTIONS, pool.length));
+  quiz = {
+    chapterId:null,
+    isFullTest:true,
+    title:'संपूर्ण मॉक टेस्ट (सभी 23 अध्याय)',
+    questions:selected,
+    idx:0,
+    score:0,
+    answers:new Array(selected.length).fill(null),
+    locked:false,
+    totalTime:FULL_TEST_TIME,
+    timeLeft:FULL_TEST_TIME
+  };
+  document.getElementById('quizTitle').textContent = 'संपूर्ण मॉक टेस्ट — 40 प्रश्न';
+  launchQuizUI();
+}
+
+function launchQuizUI(){
+  document.getElementById('quizOverlay').classList.add('show');
+  const circle = document.getElementById('timerCircle');
+  circle.style.strokeDasharray = CIRC;
+  circle.style.strokeDashoffset = 0;
+  document.querySelector('.timer-ring').classList.remove('warning');
+  const m0 = Math.floor(quiz.totalTime/60).toString().padStart(2,'0');
+  const s0 = (quiz.totalTime%60).toString().padStart(2,'0');
+  document.getElementById('timerText').textContent = `${m0}:${s0}`;
+  renderQuestion();
+  clearInterval(quiz.timerHandle);
+  quiz.timerHandle = setInterval(tickTimer, 1000);
+}
+
+function tickTimer(){
+  if(!quiz) return;
+  quiz.timeLeft--;
+  const circle = document.getElementById('timerCircle');
+  const ring = document.querySelector('.timer-ring');
+  const offset = CIRC * (1 - quiz.timeLeft/quiz.totalTime);
+  circle.style.strokeDashoffset = offset;
+  const m = Math.floor(Math.max(quiz.timeLeft,0)/60).toString().padStart(2,'0');
+  const s = Math.max(quiz.timeLeft,0)%60;
+  document.getElementById('timerText').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  if(quiz.timeLeft<=20) ring.classList.add('warning');
+  if(quiz.timeLeft<=0){
+    clearInterval(quiz.timerHandle);
+    finishQuiz();
+  }
+}
+
+function renderQuestion(){
+  const q = quiz.questions[quiz.idx];
+  const body = document.getElementById('quizBody');
+  const dots = quiz.questions.map((_,i)=>{
+    let cls = 'dot';
+    if(i<quiz.idx) cls+=' done';
+    if(i===quiz.idx) cls+=' current';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+  const letters = ['A','B','C','D'];
+  body.innerHTML = `
+    <div class="progress-dots">${dots}</div>
+    <div class="q-card">
+      <div class="q-index">प्रश्न ${quiz.idx+1} / ${quiz.questions.length}</div>
+      <p class="q-text">${q.q}</p>
+      <div class="options" id="optionsWrap">
+        ${q.options.map((opt,i)=>`
+          <div class="option" data-i="${i}" onclick="selectOption(${i})">
+            <span class="opt-letter">${letters[i]}</span>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="q-actions">
+        <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
+          ${quiz.idx===quiz.questions.length-1 ? 'परिणाम देखें' : 'अगला प्रश्न →'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function selectOption(i){
+  if(quiz.answers[quiz.idx]!==null) return; // already answered
+  const q = quiz.questions[quiz.idx];
+  quiz.answers[quiz.idx] = i;
+  if(i===q.a) quiz.score++;
+  const opts = document.querySelectorAll('#optionsWrap .option');
+  opts.forEach(o=>o.classList.add('disabled'));
+  opts[i].classList.add(i===q.a ? 'correct':'wrong', 'selected');
+  if(i!==q.a) opts[q.a].classList.add('correct');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  if(quiz.idx < quiz.questions.length-1){
+    quiz.idx++;
+    renderQuestion();
+  } else {
+    clearInterval(quiz.timerHandle);
+    finishQuiz();
+  }
+}
+
+function finishQuiz(){
+  const total = quiz.questions.length;
+  const score = quiz.score;
+  const pct = Math.round((score/total)*100);
+  const body = document.getElementById('quizBody');
+  document.querySelector('.timer-wrap').style.visibility='hidden';
+  const letters = ['A','B','C','D'];
+  const reviewHtml = quiz.questions.map((q,i)=>{
+    const userAns = quiz.answers[i];
+    const ok = userAns===q.a;
+    return `
+      <div class="review-item">
+        <div class="rq">${i+1}. ${q.q}${q.chapterTitle?` <span style="font-weight:400;color:var(--muted);font-size:12px;">(${q.chapterTitle})</span>`:''}</div>
+        <div class="ra ${ok?'ok':'bad'}">आपका उत्तर: ${userAns===null?'नहीं दिया':letters[userAns]+'. '+q.options[userAns]}</div>
+        ${!ok?`<div class="ra ok">सही उत्तर: ${letters[q.a]}. ${q.options[q.a]}</div>`:''}
+      </div>
+    `;
+  }).join('');
+  body.innerHTML = `
+    <div class="result-wrap fade-in">
+      <svg class="score-ring" width="120" height="120" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" stroke="var(--border)" stroke-width="8" fill="none"/>
+        <circle cx="50" cy="50" r="42" stroke="${pct>=60?'var(--correct)':'var(--marigold-dark)'}" stroke-width="8" fill="none"
+          stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC*(1-pct/100)}" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <text x="50" y="56" text-anchor="middle" font-family="Poppins" font-size="22" font-weight="700" fill="var(--forest-900)">${pct}%</text>
+      </svg>
+      <h2>आपका स्कोर: ${score} / ${total}</h2>
+      <p class="sub">${quiz.title} — टेस्ट पूरा हुआ</p>
+      <div class="review-list">${reviewHtml}</div>
+      <div class="result-actions">
+        <button class="btn-primary" onclick="${quiz.isFullTest ? 'startFullTest()' : 'startQuiz('+quiz.chapterId+')'}">🔁 दोबारा प्रयास करें</button>
+        <button class="btn-ghost" onclick="exitQuiz()">✕ बंद करें</button>
+      </div>
+    </div>
+  `;
+}
+
+function exitQuiz(){
+  clearInterval(quiz && quiz.timerHandle);
+  document.getElementById('quizOverlay').classList.remove('show');
+  document.querySelector('.timer-wrap').style.visibility='visible';
+  document.querySelector('.timer-ring').classList.remove('warning');
+  quiz = null;
+}
+
+/* ============ INIT ============ */
+showHome();
+updateLockUI();
+setTimeout(()=>{ document.getElementById('tgOverlay').classList.add('show'); }, 500);
+</script>
+</body>
+</html>
